@@ -24,13 +24,12 @@ public partial class Loader
     [NotNull]
     public static MappingResolver? Resolver { get; private set;}
 
-    [UnmanagedCallersOnly(EntryPoint = nameof(Load))]
-    private unsafe static void Load(JNIEnv* env, IntPtr resolver)
+    private unsafe static void Load(nint env, IntPtr resolver)
     {
         // 加载全局JVM，主线程JNIEnv，映射器
-        ThrowHelper.ThrowIfPtrIsNull(env);
-        env->Functions->GetJavaVM(env, out jvm);
-        _env = env;
+        ThrowHelper.ThrowIfPtrIsZero(env);
+        _env = (JNIEnv*)env;
+        _env->Functions->GetJavaVM(_env, out jvm);
         Resolver = new(resolver);
         // Console.WriteLine(JVM->Functions->AttachCurrentThread(JVM, out _env, IntPtr.Zero));
     }

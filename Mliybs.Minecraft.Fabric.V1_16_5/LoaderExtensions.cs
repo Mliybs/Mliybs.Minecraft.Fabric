@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 
 namespace Mliybs.Minecraft.Fabric.V1_16_5;
 
-[GetSubOf]
 public unsafe partial class Loader
 {
     public static readonly ConcurrentDictionary<IntPtr, Func<IntPtr, object>> Factories = new(-1, 128);
