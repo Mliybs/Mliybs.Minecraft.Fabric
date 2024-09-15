@@ -1,11 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
 	<LangVersion>12</LangVersion>
+	<DefineConstants>FABRIC_LIBRARY</DefineConstants>
 	<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<IncludeBuildOutput>false</IncludeBuildOutput>
+	<IsRoslynComonent>true</IsRoslynComonent>
+	<IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
