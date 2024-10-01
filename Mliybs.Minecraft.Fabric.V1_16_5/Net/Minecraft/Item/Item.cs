@@ -1,36 +1,29 @@
+using Net.Minecraft.Util;
+
 namespace Net.Minecraft.Item;
 
-public partial class Item : JavaClass, IWrapper
+[MapName("net/minecraft/class_1792")]
+public partial class Item : JavaClass, IClassRef, IFromHandle<Item>
 {
-    internal static readonly Names Names = MapClassName("net.minecraft.class_1792");
-
-    public static IntPtr ClassRef { get; } = FindClass(Names.MapSignature);
-
-    public static IntPtr[] Constructors { get; } = [GetConstructorID(ClassRef, $"(L{Settings.Names.MapSignature};)V")];
-
-    public Item(Settings settings) : this(settings, false) {}
-
-    public Item(IntPtr handle) : base(handle) {}
-
-    public partial class Settings : JavaClass, IConstructor
+    [MapName("class_1793")]
+    public partial class Settings : JavaClass, IConstructor, IFromHandle<Settings>
     {
-        internal static readonly Names Names = MapClassName("net.minecraft.class_1792$class_1793");
+        [JavaConstructor]
+        public Settings() => Settings_Invoke();
 
-        public static IntPtr ClassRef { get; } = FindClass(Names.MapSignature);
+        [Signature("method_24359")]
+        public partial Settings Fireproof();
 
-        public static IntPtr[] Constructors { get; } = [GetConstructorID(ClassRef, "()V")];
+        [Signature("method_19265")]
+        public partial Settings Food(FoodComponent foodComponent);
 
-        public unsafe Settings()
-        {
-            ObjectRef = ((Method2Ptr)Env->Functions->NewObject)(Env, ClassRef, Constructors[0]);
-        }
+        [Signature("method_7889")]
+        public partial Settings MaxCount(int maxCount);
 
-        public Settings(IntPtr handle) : base(handle) {}
+        [Signature("method_7894")]
+        public partial Settings Rarity(Rarity rarity);
 
-        public unsafe Settings Food(FoodComponent foodComponent) => this.ReturnCheck(null, ((Method3Ptr)Env->Functions->CallObjectMethod)(Env, ObjectRef, Food_, foodComponent.ObjectRef));
-
-        public unsafe Settings Fireproof() => this.ReturnCheck(null, ((Method2Ptr)Env->Functions->CallObjectMethod)(Env, ObjectRef, Fireproof_));
-
-        public unsafe Settings MaxCount(int maxCount) => this.ReturnCheck(null, ((delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, int, IntPtr>)Env->Functions->CallObjectMethod)(Env, ObjectRef, MaxCount_Int, maxCount));
+        [Signature("method_7895")]
+        public partial Settings MaxDamage(int maxDamage);
     }
 }

@@ -8,697 +8,697 @@ public readonly unsafe struct JNIEnv
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct JNIFunctions
     {
-        public readonly IntPtr Reserved0;
+        public readonly nint Reserved0;
 
-        public readonly IntPtr Reserved1;
+        public readonly nint Reserved1;
 
-        public readonly IntPtr Reserved2;
+        public readonly nint Reserved2;
 
-        public readonly IntPtr Reserved3;
+        public readonly nint Reserved3;
 
         // jint (JNICALL *GetVersion)(JNIEnv *env);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int> GetVersion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int> GetVersion;
 
         // jclass (JNICALL *DefineClass) (JNIEnv* env, const char* name, jobject loader, const jbyte* buf, jsize len);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, int, IntPtr> DefineClass;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, int, nint> DefineClass;
 
         // jclass (JNICALL *FindClass) (JNIEnv* env, const char* name);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, string, IntPtr> FindClass;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, string, nint> FindClass;
 
         // jmethodID (JNICALL *FromReflectedMethod) (JNIEnv* env, jobject method);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr> FromReflectedMethod;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint> FromReflectedMethod;
 
         // jfieldID (JNICALL *FromReflectedField) (JNIEnv* env, jobject field);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr> FromReflectedField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint> FromReflectedField;
 
         // jobject (JNICALL *ToReflectedMethod) (JNIEnv* env, jclass cls, jmethodID methodID, jboolean isStatic);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, byte, IntPtr> ToReflectedMethod;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, byte, nint> ToReflectedMethod;
 
         // jclass (JNICALL *GetSuperclass) (JNIEnv* env, jclass sub);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr> GetSuperClass;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint> GetSuperClass;
 
         // jboolean (JNICALL *IsAssignableFrom) (JNIEnv* env, jclass sub, jclass sup);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, byte> IsAssignableFrom;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, byte> IsAssignableFrom;
 
         // jobject (JNICALL *ToReflectedField) (JNIEnv* env, jclass cls, jfieldID fieldID, jboolean isStatic);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, byte, IntPtr> ToReflectedField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, byte, nint> ToReflectedField;
 
         // jint (JNICALL *Throw) (JNIEnv* env, jthrowable obj);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int> Throw;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int> Throw;
 
         // jint (JNICALL *ThrowNew) (JNIEnv* env, jclass clazz, const char* msg);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, int> ThrowNew;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, int> ThrowNew;
 
         // jthrowable (JNICALL *ExceptionOccurred) (JNIEnv* env);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr> ExceptionOccurred;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint> ExceptionOccurred;
 
         // void (JNICALL *ExceptionDescribe) (JNIEnv* env);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, void> ExceptionDescribe;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, void> ExceptionDescribe;
 
         // void (JNICALL *ExceptionClear) (JNIEnv* env);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, void> ExceptionClear;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, void> ExceptionClear;
 
         // void (JNICALL *FatalError) (JNIEnv* env, const char* msg);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, void> FatalError;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, void> FatalError;
 
         // jint (JNICALL *PushLocalFrame) (JNIEnv* env, jint capacity);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int, int> PushLocalFrame;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int, int> PushLocalFrame;
 
         // jobject (JNICALL *PopLocalFrame) (JNIEnv* env, jobject result);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr> PopLocalFrame;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint> PopLocalFrame;
 
         // jobject (JNICALL *NewGlobalRef) (JNIEnv* env, jobject lobj);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr> NewGlobalRef;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint> NewGlobalRef;
 
         // void (JNICALL *DeleteGlobalRef) (JNIEnv* env, jobject gref);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, void> DeleteGlobalRef;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, void> DeleteGlobalRef;
 
         // void (JNICALL *DeleteLocalRef) (JNIEnv* env, jobject obj);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, void> DeleteLocalRef;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, void> DeleteLocalRef;
 
         // jboolean (JNICALL *IsSameObject) (JNIEnv* env, jobject obj1, jobject obj2);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, bool> IsSameObject;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, bool> IsSameObject;
 
         // jobject (JNICALL *NewLocalRef) (JNIEnv* env, jobject ref);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr> NewLocalRef;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint> NewLocalRef;
 
         // jint (JNICALL *EnsureLocalCapacity) (JNIEnv* env, jint capacity);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int, int> EnsureLocalCapacity;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int, int> EnsureLocalCapacity;
 
         // jobject (JNICALL *AllocObject) (JNIEnv* env, jclass clazz);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr> AllocObject;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint> AllocObject;
 
         // jobject (JNICALL *NewObject) (JNIEnv* env, jclass clazz, jmethodID methodID, ...);
-        public readonly void* NewObject;
+        public readonly nint NewObject;
 
         // jobject (JNICALL *NewObjectV) (JNIEnv* env, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr NewObjectV;
+        public readonly nint NewObjectV;
 
         // jobject (JNICALL *NewObjectA) (JNIEnv* env, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr> NewObjectA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint> NewObjectA;
 
         // jclass (JNICALL *GetObjectClass) (JNIEnv* env, jobject obj);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr> GetObjectClass;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint> GetObjectClass;
 
         // jboolean (JNICALL *IsInstanceOf) (JNIEnv* env, jobject obj, jclass clazz);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, byte> IsInstanceOf;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, byte> IsInstanceOf;
 
         // jmethodID (JNICALL *GetMethodID) (JNIEnv* env, jclass clazz, const char* name, const char* sig);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, string, string, IntPtr> GetMethodID;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, string, string, nint> GetMethodID; // 只出现ASCII字符所以使用自动封送
 
         // jobject (JNICALL *CallObjectMethod) (JNIEnv* env, jobject obj, jmethodID methodID, ...);
-        public readonly IntPtr CallObjectMethod;
+        public readonly nint CallObjectMethod;
 
         // jobject (JNICALL *CallObjectMethodV) (JNIEnv* env, jobject obj, jmethodID methodID, va_list args);
-        public readonly IntPtr CallObjectMethodV;
+        public readonly nint CallObjectMethodV;
 
         // jobject (JNICALL *CallObjectMethodA) (JNIEnv* env, jobject obj, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr> CallObjectMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint> CallObjectMethodA;
 
         // jboolean (JNICALL *CallBooleanMethod) (JNIEnv* env, jobject obj, jmethodID methodID, ...);
-        public readonly IntPtr CallBooleanMethod;
+        public readonly nint CallBooleanMethod;
 
         // jboolean (JNICALL *CallBooleanMethodV) (JNIEnv* env, jobject obj, jmethodID methodID, va_list args);
-        public readonly IntPtr CallBooleanMethodV;
+        public readonly nint CallBooleanMethodV;
 
         // jboolean (JNICALL *CallBooleanMethodA) (JNIEnv* env, jobject obj, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, byte> CallBooleanMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, byte> CallBooleanMethodA;
 
         // jbyte (JNICALL *CallByteMethod) (JNIEnv* env, jobject obj, jmethodID methodID, ...);
-        public readonly IntPtr CallByteMethod;
+        public readonly nint CallByteMethod;
 
         // jbyte (JNICALL *CallByteMethodV) (JNIEnv* env, jobject obj, jmethodID methodID, va_list args);
-        public readonly IntPtr CallByteMethodV;
+        public readonly nint CallByteMethodV;
 
         // jbyte (JNICALL *CallByteMethodA) (JNIEnv* env, jobject obj, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, sbyte> CallByteMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, sbyte> CallByteMethodA;
 
         // jchar (JNICALL *CallCharMethod) (JNIEnv* env, jobject obj, jmethodID methodID, ...);
-        public readonly IntPtr CallCharMethod;
+        public readonly nint CallCharMethod;
 
         // jchar (JNICALL *CallCharMethodV) (JNIEnv* env, jobject obj, jmethodID methodID, va_list args);
-        public readonly IntPtr CallCharMethodV;
+        public readonly nint CallCharMethodV;
 
         // jchar (JNICALL *CallCharMethodA) (JNIEnv* env, jobject obj, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, char> CallCharMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, char> CallCharMethodA;
 
         // jshort (JNICALL *CallShortMethod) (JNIEnv* env, jobject obj, jmethodID methodID, ...);
-        public readonly IntPtr CallShortMethod;
+        public readonly nint CallShortMethod;
 
         // jshort (JNICALL *CallShortMethodV) (JNIEnv* env, jobject obj, jmethodID methodID, va_list args);
-        public readonly IntPtr CallShortMethodV;
+        public readonly nint CallShortMethodV;
 
         // jshort (JNICALL *CallShortMethodA) (JNIEnv* env, jobject obj, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, short> CallShortMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, short> CallShortMethodA;
 
         // jint (JNICALL *CallIntMethod) (JNIEnv* env, jobject obj, jmethodID methodID, ...);
-        public readonly IntPtr CallIntMethod;
+        public readonly nint CallIntMethod;
 
         // jshort (JNICALL *CallShortMethodV) (JNIEnv* env, jobject obj, jmethodID methodID, va_list args);
-        public readonly IntPtr CallIntMethodV;
+        public readonly nint CallIntMethodV;
 
         // jint (JNICALL *CallIntMethodA) (JNIEnv* env, jobject obj, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, int> CallIntMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, int> CallIntMethodA;
 
         // jlong (JNICALL *CallLongMethod) (JNIEnv* env, jobject obj, jmethodID methodID, ...);
-        public readonly IntPtr CallLongMethod;
+        public readonly nint CallLongMethod;
 
         // jlong (JNICALL *CallLongMethodV) (JNIEnv* env, jobject obj, jmethodID methodID, va_list args);
-        public readonly IntPtr CallLongMethodV;
+        public readonly nint CallLongMethodV;
 
         // jlong (JNICALL *CallLongMethodA) (JNIEnv* env, jobject obj, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, long> CallLongMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, long> CallLongMethodA;
 
         // jfloat (JNICALL *CallFloatMethod) (JNIEnv* env, jobject obj, jmethodID methodID, ...);
-        public readonly IntPtr CallFloatMethod;
+        public readonly nint CallFloatMethod;
 
         // jfloat (JNICALL *CallFloatMethodV) (JNIEnv* env, jobject obj, jmethodID methodID, va_list args);
-        public readonly IntPtr CallFloatMethodV;
+        public readonly nint CallFloatMethodV;
 
         // jfloat (JNICALL *CallFloatMethodA) (JNIEnv* env, jobject obj, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, float> CallFloatMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, float> CallFloatMethodA;
 
         // jdouble (JNICALL *CallDoubleMethod) (JNIEnv* env, jobject obj, jmethodID methodID, ...);
-        public readonly IntPtr CallDoubleMethod;
+        public readonly nint CallDoubleMethod;
 
         // jdouble (JNICALL *CallDoubleMethodV) (JNIEnv* env, jobject obj, jmethodID methodID, va_list args);
-        public readonly IntPtr CallDoubleMethodV;
+        public readonly nint CallDoubleMethodV;
 
         // jdouble (JNICALL *CallDoubleMethodA) (JNIEnv* env, jobject obj, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, double> CallDoubleMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, double> CallDoubleMethodA;
 
         // void (JNICALL *CallVoidMethod) (JNIEnv* env, jobject obj, jmethodID methodID, ...);
-        public readonly IntPtr CallVoidMethod;
+        public readonly nint CallVoidMethod;
 
         // void (JNICALL *CallVoidMethodV) (JNIEnv* env, jobject obj, jmethodID methodID, va_list args);
-        public readonly IntPtr CallVoidMethodV;
+        public readonly nint CallVoidMethodV;
 
         // void (JNICALL *CallVoidMethodA) (JNIEnv* env, jobject obj, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, void> CallVoidMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, void> CallVoidMethodA;
 
         // jobject (JNICALL *CallNonvirtualObjectMethod) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallNonvirtualObjectMethod;
+        public readonly nint CallNonvirtualObjectMethod;
 
         // jobject (JNICALL *CallNonvirtualObjectMethodV) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallNonvirtualObjectMethodV;
+        public readonly nint CallNonvirtualObjectMethodV;
 
         // jobject (JNICALL *CallNonvirtualObjectMethodA) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr, IntPtr> CallNonvirtualObjectMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint, nint> CallNonvirtualObjectMethodA;
 
         // jboolean (JNICALL *CallNonvirtualBooleanMethod) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallNonvirtualBooleanMethod;
+        public readonly nint CallNonvirtualBooleanMethod;
 
         // jboolean (JNICALL *CallNonvirtualBooleanMethodV) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallNonvirtualBooleanMethodV;
+        public readonly nint CallNonvirtualBooleanMethodV;
 
         // jboolean (JNICALL *CallNonvirtualBooleanMethodA) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr, byte> CallNonvirtualBooleanMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint, byte> CallNonvirtualBooleanMethodA;
 
         // jbyte (JNICALL *CallNonvirtualByteMethod) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallNonvirtualByteMethod;
+        public readonly nint CallNonvirtualByteMethod;
 
         // jbyte (JNICALL *CallNonvirtualByteMethodV) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallNonvirtualByteMethodV;
+        public readonly nint CallNonvirtualByteMethodV;
 
         // jbyte (JNICALL *CallNonvirtualByteMethodA) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr, sbyte> CallNonvirtualByteMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint, sbyte> CallNonvirtualByteMethodA;
 
         // jchar (JNICALL *CallNonvirtualCharMethod) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallNonvirtualCharMethod;
+        public readonly nint CallNonvirtualCharMethod;
 
         // jchar (JNICALL *CallNonvirtualCharMethodV) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallNonvirtualCharMethodV;
+        public readonly nint CallNonvirtualCharMethodV;
 
         // jchar (JNICALL *CallNonvirtualCharMethodA) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr, char> CallNonvirtualCharMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint, char> CallNonvirtualCharMethodA;
 
         // jshort (JNICALL *CallNonvirtualShortMethod) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallNonvirtualShortMethod;
+        public readonly nint CallNonvirtualShortMethod;
 
         // jshort (JNICALL *CallNonvirtualShortMethodV) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallNonvirtualShortMethodV;
+        public readonly nint CallNonvirtualShortMethodV;
 
         // jshort (JNICALL *CallNonvirtualShortMethodA) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr, short> CallNonvirtualShortMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint, short> CallNonvirtualShortMethodA;
 
         // jint (JNICALL *CallNonvirtualIntMethod) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallNonvirtualIntMethod;
+        public readonly nint CallNonvirtualIntMethod;
 
         // jint (JNICALL *CallNonvirtualIntMethodV) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallNonvirtualIntMethodV;
+        public readonly nint CallNonvirtualIntMethodV;
 
         // jint (JNICALL *CallNonvirtualIntMethodA) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr, int> CallNonvirtualIntMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint, int> CallNonvirtualIntMethodA;
 
         // jlong (JNICALL *CallNonvirtualLongMethod) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallNonvirtualLongMethod;
+        public readonly nint CallNonvirtualLongMethod;
 
         // jlong (JNICALL *CallNonvirtualLongMethodV)(JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallNonvirtualLongMethodV;
+        public readonly nint CallNonvirtualLongMethodV;
 
         // jlong (JNICALL *CallNonvirtualLongMethodA) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr, long> CallNonvirtualLongMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint, long> CallNonvirtualLongMethodA;
 
         // jfloat (JNICALL *CallNonvirtualFloatMethod) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallNonvirtualFloatMethod;
+        public readonly nint CallNonvirtualFloatMethod;
 
         // jfloat (JNICALL *CallNonvirtualFloatMethodV) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallNonvirtualFloatMethodV;
+        public readonly nint CallNonvirtualFloatMethodV;
 
         // jfloat (JNICALL *CallNonvirtualFloatMethodA) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr, float> CallNonvirtualFloatMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint, float> CallNonvirtualFloatMethodA;
 
         // jdouble (JNICALL *CallNonvirtualDoubleMethod) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallNonvirtualDoubleMethod;
+        public readonly nint CallNonvirtualDoubleMethod;
 
         // jdouble (JNICALL *CallNonvirtualDoubleMethodV) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallNonvirtualDoubleMethodV;
+        public readonly nint CallNonvirtualDoubleMethodV;
 
         // jdouble (JNICALL *CallNonvirtualDoubleMethodA) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr, double> CallNonvirtualDoubleMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint, double> CallNonvirtualDoubleMethodA;
 
         // void (JNICALL *CallNonvirtualVoidMethod) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallNonvirtualVoidMethod;
+        public readonly nint CallNonvirtualVoidMethod;
 
         // void (JNICALL *CallNonvirtualVoidMethodV) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallNonvirtualVoidMethodV;
+        public readonly nint CallNonvirtualVoidMethodV;
 
         // void (JNICALL *CallNonvirtualVoidMethodA) (JNIEnv* env, jobject obj, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr, void> CallNonvirtualVoidMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint, void> CallNonvirtualVoidMethodA;
 
         // jfieldID (JNICALL *GetFieldID) (JNIEnv* env, jclass clazz, const char* name, const char* sig);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr> GetFieldID;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint> GetFieldID;
 
         // jobject (JNICALL *GetObjectField) (JNIEnv* env, jobject obj, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr> GetObjectField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint> GetObjectField;
 
         // jboolean (JNICALL *GetBooleanField) (JNIEnv* env, jobject obj, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, byte> GetBooleanField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, byte> GetBooleanField;
 
         // jbyte (JNICALL *GetByteField) (JNIEnv* env, jobject obj, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, sbyte> GetByteField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, sbyte> GetByteField;
 
         // jchar (JNICALL *GetCharField) (JNIEnv* env, jobject obj, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, char> GetCharField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, char> GetCharField;
 
         // jshort (JNICALL *GetShortField) (JNIEnv* env, jobject obj, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, short> GetShortField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, short> GetShortField;
 
         // jint (JNICALL *GetIntField) (JNIEnv* env, jobject obj, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, int> GetIntField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, int> GetIntField;
 
         // jlong (JNICALL *GetLongField) (JNIEnv* env, jobject obj, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, long> GetLongField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, long> GetLongField;
 
         // jfloat (JNICALL *GetFloatField) (JNIEnv* env, jobject obj, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, float> GetFloatField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, float> GetFloatField;
 
         // jdouble (JNICALL *GetDoubleField) (JNIEnv* env, jobject obj, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, double> GetDoubleField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, double> GetDoubleField;
 
         // void (JNICALL *SetObjectField) (JNIEnv* env, jobject obj, jfieldID fieldID, jobject val);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, void> SetObjectField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, void> SetObjectField;
 
         // void (JNICALL *SetBooleanField) (JNIEnv* env, jobject obj, jfieldID fieldID, jboolean val);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, byte, void> SetBooleanField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, byte, void> SetBooleanField;
 
         // void (JNICALL *SetByteField) (JNIEnv* env, jobject obj, jfieldID fieldID, jbyte val);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, sbyte, void> SetByteField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, sbyte, void> SetByteField;
 
         // void (JNICALL *SetCharField) (JNIEnv* env, jobject obj, jfieldID fieldID, jchar val);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, char, void> SetCharField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, char, void> SetCharField;
 
         // void (JNICALL *SetShortField) (JNIEnv* env, jobject obj, jfieldID fieldID, jshort val);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, short, void> SetShortField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, short, void> SetShortField;
 
         // void (JNICALL *SetIntField) (JNIEnv* env, jobject obj, jfieldID fieldID, jint val);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, int, void> SetIntField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, int, void> SetIntField;
 
         // void (JNICALL *SetLongField) (JNIEnv* env, jobject obj, jfieldID fieldID, jlong val);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, long, void> SetLongField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, long, void> SetLongField;
 
         // void (JNICALL *SetFloatField) (JNIEnv* env, jobject obj, jfieldID fieldID, jfloat val);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, float, void> SetFloatField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, float, void> SetFloatField;
 
         // void (JNICALL *SetDoubleField) (JNIEnv* env, jobject obj, jfieldID fieldID, jdouble val);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, double, void> SetDoubleField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, double, void> SetDoubleField;
 
         // jmethodID (JNICALL *GetStaticMethodID) (JNIEnv* env, jclass clazz, const char* name, const char* sig);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, string, string, IntPtr> GetStaticMethodID;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, string, string, nint> GetStaticMethodID; // 只出现ASCII字符所以使用自动封送
 
         // jobject (JNICALL *CallStaticObjectMethod) (JNIEnv* env, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallStaticObjectMethod;
+        public readonly nint CallStaticObjectMethod;
 
         // jobject (JNICALL *CallStaticObjectMethodV) (JNIEnv* env, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallStaticObjectMethodV;
+        public readonly nint CallStaticObjectMethodV;
 
         // jobject (JNICALL *CallStaticObjectMethodA) (JNIEnv* env, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, IntPtr> CallStaticObjectMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint> CallStaticObjectMethodA;
 
         // jboolean (JNICALL *CallStaticBooleanMethod) (JNIEnv* env, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallStaticBooleanMethod;
+        public readonly nint CallStaticBooleanMethod;
 
         // jboolean (JNICALL *CallStaticBooleanMethodV) (JNIEnv* env, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallStaticBooleanMethodV;
+        public readonly nint CallStaticBooleanMethodV;
 
         // jboolean (JNICALL *CallStaticBooleanMethodA) (JNIEnv* env, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, byte> CallStaticBooleanMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, byte> CallStaticBooleanMethodA;
 
         // jbyte (JNICALL *CallStaticByteMethod)(JNIEnv* env, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallStaticByteMethod;
+        public readonly nint CallStaticByteMethod;
 
         // jbyte (JNICALL *CallStaticByteMethodV) (JNIEnv* env, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallStaticByteMethodV;
+        public readonly nint CallStaticByteMethodV;
 
         // jbyte (JNICALL *CallStaticByteMethodA) (JNIEnv* env, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, sbyte> CallStaticByteMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, sbyte> CallStaticByteMethodA;
 
         // jchar (JNICALL *CallStaticCharMethod) (JNIEnv* env, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallStaticCharMethod;
+        public readonly nint CallStaticCharMethod;
 
         // jchar (JNICALL *CallStaticCharMethodV) (JNIEnv* env, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallStaticCharMethodV;
+        public readonly nint CallStaticCharMethodV;
 
         // jchar (JNICALL *CallStaticCharMethodA) (JNIEnv* env, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, char> CallStaticCharMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, char> CallStaticCharMethodA;
 
         // jshort (JNICALL *CallStaticShortMethod) (JNIEnv* env, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallStaticShortMethod;
+        public readonly nint CallStaticShortMethod;
 
         // jshort (JNICALL *CallStaticShortMethodV) (JNIEnv* env, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallStaticShortMethodV;
+        public readonly nint CallStaticShortMethodV;
 
         // jshort (JNICALL *CallStaticShortMethodA) (JNIEnv* env, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, short> CallStaticShortMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, short> CallStaticShortMethodA;
 
         // jint (JNICALL *CallStaticIntMethod) (JNIEnv* env, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallStaticIntMethod;
+        public readonly nint CallStaticIntMethod;
 
         // jint (JNICALL *CallStaticIntMethodV) (JNIEnv* env, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallStaticIntMethodV;
+        public readonly nint CallStaticIntMethodV;
 
         // jint (JNICALL *CallStaticIntMethodA) (JNIEnv* env, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, int> CallStaticIntMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, int> CallStaticIntMethodA;
 
         // jlong (JNICALL *CallStaticLongMethod) (JNIEnv* env, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallStaticLongMethod;
+        public readonly nint CallStaticLongMethod;
 
         // jlong (JNICALL *CallStaticLongMethodV) (JNIEnv* env, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallStaticLongMethodV;
+        public readonly nint CallStaticLongMethodV;
 
         // jlong (JNICALL *CallStaticLongMethodA) (JNIEnv* env, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, long> CallStaticLongMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, long> CallStaticLongMethodA;
 
         // jfloat (JNICALL *CallStaticFloatMethod) (JNIEnv* env, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallStaticFloatMethod;
+        public readonly nint CallStaticFloatMethod;
 
         // jfloat (JNICALL *CallStaticFloatMethodV) (JNIEnv* env, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallStaticFloatMethodV;
+        public readonly nint CallStaticFloatMethodV;
 
         // jfloat (JNICALL *CallStaticFloatMethodA) (JNIEnv* env, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, float> CallStaticFloatMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, float> CallStaticFloatMethodA;
 
         // jdouble (JNICALL *CallStaticDoubleMethod) (JNIEnv* env, jclass clazz, jmethodID methodID, ...);
-        public readonly IntPtr CallStaticDoubleMethod;
+        public readonly nint CallStaticDoubleMethod;
 
         // jdouble (JNICALL *CallStaticDoubleMethodV) (JNIEnv* env, jclass clazz, jmethodID methodID, va_list args);
-        public readonly IntPtr CallStaticDoubleMethodV;
+        public readonly nint CallStaticDoubleMethodV;
 
         // jdouble (JNICALL *CallStaticDoubleMethodA) (JNIEnv* env, jclass clazz, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, double> CallStaticDoubleMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, double> CallStaticDoubleMethodA;
 
         // void (JNICALL *CallStaticVoidMethod) (JNIEnv* env, jclass cls, jmethodID methodID, ...);
-        public readonly IntPtr CallStaticVoidMethod;
+        public readonly nint CallStaticVoidMethod;
 
         // void (JNICALL *CallStaticVoidMethodV) (JNIEnv* env, jclass cls, jmethodID methodID, va_list args);
-        public readonly IntPtr CallStaticVoidMethodV;
+        public readonly nint CallStaticVoidMethodV;
 
         // void (JNICALL *CallStaticVoidMethodA) (JNIEnv* env, jclass cls, jmethodID methodID, const jvalue* args);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, void> CallStaticVoidMethodA;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, void> CallStaticVoidMethodA;
 
         // jfieldID (JNICALL *GetStaticFieldID) (JNIEnv* env, jclass clazz, const char* name, const char* sig);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, string, string, IntPtr> GetStaticFieldID;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, string, string, nint> GetStaticFieldID; // 只出现ASCII字符所以使用自动封送
 
         // jobject (JNICALL *GetStaticObjectField) (JNIEnv* env, jclass clazz, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr> GetStaticObjectField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint> GetStaticObjectField;
 
         // jboolean (JNICALL *GetStaticBooleanField) (JNIEnv* env, jclass clazz, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, byte> GetStaticBooleanField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, byte> GetStaticBooleanField;
 
         // jbyte (JNICALL *GetStaticByteField) (JNIEnv* env, jclass clazz, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, sbyte> GetStaticByteField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, sbyte> GetStaticByteField;
 
         // jchar (JNICALL *GetStaticCharField) (JNIEnv* env, jclass clazz, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, char> GetStaticCharField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, char> GetStaticCharField;
 
         // jshort (JNICALL *GetStaticShortField) (JNIEnv* env, jclass clazz, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, short> GetStaticShortField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, short> GetStaticShortField;
 
         // jint (JNICALL *GetStaticIntField) (JNIEnv* env, jclass clazz, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, int> GetStaticIntField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, int> GetStaticIntField;
 
         // jlong (JNICALL *GetStaticLongField) (JNIEnv* env, jclass clazz, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, long> GetStaticLongField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, long> GetStaticLongField;
 
         // jfloat (JNICALL *GetStaticFloatField) (JNIEnv* env, jclass clazz, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, float> GetStaticFloatField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, float> GetStaticFloatField;
 
         // jdouble (JNICALL *GetStaticDoubleField) (JNIEnv* env, jclass clazz, jfieldID fieldID);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, double> GetStaticDoubleField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, double> GetStaticDoubleField;
 
         // void (JNICALL *SetStaticObjectField) (JNIEnv* env, jclass clazz, jfieldID fieldID, jobject value);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, IntPtr, void> SetStaticObjectField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, void> SetStaticObjectField;
 
         // void (JNICALL *SetStaticBooleanField) (JNIEnv* env, jclass clazz, jfieldID fieldID, jboolean value);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, byte, void> SetStaticBooleanField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, byte, void> SetStaticBooleanField;
 
         // void (JNICALL *SetStaticByteField) (JNIEnv* env, jclass clazz, jfieldID fieldID, jbyte value);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, sbyte, void> SetStaticByteField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, sbyte, void> SetStaticByteField;
 
         // void (JNICALL *SetStaticCharField) (JNIEnv* env, jclass clazz, jfieldID fieldID, jchar value);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, char, void> SetStaticCharField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, char, void> SetStaticCharField;
 
         // void (JNICALL *SetStaticShortField) (JNIEnv* env, jclass clazz, jfieldID fieldID, jshort value);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, short, void> SetStaticShortField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, short, void> SetStaticShortField;
 
         // void (JNICALL *SetStaticIntField) (JNIEnv* env, jclass clazz, jfieldID fieldID, jint value);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, int, void> SetStaticIntField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, int, void> SetStaticIntField;
 
         // void (JNICALL *SetStaticLongField) (JNIEnv* env, jclass clazz, jfieldID fieldID, jlong value);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, long, void> SetStaticLongField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, long, void> SetStaticLongField;
 
         // void (JNICALL *SetStaticFloatField) (JNIEnv* env, jclass clazz, jfieldID fieldID, jfloat value);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, float, void> SetStaticFloatField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, float, void> SetStaticFloatField;
 
         // void (JNICALL *SetStaticDoubleField) (JNIEnv* env, jclass clazz, jfieldID fieldID, jdouble value);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, double, void> SetStaticDoubleField;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, double, void> SetStaticDoubleField;
 
         // jstring (JNICALL *NewString) (JNIEnv* env, const jchar* unicode, jsize len);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, string, int, IntPtr> NewString;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, char*, int, nint> NewString;
 
         // jsize (JNICALL *GetStringLength) (JNIEnv* env, jstring str);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int> GetStringLength;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int> GetStringLength;
 
         // const jchar *(JNICALL *GetStringChars) (JNIEnv* env, jstring str, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out bool, IntPtr> GetStringChars;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out bool, char*> GetStringChars;
 
         // void (JNICALL *ReleaseStringChars) (JNIEnv* env, jstring str, const jchar* chars);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, void> ReleaseStringChars;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, char*, void> ReleaseStringChars;
 
         // jstring (JNICALL *NewStringUTF) (JNIEnv* env, const char* utf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, string, IntPtr> NewStringUTF;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, byte*, nint> NewStringUTF;
 
         // jsize (JNICALL *GetStringUTFLength) (JNIEnv* env, jstring str);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int> GetStringUTFLength;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int> GetStringUTFLength;
 
         // const char* (JNICALL *GetStringUTFChars) (JNIEnv* env, jstring str, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out bool, IntPtr> GetStringUTFChars;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out bool, nint> GetStringUTFChars;
 
         // void (JNICALL *ReleaseStringUTFChars) (JNIEnv* env, jstring str, const char* chars);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, void> ReleaseStringUTFChars;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, void> ReleaseStringUTFChars;
 
         // jsize (JNICALL *GetArrayLength) (JNIEnv* env, jarray array);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int> GetArrayLength;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int> GetArrayLength;
 
         // jobjectArray (JNICALL *NewObjectArray) (JNIEnv* env, jsize len, jclass clazz, jobject init);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int, IntPtr, IntPtr, IntPtr> NewObjectArray;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int, nint, nint, nint> NewObjectArray;
 
         // jobject (JNICALL *GetObjectArrayElement) (JNIEnv* env, jobjectArray array, jsize index);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, IntPtr> GetObjectArrayElement;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, nint> GetObjectArrayElement;
 
         // void (JNICALL *SetObjectArrayElement) (JNIEnv* env, jobjectArray array, jsize index, jobject val);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, IntPtr, void> SetObjectArrayElement;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, nint, void> SetObjectArrayElement;
 
         // jbooleanArray (JNICALL *NewBooleanArray) (JNIEnv* env, jsize len);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int, IntPtr> NewBooleanArray;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int, nint> NewBooleanArray;
 
         // jbyteArray (JNICALL *NewByteArray) (JNIEnv* env, jsize len);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int, IntPtr> NewByteArray;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int, nint> NewByteArray;
 
         // jcharArray (JNICALL *NewCharArray) (JNIEnv* env, jsize len);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int, IntPtr> NewCharArray;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int, nint> NewCharArray;
 
         // jshortArray (JNICALL *NewShortArray) (JNIEnv* env, jsize len);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int, IntPtr> NewShortArray;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int, nint> NewShortArray;
 
         // jintArray (JNICALL *NewIntArray) (JNIEnv* env, jsize len);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int, IntPtr> NewIntArray;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int, nint> NewIntArray;
 
         // jlongArray (JNICALL *NewLongArray) (JNIEnv* env, jsize len);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int, IntPtr> NewLongArray;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int, nint> NewLongArray;
 
         // jfloatArray (JNICALL *NewFloatArray) (JNIEnv* env, jsize len);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int, IntPtr> NewFloatArray;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int, nint> NewFloatArray;
 
         // jdoubleArray (JNICALL *NewDoubleArray) (JNIEnv* env, jsize len);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, int, IntPtr> NewDoubleArray;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, int, nint> NewDoubleArray;
 
         // jboolean * (JNICALL *GetBooleanArrayElements) (JNIEnv* env, jbooleanArray array, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out byte, byte*> GetBooleanArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out byte, byte*> GetBooleanArrayElements;
 
         // jbyte * (JNICALL *GetByteArrayElements) (JNIEnv* env, jbyteArray array, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out byte, sbyte*> GetByteArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out byte, sbyte*> GetByteArrayElements;
 
         // jchar * (JNICALL *GetCharArrayElements) (JNIEnv* env, jcharArray array, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out byte, char*> GetCharArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out byte, char*> GetCharArrayElements;
 
         // jshort * (JNICALL *GetShortArrayElements) (JNIEnv* env, jshortArray array, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out byte, short*> GetShortArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out byte, short*> GetShortArrayElements;
 
         // jint * (JNICALL *GetIntArrayElements) (JNIEnv* env, jintArray array, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out byte, int*> GetIntArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out byte, int*> GetIntArrayElements;
 
         // jlong * (JNICALL *GetLongArrayElements) (JNIEnv* env, jlongArray array, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out byte, long*> GetLongArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out byte, long*> GetLongArrayElements;
 
         // jfloat * (JNICALL *GetFloatArrayElements) (JNIEnv* env, jfloatArray array, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out byte, float*> GetFloatArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out byte, float*> GetFloatArrayElements;
 
         // jdouble * (JNICALL *GetDoubleArrayElements) (JNIEnv* env, jdoubleArray array, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out byte, double*> GetDoubleArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out byte, double*> GetDoubleArrayElements;
 
         // void (JNICALL *ReleaseBooleanArrayElements) (JNIEnv* env, jbooleanArray array, jboolean* elems, jint mode);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, byte*, int, void> ReleaseBooleanArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, byte*, int, void> ReleaseBooleanArrayElements;
 
         // void (JNICALL *ReleaseByteArrayElements) (JNIEnv* env, jbyteArray array, jbyte* elems, jint mode);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, sbyte*, int, void> ReleaseByteArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, sbyte*, int, void> ReleaseByteArrayElements;
 
         // void (JNICALL *ReleaseCharArrayElements) (JNIEnv* env, jcharArray array, jchar* elems, jint mode);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, char*, int, void> ReleaseCharArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, char*, int, void> ReleaseCharArrayElements;
 
         // void (JNICALL *ReleaseShortArrayElements) (JNIEnv* env, jshortArray array, jshort* elems, jint mode);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, short*, int, void> ReleaseShortArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, short*, int, void> ReleaseShortArrayElements;
 
         // void (JNICALL *ReleaseIntArrayElements) (JNIEnv* env, jintArray array, jint* elems, jint mode);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int*, int, void> ReleaseIntArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int*, int, void> ReleaseIntArrayElements;
 
         // void (JNICALL *ReleaseLongArrayElements) (JNIEnv* env, jlongArray array, jlong* elems, jint mode);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, long*, int, void> ReleaseLongArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, long*, int, void> ReleaseLongArrayElements;
 
         // void (JNICALL *ReleaseFloatArrayElements) (JNIEnv* env, jfloatArray array, jfloat* elems, jint mode);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, float*, int, void> ReleaseFloatArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, float*, int, void> ReleaseFloatArrayElements;
 
         // void (JNICALL *ReleaseDoubleArrayElements) (JNIEnv* env, jdoubleArray array, jdouble* elems, jint mode);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, double*, int, void> ReleaseDoubleArrayElements;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, double*, int, void> ReleaseDoubleArrayElements;
 
         // void (JNICALL *GetBooleanArrayRegion) (JNIEnv* env, jbooleanArray array, jsize start, jsize l, jboolean* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, byte*, void> GetBooleanArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, byte*, void> GetBooleanArrayRegion;
 
         // void (JNICALL *GetByteArrayRegion) (JNIEnv* env, jbyteArray array, jsize start, jsize len, jbyte* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, sbyte*, void> GetByteArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, sbyte*, void> GetByteArrayRegion;
 
         // void (JNICALL *GetCharArrayRegion) (JNIEnv* env, jcharArray array, jsize start, jsize len, jchar* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, char*, void> GetCharArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, char*, void> GetCharArrayRegion;
 
         // void (JNICALL *GetShortArrayRegion) (JNIEnv* env, jshortArray array, jsize start, jsize len, jshort* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, short*, void> GetShortArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, short*, void> GetShortArrayRegion;
 
         // void (JNICALL *GetIntArrayRegion) (JNIEnv* env, jintArray array, jsize start, jsize len, jint* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, int*, void> GetIntArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, int*, void> GetIntArrayRegion;
 
         // void (JNICALL *GetLongArrayRegion) (JNIEnv* env, jlongArray array, jsize start, jsize len, jlong* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, long*, void> GetLongArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, long*, void> GetLongArrayRegion;
 
         // void (JNICALL *GetFloatArrayRegion) (JNIEnv* env, jfloatArray array, jsize start, jsize len, jfloat* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, float*, void> GetFloatArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, float*, void> GetFloatArrayRegion;
 
         // void (JNICALL *GetDoubleArrayRegion) (JNIEnv* env, jdoubleArray array, jsize start, jsize len, jdouble* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, double*, void> GetDoubleArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, double*, void> GetDoubleArrayRegion;
 
         // void (JNICALL *SetBooleanArrayRegion) (JNIEnv* env, jbooleanArray array, jsize start, jsize l, const jboolean* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, byte*, void> SetBooleanArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, byte*, void> SetBooleanArrayRegion;
 
         // void (JNICALL *SetByteArrayRegion) (JNIEnv* env, jbyteArray array, jsize start, jsize len, const jbyte* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, sbyte*, void> SetByteArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, sbyte*, void> SetByteArrayRegion;
 
         // void (JNICALL *SetCharArrayRegion) (JNIEnv* env, jcharArray array, jsize start, jsize len, const jchar* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, char*, void> SetCharArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, char*, void> SetCharArrayRegion;
 
         // void (JNICALL *SetShortArrayRegion) (JNIEnv* env, jshortArray array, jsize start, jsize len, const jshort* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, short*, void> SetShortArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, short*, void> SetShortArrayRegion;
 
         // void (JNICALL *SetIntArrayRegion) (JNIEnv* env, jintArray array, jsize start, jsize len, const jint* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, int*, void> SetIntArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, int*, void> SetIntArrayRegion;
 
         // void (JNICALL *SetLongArrayRegion) (JNIEnv* env, jlongArray array, jsize start, jsize len, const jlong* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, long*, void> SetLongArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, long*, void> SetLongArrayRegion;
 
         // void (JNICALL *SetFloatArrayRegion) (JNIEnv* env, jfloatArray array, jsize start, jsize len, const jfloat* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, float*, void> SetFloatArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, float*, void> SetFloatArrayRegion;
 
         // void (JNICALL *SetDoubleArrayRegion) (JNIEnv* env, jdoubleArray array, jsize start, jsize len, const jdouble* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, double*, void> SetDoubleArrayRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, double*, void> SetDoubleArrayRegion;
 
         // jint (JNICALL *RegisterNatives) (JNIEnv* env, jclass clazz, const JNINativeMethod* methods, jint nMethods);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, int> RegisterNatives;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, int> RegisterNatives;
 
         // jint (JNICALL *UnregisterNatives) (JNIEnv* env, jclass clazz);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int> UnregisterNatives;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int> UnregisterNatives;
 
         // jint (JNICALL *MonitorEnter) (JNIEnv* env, jobject obj);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int> MonitorEnter;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int> MonitorEnter;
 
         // jint (JNICALL *MonitorExit) (JNIEnv* env, jobject obj);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int> MonitorExit;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int> MonitorExit;
 
         // jint (JNICALL *GetJavaVM) (JNIEnv* env, JavaVM** vm);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, out JavaVM*, Result> GetJavaVM;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, out JavaVM*, Result> GetJavaVM;
 
         // void (JNICALL *GetStringRegion) (JNIEnv* env, jstring str, jsize start, jsize len, jchar* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, IntPtr, void> GetStringRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, char*, void> GetStringRegion;
 
         // void (JNICALL *GetStringUTFRegion) (JNIEnv* env, jstring str, jsize start, jsize len, char* buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, int, int, char*, void> GetStringUTFRegion;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, int, int, byte*, void> GetStringUTFRegion;
 
         // void * (JNICALL *GetPrimitiveArrayCritical) (JNIEnv* env, jarray array, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out byte, IntPtr> GetPrimitiveArrayCritical;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out bool, nint> GetPrimitiveArrayCritical;
 
         // void (JNICALL *ReleasePrimitiveArrayCritical) (JNIEnv* env, jarray array, void* carray, jint mode);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr, int, void> ReleasePrimitiveArrayCritical;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, int, void> ReleasePrimitiveArrayCritical;
 
         // const jchar * (JNICALL *GetStringCritical) (JNIEnv* env, jstring string, jboolean* isCopy);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, out bool, string> GetStringCritical;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, out bool, char*> GetStringCritical;
 
         // void (JNICALL *ReleaseStringCritical) (JNIEnv* env, jstring string, const jchar* cstring);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, string, void> ReleaseStringCritical;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, char*, void> ReleaseStringCritical;
 
         // jweak (JNICALL *NewWeakGlobalRef) (JNIEnv* env, jobject obj);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr> NewWeakGlobalRef;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint> NewWeakGlobalRef;
 
         // void (JNICALL *DeleteWeakGlobalRef) (JNIEnv* env, jweak ref);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, void> DeleteWeakGlobalRef;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, void> DeleteWeakGlobalRef;
 
         // jboolean (JNICALL *ExceptionCheck) (JNIEnv* env);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, byte> ExceptionCheck;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, bool> ExceptionCheck;
 
         // jobject (JNICALL *NewDirectByteBuffer) (JNIEnv* env, void* address, jlong capacity);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, long, IntPtr> NewDirectByteBuffer;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, long, nint> NewDirectByteBuffer;
 
         // void* (JNICALL *GetDirectBufferAddress) (JNIEnv* env, jobject buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, IntPtr> GetDirectBufferAddress;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint> GetDirectBufferAddress;
 
         // jlong (JNICALL *GetDirectBufferCapacity) (JNIEnv* env, jobject buf);
-        public readonly delegate* unmanaged[Stdcall]<JNIEnv*, IntPtr, long> GetDirectBufferCapacity;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, long> GetDirectBufferCapacity;
     }
 
     public readonly JNIFunctions* Functions;

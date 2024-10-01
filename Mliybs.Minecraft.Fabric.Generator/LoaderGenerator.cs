@@ -19,12 +19,12 @@ namespace Mliybs.Minecraft.Fabric.Generator
                     public static class FabricLoader
                     {
                         [UnmanagedCallersOnly(EntryPoint = nameof(Load))]
-                        private static void Load(nint env, nint resolver)
+                        private static void Load(nint env, nint resolver, nint logger)
                         {
                             [UnsafeAccessor(UnsafeAccessorKind.StaticMethod, Name = nameof(Load))]
-                            static extern void Loader_Load(UnsafeAccessorLoader @this, nint env, nint resolver);
+                            static extern void Loader_Load(UnsafeAccessorLoader @this, nint env, nint resolver, nint logger);
 
-                            Loader_Load(null!, env, resolver);
+                            Loader_Load(null!, env, resolver, logger);
                         }
                     }
                 }

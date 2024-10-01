@@ -12,29 +12,6 @@ namespace Mliybs.Minecraft.Fabric.Generator
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.RegisterPostInitializationOutput(x =>
-            {
-                x.AddSource("MapNameAttribute.g.cs", """
-                    #if FABRIC_LIBRARY
-                    using System;
-                
-                    namespace Mliybs.Minecraft.Fabric
-                    {
-                        [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-                        public sealed class MapNameAttribute : Attribute
-                        {
-                            public string Value { get; }
-                
-                            public MapNameAttribute(string value)
-                            {
-                                Value = value;
-                            }
-                        }
-                    }
-                    #endif
-                    """);
-            });
-
             var provider = context.SyntaxProvider.CreateSyntaxProvider(static (x, _) => x is ClassDeclarationSyntax
             {
                 AttributeLists.Count: > 0
@@ -63,8 +40,8 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                     var name = string.Join("$", list.Reverse<string>()).Replace('/', '.');
 
-                    x.AddSource($"MapName.{@class.MetadataName.Replace('`', '_')}.g.cs", @class.NestedClassCompletion($$"""
-                        internal static readonly Names Names = MapClassName("{{name}}");
+                    x.AddSource($"MapName.{@class.GetFullyQualifiedNameForFile()}.g.cs", @class.NestedClassCompletion($$"""
+                        internal static Names Names { get; } = MapClassName("{{name}}");
 
                         public static nint ClassRef { get; } = FindClass(Names.MapSignature);
                         """, true));

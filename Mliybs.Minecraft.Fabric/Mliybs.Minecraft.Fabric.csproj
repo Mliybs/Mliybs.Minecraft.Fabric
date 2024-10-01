@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>FABRIC_LIBRARY</DefineConstants>
+	<NoWarn>108</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mliybs.JNI\Mliybs.JNI.csproj" />
+    <ProjectReference Include="..\Mliybs.Minecraft.Fabric.Generator\Mliybs.Minecraft.Fabric.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+	<!--引用该库方式参考-->
+	<!--<Compile Include="..\Mliybs.Minecraft.Fabric\**\*.cs" />-->
+	<!--<Compile Remove="..\Mliybs.Minecraft.Fabric\bin\**\*.cs" />-->
+	<!--<Compile Remove="..\Mliybs.Minecraft.Fabric\obj\**\*.cs" />-->
+  </ItemGroup>
+
+</Project>

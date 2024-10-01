@@ -8,26 +8,26 @@ public readonly unsafe struct JavaVM
     [StructLayout(LayoutKind.Sequential)]
     public readonly unsafe struct JVMFunctions
     {
-        public readonly IntPtr Reserved0;
+        public readonly nint Reserved0;
 
-        public readonly IntPtr Reserved1;
+        public readonly nint Reserved1;
 
-        public readonly IntPtr Reserved2;
+        public readonly nint Reserved2;
 
         // jint (JNICALL *DestroyJavaVM)(JavaVM *vm);
-        public readonly delegate* unmanaged[Stdcall]<JavaVM*, Result> DestroyJavaVM;
+        public readonly delegate* unmanaged[Cdecl]<JavaVM*, Result> DestroyJavaVM;
 
         // jint (JNICALL *AttachCurrentThread)(JavaVM *vm, void **penv, void *args);
-        public readonly delegate* unmanaged[Stdcall]<JavaVM*, out JNIEnv*, IntPtr, Result> AttachCurrentThread;
+        public readonly delegate* unmanaged[Cdecl]<JavaVM*, out JNIEnv*, nint, Result> AttachCurrentThread;
 
         // jint (JNICALL *DetachCurrentThread)(JavaVM *vm);
-        public readonly delegate* unmanaged[Stdcall]<JavaVM*, Result> DetachCurrentThread;
+        public readonly delegate* unmanaged[Cdecl]<JavaVM*, Result> DetachCurrentThread;
 
         // jint (JNICALL *GetEnv)(JavaVM *vm, void **penv, jint version);
-        public readonly delegate* unmanaged[Stdcall]<JavaVM*, out IntPtr, int, Result> GetEnv;
+        public readonly delegate* unmanaged[Cdecl]<JavaVM*, out nint, int, Result> GetEnv;
 
         // jint (JNICALL *AttachCurrentThreadAsDaemon)(JavaVM *vm, void **penv, void *args);
-        public readonly delegate* unmanaged[Stdcall]<JavaVM*, out IntPtr, IntPtr, Result> AttachCurrentThreadAsDaemon;
+        public readonly delegate* unmanaged[Cdecl]<JavaVM*, out nint, nint, Result> AttachCurrentThreadAsDaemon;
     }
 
     public readonly JVMFunctions* Functions;

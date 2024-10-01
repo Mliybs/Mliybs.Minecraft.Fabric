@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Mliybs.Minecraft.Fabric.V1_16_5;
+namespace Mliybs.Minecraft.Fabric;
 
 internal static class ThrowHelper
 {
@@ -14,8 +14,8 @@ internal static class ThrowHelper
     {
         if (ptr is null) throw new NullReferenceException($"{nameof(ptr)}为空指针！");
     }
-    public unsafe static void ThrowIfPtrIsZero(IntPtr ptr)
+    public unsafe static void ThrowIfPtrIsZero(nint ptr)
     {
-        if (ptr == IntPtr.Zero) throw new NullReferenceException($"{nameof(ptr)}为空指针！");
+        if (ptr == nint.Zero) throw new NullReferenceException($"{nameof(ptr)}为空指针！");
     }
 }

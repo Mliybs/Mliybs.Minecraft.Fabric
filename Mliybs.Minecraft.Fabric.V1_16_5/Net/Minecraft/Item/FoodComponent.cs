@@ -1,26 +1,27 @@
 namespace Net.Minecraft.Item;
 
-public partial class FoodComponent(IntPtr handle) : JavaClass(handle), IClassRef
+[MapName("net/minecraft/class_4174")]
+public partial class FoodComponent : JavaClass, IClassRef, IFromHandle<FoodComponent>
 {
-    internal static readonly Names Names = MapClassName("net.minecraft.class_4174");
-
-    public static IntPtr ClassRef { get; } = FindClass(Names.MapSignature);
-
-    public partial class Builder : JavaClass, IConstructor
+    [MapName("class_4175")]
+    public partial class Builder : JavaClass, IConstructor, IFromHandle<Builder>
     {
-        internal static readonly Names Names = MapClassName("net.minecraft.class_4174$class_4175");
+        [JavaConstructor]
+        public Builder() => Builder_Invoke();
 
-        public static IntPtr ClassRef { get; } = FindClass(Names.MapSignature);
+        [Signature("method_19236")]
+        public partial Builder Meat();
 
-        public static IntPtr[] Constructors { get; } = [GetConstructorID(ClassRef, $"()V")];
+        [Signature("method_19237")]
+        public partial Builder SaturationModifier(float saturationModifier);
 
-        public unsafe Builder()
-        {
-            ObjectRef = ((Method2Ptr)Env->Functions->NewObject)(Env, ClassRef, Constructors[0]);
-        }
+        [Signature("method_19238")]
+        public partial Builder Hunger(int hunger);
 
-        public unsafe Builder AlwaysEdible() => this.ReturnCheck(null, ((Method2Ptr)Env->Functions->CallObjectMethod)(Env, ObjectRef, AlwaysEdible_));
+        [Signature("method_19240")]
+        public partial Builder AlwaysEdible();
 
-        public unsafe FoodComponent Build() => new(((Method2Ptr)Env->Functions->CallObjectMethod)(Env, ObjectRef, Build_));
+        [Signature("method_19242")]
+        public partial FoodComponent Build();
     }
 }

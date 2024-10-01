@@ -1,8 +1,6 @@
 namespace Net.Minecraft.World;
 
-public abstract class World(IntPtr handle) : JavaClass(handle), IClassRef
+[MapName("net.minecraft.class_1937")]
+public partial class World : JavaClass, IClassRef, IFromHandle<World>
 {
-    internal static readonly Names Names = MapClassName("net.minecraft.class_1937");
-
-    public static IntPtr ClassRef { get; } = FindClass(Names.MapSignature);
 }

@@ -1,55 +1,49 @@
-using System.Reflection;
+using Mliybs.Minecraft.Fabric.Handlers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Net.Minecraft.Item;
 
-public partial class Item
+partial class Item : IWrapper<Item>
 {
-    private static readonly Lazy<List<Item>> Instances = new(() => []);
+    public static nint WrapperClassRef { get; } = FindClass("com/mlinetles/nativeloader/wrappers/ItemWrapper");
 
-    public static IntPtr WrapperClassRef { get; } = FindClass("com/mlinetles/nativeloader/wrappers/ItemWrapper");
+    public static nint WrapperConstructor { get; } = GetConstructorID(WrapperClassRef, $"(L{Settings.Names.MapSignature};J)V");
 
-    public static IntPtr[] WrapperConstructors { get; } = [GetConstructorID(WrapperClassRef, $"(L{Settings.Names.MapSignature};J)V")];
-
-    protected unsafe Item(Settings settings, bool isWrapper)
+    [JavaConstructor]
+    public unsafe Item(Settings settings)
     {
-        if (isWrapper)
+        if (TryGetWrapper(out var wrapper))
         {
-            Instances.Value.Add(this);
-
-            var type = GetType();
-            
-            var wrapper = new ItemWrapper()
-            {
-                GetTranslationKey = type
-                    .GetMethod(nameof(GetTranslationKey), BindingFlags.Instance | BindingFlags.NonPublic)
-                    .IsOverride() ? &GetTranslationKeyStatic : null
-            };
-
-            ObjectRef = ((Method4Ptr)Env->Functions->NewObject)(Env, WrapperClassRef, WrapperConstructors[0], settings.ObjectRef, (nint)(&wrapper));
+            ObjectRef = ((Method4Ptr)Env->Functions->NewObject)(Env, WrapperClassRef, WrapperConstructor, settings.ObjectRef, (nint)(&wrapper));
         }
-        
+
         else
         {
-            ObjectRef = ((Method3Ptr)Env->Functions->NewObject)(Env, ClassRef, Constructors[0], settings.ObjectRef);
+            Item_SettingsInvoke(settings);
         }
     }
 
-    private static IntPtr GetTranslationKeyStatic(IntPtr obj)
+    /// <summary>
+    /// 该方法由源生成器自动生成，请勿覆写此方法！
+    /// </summary>
+    /// <param name="wrapper"></param>
+    /// <returns></returns>
+    protected virtual bool TryGetWrapper(out ItemWrapper wrapper)
     {
-        var instance = Instances.Value.Find(x => IsSameObject(x.ObjectRef, obj)) ?? throw new ArgumentException($"调用的方法没有被注册！");
-        return NewString(instance.GetTranslationKey());
+        wrapper = default;
+        return false;
     }
 
-    protected internal virtual string GetTranslationKey() => "item.mlinetles.dnmd";
+    [Signature("method_7876")]
+    public virtual partial string GetTranslationKey();
 
-    ~Item()
-    {
-        Instances.Value.Remove(this);
-    }
-    
+    protected virtual nint GetTranslationKeyHandler() => NewString(GetTranslationKey());
+
+    protected delegate nint GetTranslationKeyHandlerDelegate();
+
     [StructLayout(LayoutKind.Sequential)]
-    private unsafe struct ItemWrapper
+    public partial struct ItemWrapper
     {
-        public required delegate*<IntPtr, IntPtr> GetTranslationKey;
+        public nint GetTranslationKeyHandler;
     }
 }
