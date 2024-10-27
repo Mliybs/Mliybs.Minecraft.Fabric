@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mliybs.JNI", "Mliybs.JNI\Mliybs.JNI.csproj", "{05441869-C46A-4084-96E7-7583DD0A8B46}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mliybs.Minecraft.Fabric.V1_16_5", "Mliybs.Minecraft.Fabric.V1_16_5\Mliybs.Minecraft.Fabric.V1_16_5.csproj", "{7B35311B-6FAD-4749-AE8C-F29C9E8BBDF7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mliybs.Minecraft.Fabric.Generator", "Mliybs.Minecraft.Fabric.Generator\Mliybs.Minecraft.Fabric.Generator.csproj", "{E64D3C6C-F436-4139-BDD5-70D2C96AFC01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mliybs.Minecraft.Fabric", "Mliybs.Minecraft.Fabric\Mliybs.Minecraft.Fabric.csproj", "{B689E14C-6310-4BC4-84C0-6B948D17FAD4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05441869-C46A-4084-96E7-7583DD0A8B46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05441869-C46A-4084-96E7-7583DD0A8B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05441869-C46A-4084-96E7-7583DD0A8B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05441869-C46A-4084-96E7-7583DD0A8B46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B35311B-6FAD-4749-AE8C-F29C9E8BBDF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B35311B-6FAD-4749-AE8C-F29C9E8BBDF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B35311B-6FAD-4749-AE8C-F29C9E8BBDF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B35311B-6FAD-4749-AE8C-F29C9E8BBDF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E64D3C6C-F436-4139-BDD5-70D2C96AFC01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E64D3C6C-F436-4139-BDD5-70D2C96AFC01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E64D3C6C-F436-4139-BDD5-70D2C96AFC01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E64D3C6C-F436-4139-BDD5-70D2C96AFC01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B689E14C-6310-4BC4-84C0-6B948D17FAD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B689E14C-6310-4BC4-84C0-6B948D17FAD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B689E14C-6310-4BC4-84C0-6B948D17FAD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B689E14C-6310-4BC4-84C0-6B948D17FAD4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A636F179-B8AF-490C-953F-FBC233A4776F}
+	EndGlobalSection
+EndGlobal
