@@ -1,0 +1,8 @@
+using System;
+
+namespace Net.Minecraft.Entity.Projectile;
+
+[MapName("net/minecraft/class_1667")]
+public partial class ArrowEntity : Java.Lang.Object, IClassRef, IFromHandle<ArrowEntity>
+{
+}

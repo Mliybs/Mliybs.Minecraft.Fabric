@@ -1,0 +1,8 @@
+using System;
+
+namespace Net.Minecraft.Datafixer.Schema;
+
+[MapName("net/minecraft/class_1237")]
+public partial class Schema1466 : Java.Lang.Object, IClassRef, IFromHandle<Schema1466>
+{
+}

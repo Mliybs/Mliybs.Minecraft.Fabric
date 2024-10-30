@@ -1,0 +1,8 @@
+using System;
+
+namespace Net.Minecraft.Util.Math;
+
+[MapName("net/minecraft/class_2265")]
+public partial class ColumnPos : Java.Lang.Object, IClassRef, IFromHandle<ColumnPos>
+{
+}

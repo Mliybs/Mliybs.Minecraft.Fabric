@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PublishAot>true</PublishAot>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EmitCompilerGeneratedFiles>false</EmitCompilerGeneratedFiles>
+    <DefineConstants>FABRIC_LIBRARY</DefineConstants>
+	<NoWarn>108</NoWarn>
+	<Version>0.7.0</Version>
+	<Authors>Mliybs</Authors>
+	<Company>Mlinetles</Company>
+	<Description>Mliybs.Minecraft.Fabric</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\main\Mliybs.Minecraft.Fabric.Generator\Mliybs.Minecraft.Fabric.Generator.Library\Mliybs.Minecraft.Fabric.Generator.Library.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+	<ProjectReference Include="..\main\Mliybs.Minecraft.Fabric.Generator\Mliybs.Minecraft.Fabric.Generator.User\Mliybs.Minecraft.Fabric.Generator.User.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
+	<Compile Include="..\main\Mliybs.Minecraft.Fabric\**\*.cs" />
+  </ItemGroup>
+
+
+	<ItemGroup>
+		<None Include="..\main\Mliybs.Minecraft.Fabric.Generator\Mliybs.Minecraft.Fabric.Generator.User\bin\$(Configuration)\netstandard2.0\Mliybs.Minecraft.Fabric.Generator.User.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <PackageReference Include="Mliybs.JNI" Version="0.7.0" />
+	</ItemGroup>
+
+</Project>

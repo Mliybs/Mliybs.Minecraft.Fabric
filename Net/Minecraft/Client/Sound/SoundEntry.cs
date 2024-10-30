@@ -1,0 +1,8 @@
+using System;
+
+namespace Net.Minecraft.Client.Sound;
+
+[MapName("net/minecraft/class_1110")]
+public partial class SoundEntry : Java.Lang.Object, IClassRef, IFromHandle<SoundEntry>
+{
+}
