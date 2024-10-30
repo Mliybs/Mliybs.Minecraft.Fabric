@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PublishAot>true</PublishAot>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<Version>0.7.0</Version>
+	<Authors>Mliybs</Authors>
+	<Company>Mlinetles</Company>
+	<Description>Mliybs.JNI</Description>
+  </PropertyGroup>
+
+</Project>
