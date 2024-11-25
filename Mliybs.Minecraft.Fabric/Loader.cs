@@ -1,4 +1,8 @@
+#if USE_SLF4J
+using Org.Slf4j;
+#else
 using Org.Apache.Logging.Log4j;
+#endif
 using System.Diagnostics.CodeAnalysis;
 
 namespace Mliybs.Minecraft.Fabric;

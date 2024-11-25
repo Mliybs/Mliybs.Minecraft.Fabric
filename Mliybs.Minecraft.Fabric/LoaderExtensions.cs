@@ -69,11 +69,61 @@ unsafe partial class Loader
         return NewGlobalRef(Env->Functions->GetStaticObjectField(Env, classRef, id));
     }
 
+    internal static int GetStaticIntField(nint classRef, string fieldSignature, string type)
+    {
+        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
+        return Env->Functions->GetStaticIntField(Env, classRef, id);
+    }
+
+    internal static short GetStaticShortField(nint classRef, string fieldSignature, string type)
+    {
+        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
+        return Env->Functions->GetStaticShortField(Env, classRef, id);
+    }
+
+    internal static long GetStaticLongField(nint classRef, string fieldSignature, string type)
+    {
+        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
+        return Env->Functions->GetStaticLongField(Env, classRef, id);
+    }
+
+    internal static sbyte GetStaticByteField(nint classRef, string fieldSignature, string type)
+    {
+        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
+        return Env->Functions->GetStaticByteField(Env, classRef, id);
+    }
+
+    internal static bool GetStaticBooleanField(nint classRef, string fieldSignature, string type)
+    {
+        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
+        return Env->Functions->GetStaticBooleanField(Env, classRef, id);
+    }
+
+    internal static char GetStaticCharField(nint classRef, string fieldSignature, string type)
+    {
+        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
+        return Env->Functions->GetStaticCharField(Env, classRef, id);
+    }
+
+    internal static float GetStaticFloatField(nint classRef, string fieldSignature, string type)
+    {
+        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
+        return Env->Functions->GetStaticFloatField(Env, classRef, id);
+    }
+
+    internal static double GetStaticDoubleField(nint classRef, string fieldSignature, string type)
+    {
+        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
+        return Env->Functions->GetStaticDoubleField(Env, classRef, id);
+    }
+
     internal static int GetArrayLength(nint array) => Env->Functions->GetArrayLength(Env, array);
 
     internal static nint GetObjectArrayElement(nint array, int index) => Env->Functions->GetObjectArrayElement(Env, array, index);
 
     internal static void SetObjectArrayElement(nint array, int index, nint handle) => Env->Functions->SetObjectArrayElement(Env, array, index, handle);
+
+    internal static nint NewObjectArray(int length, nint @class, nint initObject = 0) => Env->Functions->NewObjectArray(Env, length, @class, initObject);
 
     public static nint NewString(string text)
     {

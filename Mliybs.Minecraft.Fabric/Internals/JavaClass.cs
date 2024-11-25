@@ -12,7 +12,8 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
         set
         {
             if (objectRef != nint.Zero) Env->Functions->DeleteGlobalRef(Env, objectRef);
-            objectRef = NewGlobalRef(value);
+            if (value != nint.Zero) objectRef = NewGlobalRef(value);
+            else objectRef = value;
         }
     }
 
@@ -79,18 +80,11 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
 
     public static bool operator ==(JavaClass x, JavaClass y)
     {
-        if (x is null || y is null)
-            if (x is null && y is null) return true;
+        if ((x?.IsNull ?? true) || (y?.IsNull ?? true))
+            if ((x?.IsNull ?? true) && (y?.IsNull ?? true)) return true;
             else return false;
 
-        else
-            if (x.objectRef == nint.Zero)
-                if (y.objectRef == nint.Zero) return true;
-                else return false;
-
-            else
-                if (y.objectRef == nint.Zero) return false;
-                else return IsSameObject(x.objectRef, y.objectRef);
+        else return IsSameObject(x.objectRef, y.objectRef);
     }
 
     public static bool operator !=(JavaClass x, JavaClass y) => !(x == y);

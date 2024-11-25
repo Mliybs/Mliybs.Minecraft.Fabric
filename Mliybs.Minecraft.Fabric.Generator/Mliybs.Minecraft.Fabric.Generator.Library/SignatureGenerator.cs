@@ -1,7 +1,9 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,7 +27,8 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
             context.RegisterSourceOutput(provider, static (x, y) =>
             {
-                var classes = y.AsParallel().GroupBy<ISymbol, INamedTypeSymbol>(x => x.ContainingType, SymbolEqualityComparer.Default)
+                var bag = new ConcurrentBag<(INamedTypeSymbol Key, IEnumerable<string>)>();
+                y.AsParallel().GroupBy<ISymbol, INamedTypeSymbol>(x => x.ContainingType, SymbolEqualityComparer.Default)
                     .Select(group => (group.Key, group.Select(symbol =>
                     {
                         if (symbol is IMethodSymbol method) return MethodSignatureGenerate(x, method);
@@ -35,15 +38,77 @@ namespace Mliybs.Minecraft.Fabric.Generator
                                 .Where(x => x.AttributeClass.HasFullyQualifiedName("global::Mliybs.Minecraft.Fabric.SignatureAttribute"))
                                 .Select(x => ((string)x.ConstructorArguments[0].Value, (bool)x.ConstructorArguments[1].Value))
                                 .Single();
-                            var type = property.Type.GetFullyQualifiedName();
-                            if (useMapping) return $$"""    {{property.GetFullyQualifiedName()}} = new(GetStaticObjectField(ClassRef.ObjectRef, MapFieldName(Names.OriginName, "{{arg}}", $"L{({{type}}.Names.OriginSignature)};"), $"L{({{type}}.Names.MapSignature)};"));""";
-                            else return $$"""    {{property.GetFullyQualifiedName()}} = new(GetStaticObjectField(ClassRef.ObjectRef, "{{arg}}", $"L{({{type}}.Names.MapSignature)};"));""";
+                            var type = string.Empty;
+                            var function = string.Empty;
+                            var @return = string.Empty;
+                            var name = property.Type.GetFullyQualifiedName();
+                            switch (name)
+                            {
+                                case "int":
+                                    type = "I";
+                                    function = "Int";
+                                    break;
+
+                                case "long":
+                                    type = "J";
+                                    function = "Long";
+                                    break;
+
+                                case "bool":
+                                    type = "Z";
+                                    function = "Boolean";
+                                    break;
+
+                                case "sbyte":
+                                    type = "B";
+                                    function = "Byte";
+                                    break;
+
+                                case "byte":
+                                    type = "B";
+                                    function = "Byte";
+                                    break;
+
+                                case "char":
+                                    type = "C";
+                                    function = "Char";
+                                    break;
+
+                                case "short":
+                                    type = "S";
+                                    function = "Short";
+                                    break;
+
+                                case "float":
+                                    type = "F";
+                                    function = "Float";
+                                    break;
+
+                                case "double":
+                                    type = "D";
+                                    function = "Double";
+                                    break;
+
+                                case "string":
+                                    type = "Ljava/lang/String;";
+                                    function = "Object";
+                                    @return = "GetString";
+                                    break;
+
+                                default:
+                                    type = $"L{{({name}.Names.MapSignature)}};";
+                                    function = "Object";
+                                    @return = $"{name}.From";
+                                    break;
+                            }
+                            if (useMapping) return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, MapFieldName(Names.OriginName, "{{arg}}", $"{{type.Replace("MapSignature", "OriginSignature")}}"), $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}};""";
+                            else return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, "{{arg}}", $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}};""";
                         }
 
                         throw new ArgumentException(nameof(symbol));
-                    })));
+                    }))).ForAll(bag.Add);
 
-                foreach (var @class in classes)
+                for (var hasNext = bag.TryTake(out var @class); hasNext; hasNext = bag.TryTake(out @class))
                 {
                     x.AddSource($"SignatureInitialize.{@class.Key.GetFullyQualifiedNameForFile()}.g.cs", @class.Key.NestedClassCompletion($$"""
                         private static void SignatureInitialize()
@@ -87,7 +152,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
             foreach (var param in y.Parameters)
             {
-                var name = param.Type.GetFullyQualifiedName();
+                var name = param.Type.GetFullyQualifiedName().AsSpan();
 
                 if (param.Type.TypeKind == TypeKind.Delegate)
                 {
@@ -97,21 +162,23 @@ namespace Mliybs.Minecraft.Fabric.Generator
                     method.Append("Object");
                 }
                 
-                else if (name.StartsWith("global::"))
+                else if (name.StartsWith("global::".AsSpan()))
                 {
                     if (param.Type.OriginalDefinition.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.Internals.JavaArray<T>")
                     {
-                        var genericType = name.Substring(52, name.Length - 53);
-                        origin.Append($"[L{{({regex.Replace(genericType, regexReplace)}.Names.OriginSignature)}};");
-                        map.Append($"[L{{({regex.Replace(genericType, regexReplace)}.Names.MapSignature)}};");
-                        method.Append(regex.Replace(genericType.Substring(genericType.LastIndexOf('.') + 1), string.Empty) + "Array");
+                        var genericType = name.Slice(52, name.Length - 53);
+                        var @string = regex.Replace(@genericType.ToString(), regexReplace);
+                        origin.Append($"[L{{({@string}.Names.OriginSignature)}};");
+                        map.Append($"[L{{({@string}.Names.MapSignature)}};");
+                        method.Append(regex.Replace(genericType.Slice(genericType.LastIndexOf('.') + 1).ToString(), string.Empty) + "Array");
                     }
 
                     else
                     {
-                        origin.Append($"L{{({regex.Replace(name, regexReplace).Replace("?", "")}.Names.OriginSignature)}};");
-                        map.Append($"L{{({regex.Replace(name, regexReplace).Replace("?", "")}.Names.MapSignature)}};");
-                        if (name == "global::Java.Lang.Class")
+                        var @string = regex.Replace(name.ToString(), regexReplace).Replace("?", "");
+                        origin.Append($"L{{({@string}.Names.OriginSignature)}};");
+                        map.Append($"L{{({@string}.Names.MapSignature)}};");
+                        if (name == "global::Java.Lang.Class".AsSpan())
                             method.Append("Class");
 
                         else
@@ -207,8 +274,9 @@ namespace Mliybs.Minecraft.Fabric.Generator
                 if (y.ReturnType.TypeKind == TypeKind.Delegate)
                 {
                     var @delegate = y.ReturnType.ContainingType.GetFullyQualifiedName();
-                    origin.Append($"L{{({regex.Replace(@delegate, regexReplace)}.Names.OriginSignature)}};");
-                    map.Append($"L{{({regex.Replace(@delegate, regexReplace)}.Names.MapSignature)}};");
+                    var @string = regex.Replace(@delegate, regexReplace);
+                    origin.Append($"L{{({@string}.Names.OriginSignature)}};");
+                    map.Append($"L{{({@string}.Names.MapSignature)}};");
                 }
                 
                 else if (returnType!.StartsWith("global::"))
@@ -216,14 +284,16 @@ namespace Mliybs.Minecraft.Fabric.Generator
                     if (y.ReturnType.OriginalDefinition.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.Internals.JavaArray<T>")
                     {
                         var genericType = returnType.Substring(52, returnType.Length - 53);
-                        origin.Append($"[L{{({regex.Replace(genericType, regexReplace)}.Names.OriginSignature)}};");
-                        map.Append($"[L{{({regex.Replace(genericType, regexReplace)}.Names.MapSignature)}};");
+                        var @string = regex.Replace(genericType, regexReplace);
+                        origin.Append($"[L{{({@string}.Names.OriginSignature)}};");
+                        map.Append($"[L{{({@string}.Names.MapSignature)}};");
                     }
 
                     else
                     {
-                        origin.Append($"L{{({regex.Replace(returnType, regexReplace)}.Names.OriginSignature)}};");
-                        map.Append($"L{{({regex.Replace(returnType, regexReplace)}.Names.MapSignature)}};");
+                        var @string = regex.Replace(returnType, regexReplace);
+                        origin.Append($"L{{({@string}.Names.OriginSignature)}};");
+                        map.Append($"L{{({@string}.Names.MapSignature)}};");
                     }
 
                     if (y.IsStatic) function = "Env->Functions->CallStaticObjectMethodA";
@@ -462,7 +532,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
                         break;
                 }
             }
-            if (symbols.Length != 0) builder.Append("        ");
+            builder.Append("        ");
             return builder.ToString();
         }
 
@@ -472,7 +542,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
             if (x.Type.TypeKind == TypeKind.Delegate)
             {
                 var nestedClass = x.Type.ContainingType.GetFullyQualifiedName();
-                return $"Mliybs.Minecraft.Fabric.Wrappers.InvocationHandlerWrapper.GetProxyOf({nestedClass}.ClassRef, {x.GetFullyQualifiedName()})";
+                return $"Mliybs.Minecraft.Fabric.Wrappers.InvocationHandlerWrapper.GetProxyOf({nestedClass}.ClassRef, {nestedClass}.Handle({x.GetFullyQualifiedName()}))";
             }
             if (name.StartsWith("global::") || x.Type.TypeKind == TypeKind.TypeParameter) return $"{x.GetFullyQualifiedName()}{(x.NullableAnnotation == NullableAnnotation.Annotated ? "?.ObjectRef ?? nint.Zero" : ".ObjectRef")}";
             if (name == "string") return $"NewString({x.GetFullyQualifiedName()})";

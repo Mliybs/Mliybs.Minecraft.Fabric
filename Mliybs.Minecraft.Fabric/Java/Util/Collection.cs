@@ -15,6 +15,6 @@ public static partial class Collection
 {}
 
 [JavaInterface(typeof(Collection<>))]
-public partial interface ICollection<T> where T : Java.Lang.Object, IClassRef, IFromHandle<T>
+public partial interface ICollection<T> : IJavaClass where T : Java.Lang.Object, IClassRef, IFromHandle<T>
 {
 }

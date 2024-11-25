@@ -53,9 +53,10 @@ namespace Mliybs.Minecraft.Fabric.Generator
         public static string GetQualifiedName(this ISymbol symbol)
         {
             var name = symbol.GetFullyQualifiedName();
-            var index = name.IndexOf('<');
-            if (index == -1) return name.Substring(name.LastIndexOf('.') + 1);
-            return name.Substring(name.Substring(0, index).LastIndexOf('.') + 1);
+            var span = name.AsSpan();
+            var index = span.IndexOf('<');
+            if (index == -1) return span.Slice(name.LastIndexOf('.') + 1).ToString();
+            return span.Slice(span.Slice(0, index).LastIndexOf('.') + 1).ToString();
         }
 
         public static string GetFullyQualifiedNameForFile(this ISymbol symbol)

@@ -11,7 +11,7 @@ public partial class Consumer<T> : Lang.Object, IClassRef, IFromHandle<Consumer<
     [Signature("accept", false)]
     public partial void Accept(T t);
 
-    public delegate void ConsumerDelegate(T t);
+    public delegate void ConsumerDelegate(in T t);
 
     internal static Consumer.ConsumerDelegateHandler Handle(ConsumerDelegate @delegate) => x => @delegate(T.From(x));
 }
@@ -20,4 +20,6 @@ public partial class Consumer<T> : Lang.Object, IClassRef, IFromHandle<Consumer<
 public static partial class Consumer
 {
     public delegate void ConsumerDelegateHandler(nint t);
+
+    internal static ConsumerDelegateHandler Handle(ConsumerDelegateHandler @delegate) => @delegate;
 }

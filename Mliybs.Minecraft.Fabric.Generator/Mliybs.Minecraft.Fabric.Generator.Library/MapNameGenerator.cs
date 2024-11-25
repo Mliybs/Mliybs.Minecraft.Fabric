@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,8 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
             context.RegisterSourceOutput(provider, static (x, y) =>
             {
-                foreach (var @class in y.AsParallel().Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default))
+                var bag = new ConcurrentBag<(string, string)>();
+                y.AsParallel().Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default).ForAll(@class =>
                 {
                     var list = new List<string>();
 
@@ -46,12 +48,15 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                     var name = string.Join("$", list.Reverse<string>()).Replace('/', '.');
 
-                    x.AddSource($"MapName.{@class.GetFullyQualifiedNameForFile()}.g.cs", @class.NestedClassCompletion($$"""
+                    bag.Add(($"MapName.{@class.GetFullyQualifiedNameForFile()}.g.cs", @class.NestedClassCompletion($$"""
                         internal static Names Names { get; } = {{(useMapping ? $"MapClassName(\"{name}\")" : $"(\"{name}\", \"{name.Replace('.', '/')}\", \"{name}\", \"{name.Replace('.', '/')}\")")}};
 
                         public static Class ClassRef { get; } = FindClass(Names.MapSignature);
-                        """, true));
-                }
+                        """, true)));
+                });
+
+                for (var hasNext = bag.TryTake(out var tuple); hasNext; hasNext = bag.TryTake(out tuple))
+                    x.AddSource(tuple.Item1, tuple.Item2);
             });
         }
     }

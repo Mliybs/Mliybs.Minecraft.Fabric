@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace Org.Apache.Logging.Log4j
 {
     [MapName("org.apache.logging.log4j.Logger", false), JavaInterface(typeof(ILogger))]
-    public partial class Logger : Java.Lang.Object, IClassRef, IFromHandle<Logger>
+    public partial class Logger : Java.Lang.Object, IClassRef, IFromHandle<Logger>, ILogger
     {
         [Signature("info", false)]
         public partial void Info(string message);
     }
 
     [JavaInterface(typeof(Logger))]
-    public partial interface ILogger
+    public partial interface ILogger : IJavaClass
     {
         void Info(string message);
     }
