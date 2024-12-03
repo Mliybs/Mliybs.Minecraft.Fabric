@@ -1,0 +1,6 @@
+namespace Net.Minecraft.Entity.Ai.Control;
+
+[MapName("net/minecraft/class_1333")]
+public partial class LookControl : Java.Lang.Object, IClassRef<LookControl>, IFromHandle<LookControl>
+{
+}

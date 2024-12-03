@@ -364,6 +364,3 @@ FodyWeavers.xsd
 
 **/MSBuild_Logs
 **/launchSettings.json
-
-!/Mliybs.Minecraft.Fabric.Generator/Mliybs.Minecraft.Fabric.Generator.User/
-*.sln

@@ -1,0 +1,6 @@
+namespace Net.Minecraft.Unused.Packageinfo;
+
+[MapName("net/minecraft/class_5988")]
+public partial class PackageInfo5988 : Java.Lang.Object, IClassRef<PackageInfo5988>, IFromHandle<PackageInfo5988>
+{
+}
