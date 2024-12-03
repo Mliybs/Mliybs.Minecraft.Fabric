@@ -4,16 +4,21 @@ using System.Collections;
 namespace Mliybs.Minecraft.Fabric.Wrappers;
 
 [SuppressJavaClass]
-public sealed partial class IteratorWrapper<T> : Java.Lang.Object, IClassRef, IEnumerator<T> where T : Java.Lang.Object, IClassRef
+public sealed partial class IteratorWrapper<T> : Java.Lang.Object, IClassRef<IteratorWrapper<Java.Lang.Object>>, IFromHandle<IteratorWrapper<T>>, IEnumerator<T> where T : Java.Lang.Object, IClassRef<T>
 {
     internal static Names Names => IteratorWrapper.Names;
 
-    public static Class ClassRef => IteratorWrapper.ClassRef;
+    public static Class<IteratorWrapper<Java.Lang.Object>> ClassRef => IteratorWrapper.ClassRef;
 
     private readonly IEnumerator<T> _enumerator;
 
     [JavaConstructor]
     private IteratorWrapper(long hasNext, long next) : base(nint.Zero)
+    {
+        throw new NotSupportedException();
+    }
+
+    public static IteratorWrapper<T> From(nint handle)
     {
         throw new NotSupportedException();
     }
@@ -37,7 +42,7 @@ public sealed partial class IteratorWrapper<T> : Java.Lang.Object, IClassRef, IE
     public void Dispose() => _enumerator.Dispose();
 }
 
-[MapName("com/mlinetles/nativeloader/wrappers/IteratorWrapper", false)]
+[MapName("com/mlinetles/nativeloader/wrappers/IteratorWrapper", false), StaticGeneric(typeof(IteratorWrapper<>))]
 public static partial class IteratorWrapper
 {
 

@@ -145,7 +145,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
             var function = string.Empty;
 
-            var regex = new Regex("<.+?>");
+            var regex = new Regex("<.*?>");
 
             // var regexReplace = y.ContainingType.TypeParameters.Any() ? "<Mliybs.Minecraft.Fabric.Internals.InternalClass>" : string.Empty;
             const string regexReplace = "";
@@ -167,6 +167,8 @@ namespace Mliybs.Minecraft.Fabric.Generator
                     if (param.Type.OriginalDefinition.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.Internals.JavaArray<T>")
                     {
                         var genericType = name.Slice(52, name.Length - 53);
+                        // JavaArray的类型参数一定以global::开头，不以它开头的一定是泛型类型参数
+                        if (!genericType.StartsWith("global::".AsSpan())) genericType = "Java.Lang.Object".AsSpan();
                         var @string = regex.Replace(@genericType.ToString(), regexReplace);
                         origin.Append($"[L{{({@string}.Names.OriginSignature)}};");
                         map.Append($"[L{{({@string}.Names.MapSignature)}};");
@@ -175,7 +177,9 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                     else
                     {
-                        var @string = regex.Replace(name.ToString(), regexReplace).Replace("?", "");
+                        var @string = param.Type.TypeKind == TypeKind.Interface
+                            ? regex.Replace(param.Type.InterfaceToClass().GetFullyQualifiedName(), regexReplace).Replace("?", "")
+                            : regex.Replace(name.ToString(), regexReplace).Replace("?", "");
                         origin.Append($"L{{({@string}.Names.OriginSignature)}};");
                         map.Append($"L{{({@string}.Names.MapSignature)}};");
                         if (name == "global::Java.Lang.Class".AsSpan())
@@ -284,6 +288,8 @@ namespace Mliybs.Minecraft.Fabric.Generator
                     if (y.ReturnType.OriginalDefinition.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.Internals.JavaArray<T>")
                     {
                         var genericType = returnType.Substring(52, returnType.Length - 53);
+                        // JavaArray的类型参数一定以global::开头，不以它开头的一定是泛型类型参数
+                        if (!genericType.StartsWith("global::")) genericType = "Java.Lang.Object";
                         var @string = regex.Replace(genericType, regexReplace);
                         origin.Append($"[L{{({@string}.Names.OriginSignature)}};");
                         map.Append($"[L{{({@string}.Names.MapSignature)}};");
@@ -424,9 +430,15 @@ namespace Mliybs.Minecraft.Fabric.Generator
                 internal static nint {{methodName}} { get; private set; }
                 """, true));
 
+            var methodFullName = y.GetFullyQualifiedName();
+
+            var insertIndex = methodFullName.LastIndexOf('<');
+
+            if (insertIndex == -1) insertIndex = methodFullName.Length;
+
             // 两个分部声明必须都有unsafe修饰符，所以将unsafe移到方法体内部
             if (y.IsPartialDefinition) x.AddSource($"MethodBody.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}.g.cs", y.ContainingType.NestedClassCompletion($$"""
-                {{y.DeclaredAccessibility.GetAccessModifier()}}{{(y.IsStatic ? "static " : "")}}{{(y.IsVirtual ? "virtual " : "")}}partial {{(y.ReturnsVoid ? "void" : returnType!)}} {{y.GetFullyQualifiedName()}}({{string.Join(", ", y.Parameters.Select(x => $"{x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}
+                {{y.DeclaredAccessibility.GetAccessModifier()}}{{(y.IsStatic ? "static " : "")}}{{(y.IsVirtual ? "virtual " : "")}}partial {{(y.ReturnsVoid ? "void" : returnType!)}} {{methodFullName}}({{string.Join(", ", y.Parameters.Select(x => $"{x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}
                 {
                 #nullable enable
                     unsafe
@@ -437,18 +449,18 @@ namespace Mliybs.Minecraft.Fabric.Generator
                             )}};
 
                         return{{(y.ReturnsVoid ? "" : (returnType!.StartsWith("global::")
-                            ? $" {(check is null ? (returnType + ".From") : check + $".ReturnCheck")}(result)"
+                            ? $" {(check is null ? $"From<{returnType}>" : check + $".ReturnCheck")}(result)"
                             : (returnType == "string"
                                 ? " GetString(result)"
                                 : (y.ReturnType.TypeKind == TypeKind.TypeParameter
-                                    ? $" {(check is null ? $"{y.ReturnType.Name}.From" : (check + $".ReturnCheck"))}(result)"
+                                    ? $" {(check is null ? $"From<{y.ReturnType.Name}>" : (check + $".ReturnCheck"))}(result)"
                                     : " result"))))}};
                     }
                 }
                 """, true));
 
             if (!y.IsStatic) x.AddSource($"ProxyMethodBody.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}.g.cs", y.ContainingType.NestedClassCompletion($$"""
-                internal static {{(y.ReturnsVoid ? "void" : returnType!)}} {{y.GetFullyQualifiedName()}}Proxy(nint obj{{string.Join("", y.Parameters.Select(x => $", {x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}
+                internal static {{(y.ReturnsVoid ? "void" : returnType!)}} {{methodFullName.Insert(insertIndex, "Proxy")}}(nint obj{{string.Join("", y.Parameters.Select(x => $", {x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}
                 {
                 #nullable enable
                     unsafe
@@ -456,11 +468,11 @@ namespace Mliybs.Minecraft.Fabric.Generator
                         {{SetJValues(y.Parameters)}}{{(y.ReturnsVoid ? "" : "var result = ")}}{{function}}{{$"(Env, obj, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodName}, @params)"}};
 
                         return{{(y.ReturnsVoid ? "" : (returnType!.StartsWith("global::")
-                            ? $" {(check is null ? (returnType + ".From") : check + $".ReturnCheck")}(result)"
+                            ? $" {(check is null ? $"From<{returnType}>" : check + $".ReturnCheck")}(result)"
                             : (returnType == "string"
                                 ? " GetString(result)"
                                 : (y.ReturnType.TypeKind == TypeKind.TypeParameter
-                                    ? $" {(check is null ? $"{y.ReturnType.Name}.From" : (check + $".ReturnCheck"))}(result)"
+                                    ? $" {(check is null ? $"From<{y.ReturnType.Name}>" : (check + $".ReturnCheck"))}(result)"
                                     : " result"))))}};
                     }
                 }
@@ -468,7 +480,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
             if (returnType == "string" && y.ContainingType.Interfaces.Any(x => x.OriginalDefinition.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.Internals.IWrapper<T>"))
                 x.AddSource($"RawMethodBody.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}.g.cs", y.ContainingType.NestedClassCompletion($$"""
-                    protected {{(y.IsStatic ? "static " : "")}}nint {{y.GetFullyQualifiedName()}}Raw({{string.Join(", ", y.Parameters.Select(x => $"{x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}
+                    protected {{(y.IsStatic ? "static " : "")}}nint {{methodFullName.Insert(insertIndex, "Raw")}}({{string.Join(", ", y.Parameters.Select(x => $"{x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}
                     {
                     #nullable enable
                         unsafe

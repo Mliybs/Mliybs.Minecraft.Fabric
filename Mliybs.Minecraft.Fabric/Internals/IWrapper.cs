@@ -1,6 +1,5 @@
 namespace Mliybs.Minecraft.Fabric.Internals;
 
-public interface IWrapper<T> : IConstructor where T : JavaClass, IWrapper<T>
+internal interface IWrapper<T> where T : Java.Lang.Object, IWrapper<T>
 {
-    internal static abstract Class WrapperClassRef { get; }
 }

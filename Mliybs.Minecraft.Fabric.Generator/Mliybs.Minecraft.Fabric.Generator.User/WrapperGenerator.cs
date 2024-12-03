@@ -15,19 +15,19 @@ namespace Mliybs.Minecraft.Fabric.Generator.Wrappers
         {
             var @class = context.SyntaxProvider.CreateSyntaxProvider(static (x, _) => x is ClassDeclarationSyntax,
                 static (x, _) => (INamedTypeSymbol)x.SemanticModel.GetDeclaredSymbol(x.Node))
-                .Where(x => x.HasBaseWithFullyQualifiedName("global::Net.Minecraft.Item.Item"))
+                .Where(x => x.BaseType?.Interfaces.Any(x => x.OriginalDefinition.HasFullyQualifiedName("global::Mliybs.Minecraft.Fabric.Internals.IWrapper<T>")) == true)
                 .Collect();
 
             context.RegisterSourceOutput(@class, static (x, y) =>
             {
                 foreach (var @class in y.Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default))
                 {
-                    GenerateItemWrapper(x, @class);
+                    GenerateWrapper(x, @class);
                 }
             });
         }
 
-        static void GenerateItemWrapper(SourceProductionContext x, INamedTypeSymbol y)
+        static void GenerateWrapper(SourceProductionContext x, INamedTypeSymbol y)
         {
             var overriddens = y.GetMembers()
                 .OfType<IMethodSymbol>()
@@ -35,19 +35,17 @@ namespace Mliybs.Minecraft.Fabric.Generator.Wrappers
                 .Where(x => x.IsOverride)
                 .Select(x =>
                 {
-                    var name = x.GetFullyQualifiedName();
-                    if (name.EndsWith("Handler")) return name;
-                    if (x.OverriddenMethod!.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.SignatureAttribute")) return name + "Handler";
-                    return null;
+                    var span = x.GetFullyQualifiedName().AsSpan();
+                    if (span.EndsWith("Handler".AsSpan())) return span.Slice(0, span.Length - 7).ToString();
+                    return span.ToString();
                 })
-                .Where(x => x is not null)
                 .Distinct(StringComparer.Ordinal)
-                .Select(x => $"{x}Delegate _{x} = {x};\n    wrapper.{x} = System.Runtime.InteropServices.Marshal.GetFunctionPointerForDelegate<{x}Delegate>(_{x});\n    Add(_{x});");
+                .Select(x => $"{x}Delegate _{x} = {x}Handler;\n    wrapper.{x} = System.Runtime.InteropServices.Marshal.GetFunctionPointerForDelegate<{x}Delegate>(_{x});\n    Add(_{x});");
 
-            x.AddSource($"ItemWrapper.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
-                protected override bool TryGetWrapper(out ItemWrapper wrapper)
+            x.AddSource($"Wrapper.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
+                protected override bool TryGetWrapper(out Wrapper wrapper)
                 {
-                    wrapper = new ItemWrapper();
+                    wrapper = new Wrapper();
                     {{string.Join("\n    ", overriddens)}}
                     return true;
                 }

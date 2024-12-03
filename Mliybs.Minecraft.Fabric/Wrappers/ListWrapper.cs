@@ -4,13 +4,13 @@ using System.Collections;
 namespace Mliybs.Minecraft.Fabric.Wrappers;
 
 [SuppressJavaClass]
-public sealed partial class ListWrapper<T> : Java.Lang.Object, IClassRef, IReadOnlyList<T> where T : Java.Lang.Object, IClassRef
+public sealed partial class ListWrapper<T> : Java.Lang.Object, IClassRef<ListWrapper<Java.Lang.Object>>, IFromHandle<ListWrapper<T>>, IReadOnlyList<T> where T : Java.Lang.Object, IClassRef<T>
 {
     internal static Names Names => ListWrapper.Names;
 
-    public static Class ClassRef => ListWrapper.ClassRef;
+    public static Class<ListWrapper<Java.Lang.Object>> ClassRef => ListWrapper.ClassRef;
 
-    private readonly IList<T> _list;
+    private readonly System.Collections.Generic.IList<T> _list;
 
     [JavaConstructor]
     private ListWrapper(long handle) : base(nint.Zero)
@@ -18,9 +18,11 @@ public sealed partial class ListWrapper<T> : Java.Lang.Object, IClassRef, IReadO
         throw new NotSupportedException();
     }
 
+    public static ListWrapper<T> From(nint handle) => throw new NotSupportedException();
+
     public unsafe ListWrapper() : base(nint.Zero)
     {
-        _list = new List<T>();
+        _list = new System.Collections.Generic.List<T>();
         var wrapper = new ListWrapperStruct()
         {
             Get = Marshal.GetFunctionPointerForDelegate<ListWrapperDelegates.GetDelegate>(Get),
@@ -40,7 +42,7 @@ public sealed partial class ListWrapper<T> : Java.Lang.Object, IClassRef, IReadO
         ObjectRef = ListWrapper_LongInvoke((nint)(&wrapper));
     }
 
-    public unsafe ListWrapper(IList<T> list) : base(nint.Zero)
+    public unsafe ListWrapper(System.Collections.Generic.IList<T> list) : base(nint.Zero)
     {
         _list = list;
         var wrapper = new ListWrapperStruct()
@@ -85,10 +87,10 @@ public sealed partial class ListWrapper<T> : Java.Lang.Object, IClassRef, IReadO
 
     IEnumerator IEnumerable.GetEnumerator() => _list.GetEnumerator();
 
-    public static implicit operator ListWrapper<T>(List<T> list) => new(list);
+    public static implicit operator ListWrapper<T>(System.Collections.Generic.List<T> list) => new(list);
 }
 
-[MapName("com/mlinetles/nativeloader/wrappers/ListWrapper", false)]
+[MapName("com/mlinetles/nativeloader/wrappers/ListWrapper", false), StaticGeneric(typeof(ListWrapper<>))]
 public static partial class ListWrapper
 {
 

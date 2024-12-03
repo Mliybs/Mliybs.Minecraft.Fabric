@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Java.Lang
 {
     [MapName("java.lang.Boolean", false), SuppressJavaClass]
-    public partial class Boolean : Java.Lang.Object, IClassRef, IFromHandle<Boolean>
+    public partial class Boolean : Java.Lang.Object, IClassRef<Boolean>, IFromHandle<Boolean>
     {
-        public Boolean(nint handle) : base(handle)
+        internal Boolean(nint handle) : base(handle)
         {}
 
         [JavaConstructor]

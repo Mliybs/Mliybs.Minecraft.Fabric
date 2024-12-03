@@ -51,8 +51,8 @@ unsafe partial class Loader
     // 因为对于类和方法签名来说只会出现ASCII字符，所以可以直接使用.NET的自动封送
     // 直接使用中文会乱码
 
-    internal static Class FindClass(string classSignature) =>
-        new(NewGlobalRef(Env->Functions->FindClass(Env, classSignature)));
+    internal static Class<T> FindClass<T>(string classSignature) where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T> =>
+        new(Env->Functions->FindClass(Env, classSignature));
 
     internal static nint GetConstructorID(nint classRef, string methodSignature) =>
         Env->Functions->GetMethodID(Env, classRef, "<init>", methodSignature);
@@ -162,6 +162,12 @@ unsafe partial class Loader
         return new string(span);
     }
 
+    /// <summary>
+    /// 根据局部引用创建全局引用
+    /// 经此函数调用后的局部引用会被删除，切记不要在JavaClass的子类构造函数中使用外部参数传入的局部引用！
+    /// </summary>
+    /// <param name="local"></param>
+    /// <returns></returns>
     internal static nint NewGlobalRef(nint local)
     {
         var global = Env->Functions->NewGlobalRef(Env, local);
@@ -181,6 +187,8 @@ unsafe partial class Loader
 
     internal static void ExceptionClear() => Env->Functions->ExceptionClear(Env);
 
+    internal static T From<T>(nint handle) where T : IFromHandle<T> => T.From(handle);
+
     public static nint GetObjectRef(JavaClass? obj) => obj?.ObjectRef ?? nint.Zero;
 }
 
@@ -191,7 +199,7 @@ public static class LoaderExtensions
     internal static IHandle<T> AsHandle<T>(this nint handle) => new DefaultHandle<T>(handle);
 
     // 在有可能会返回已有对象时，调用该函数
-    internal static T ReturnCheck<T>(this T obj, nint handle, [CallerMemberName] string caller = default!) where T : JavaClass, IClassRef, IFromHandle<T>
+    internal static T ReturnCheck<T>(this T obj, nint handle, [CallerMemberName] string caller = default!) where T : Java.Lang.Object, IFromHandle<T>
     {
         if (IsSameObject(obj.ObjectRef, handle)) return obj;
         var global = NewGlobalRef(handle);

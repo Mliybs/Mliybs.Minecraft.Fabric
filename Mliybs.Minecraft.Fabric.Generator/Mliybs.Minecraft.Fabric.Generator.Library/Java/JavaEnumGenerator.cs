@@ -1,3 +1,4 @@
+#if false
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
@@ -40,3 +41,4 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
         }
     }
 }
+#endif

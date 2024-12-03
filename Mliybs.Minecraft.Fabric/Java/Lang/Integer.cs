@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Java.Lang
 {
     [MapName("java.lang.Integer", false), SuppressJavaClass]
-    public partial class Integer : Java.Lang.Object, IClassRef, IFromHandle<Integer>
+    public partial class Integer : Java.Lang.Object, IClassRef<Integer>, IFromHandle<Integer>
     {
-        public Integer(nint handle) : base(handle)
+        internal Integer(nint handle) : base(handle)
         {}
 
         [JavaConstructor]

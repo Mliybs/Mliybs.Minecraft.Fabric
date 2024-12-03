@@ -35,12 +35,12 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
             Env->Functions->DeleteGlobalRef(Env, objectRef);
     }
 
-    public bool Is<T>() where T : Java.Lang.Object, IClassRef
+    public bool Is<T>() where T : Java.Lang.Object, IClassRef<T>
     {
         return IsInstanceOf(objectRef, T.ClassRef.objectRef);
     }
 
-    public bool Is<T>([NotNullWhen(true)] out T? obj) where T : Java.Lang.Object, IClassRef, IFromHandle<T>
+    public bool Is<T>([NotNullWhen(true)] out T? obj) where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
     {
         if (IsInstanceOf(objectRef, T.ClassRef.objectRef))
         {
@@ -51,7 +51,7 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
         return false;
     }
 
-    public bool Is<T>(Predicate<T> predicate, [NotNullWhen(true)] out T? obj) where T : Java.Lang.Object, IClassRef, IFromHandle<T>
+    public bool Is<T>(Predicate<T> predicate, [NotNullWhen(true)] out T? obj) where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
     {
         if (IsInstanceOf(objectRef, T.ClassRef.objectRef))
         {
@@ -66,25 +66,29 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
         return false;
     }
 
-    public T? As<T>() where T : Java.Lang.Object, IClassRef, IFromHandle<T>
+    public T? As<T>() where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
     {
         return IsInstanceOf(objectRef, T.ClassRef.objectRef) ? T.From(objectRef) : default;
     }
 
     [return: NotNull]
-    public T To<T>() where T : Java.Lang.Object, IClassRef, IFromHandle<T> =>
+    public T To<T>() where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T> =>
         As<T>() ?? throw new InvalidCastException();
 
-    public bool InstanceOf<T>() where T : Java.Lang.Object, IClassRef, IFromHandle<T> =>
+    public bool InstanceOf<T>() where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T> =>
         Is<T>();
 
     public static bool operator ==(JavaClass x, JavaClass y)
     {
-        if ((x?.IsNull ?? true) || (y?.IsNull ?? true))
-            if ((x?.IsNull ?? true) && (y?.IsNull ?? true)) return true;
+        var xIsNull = x?.IsNull ?? true;
+
+        var yIsNull = y?.IsNull ?? true;
+
+        if (xIsNull || yIsNull)
+            if (xIsNull && yIsNull) return true;
             else return false;
 
-        else return IsSameObject(x.objectRef, y.objectRef);
+        else return IsSameObject(x!.objectRef, y!.objectRef);
     }
 
     public static bool operator !=(JavaClass x, JavaClass y) => !(x == y);

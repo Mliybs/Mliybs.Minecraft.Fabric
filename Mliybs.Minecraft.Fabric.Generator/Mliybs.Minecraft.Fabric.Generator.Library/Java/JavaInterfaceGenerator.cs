@@ -34,7 +34,7 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
                         x.AddSource($"JavaInterface.{item.GetFullyQualifiedNameForFile()}.g.cs", item.NestedClassCompletion($$"""
                             internal static Names Names => {{name}}.Names;
 
-                            public static Class ClassRef => {{name}}.ClassRef;
+                            public static Class<{{(item.TypeParameters.Length == 0 ? name : System.Text.RegularExpressions.Regex.Replace(name, "<.*?>", "<Java.Lang.Object>"))}}> ClassRef => {{name}}.ClassRef;
                             """, true, "IJavaClass"));
                     }
                 }

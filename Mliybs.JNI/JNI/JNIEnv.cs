@@ -699,37 +699,52 @@ public readonly unsafe struct JNIEnv
 
         // jlong (JNICALL *GetDirectBufferCapacity) (JNIEnv* env, jobject buf);
         public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, long> GetDirectBufferCapacity;
+
+        // jobjectRefType (JNICALL *GetObjectRefType) (JNIEnv* env, jobject obj);
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, JObjectRefType> GetObjectRefType;
     }
 
     public readonly JNIFunctions* Functions;
-    [StructLayout(LayoutKind.Explicit, Size = 8)]
-    public struct JValue
-    {
-        [FieldOffset(0)]
-        public bool z;
+}
+    
+[StructLayout(LayoutKind.Explicit, Size = 8)]
+public struct JValue
+{
+    [FieldOffset(0)]
+    public bool z;
 
-        [FieldOffset(0)]
-        public sbyte b;
-        
-        [FieldOffset(0)]
-        public char c;
-        
-        [FieldOffset(0)]
-        public short s;
-        
-        [FieldOffset(0)]
-        public int i;
-        
-        [FieldOffset(0)]
-        public long j;
-        
-        [FieldOffset(0)]
-        public float f;
-        
-        [FieldOffset(0)]
-        public double d;
-        
-        [FieldOffset(0)]
-        public IntPtr l;
-    }
+    [FieldOffset(0)]
+    public sbyte b;
+    
+    [FieldOffset(0)]
+    public char c;
+    
+    [FieldOffset(0)]
+    public short s;
+    
+    [FieldOffset(0)]
+    public int i;
+    
+    [FieldOffset(0)]
+    public long j;
+    
+    [FieldOffset(0)]
+    public float f;
+    
+    [FieldOffset(0)]
+    public double d;
+    
+    [FieldOffset(0)]
+    public IntPtr l;
+}
+
+public enum JObjectRefType
+{
+    JNIInvalidRefType,
+
+    JNILocalRefType,
+
+    JNIGlobalRefType,
+
+    JNIWeakGlobalRefType
 }

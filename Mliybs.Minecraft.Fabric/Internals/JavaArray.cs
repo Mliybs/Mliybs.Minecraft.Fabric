@@ -6,23 +6,33 @@ using System.Linq;
 namespace Mliybs.Minecraft.Fabric.Internals
 {
     [SuppressJavaClass]
-    public partial class JavaArray<T> : Java.Lang.Object, IFromHandle<JavaArray<T>>, IEnumerable<T> where T : Java.Lang.Object, IClassRef, IFromHandle<T>
+    public partial class JavaArray<T> : Java.Lang.Object, IFromHandle<JavaArray<T>>, IEnumerable<T> where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
     {
         private readonly int length;
 
-        internal unsafe JavaArray(nint handle) : base(handle)
+        internal JavaArray(nint handle) : base(handle)
         {
-            length = GetArrayLength(handle);
+            // 基类构造函数先于子类构造函数调用，此时的handle已经被删除引用无法使用了
+            length = GetArrayLength(ObjectRef);
         }
 
-        public unsafe JavaArray(int length) : base(NewObjectArray(length, T.ClassRef.ObjectRef))
+        public JavaArray(int length) : base(NewObjectArray(length, T.ClassRef.ObjectRef))
         {
             this.length = length;
         }
 
-        public unsafe JavaArray(int length, T initObject) : base(NewObjectArray(length, T.ClassRef.ObjectRef, initObject.ObjectRef))
+        public JavaArray(int length, T initObject) : base(NewObjectArray(length, T.ClassRef.ObjectRef, initObject.ObjectRef))
         {
             this.length = length;
+        }
+
+        public JavaArray(IEnumerable<T> objects) : base(nint.Zero)
+        {
+            var array = objects.ToArray();
+            ObjectRef = NewObjectArray(array.Length, T.ClassRef.ObjectRef);
+            length = array.Length;
+            for (var i = 0; i < array.Length; i++)
+                this[i] = array[i];
         }
 
         public IEnumerator<T> GetEnumerator()

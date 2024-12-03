@@ -60,6 +60,13 @@ namespace Mliybs.Minecraft.Fabric
         {}
     }
 
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    internal sealed class StaticGenericAttribute : Attribute
+    {
+        public StaticGenericAttribute(Type type)
+        {}
+    }
+
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public sealed class FabricModAttribute : Attribute
     {

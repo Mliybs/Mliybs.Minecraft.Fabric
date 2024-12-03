@@ -5,7 +5,7 @@ namespace Org.Slf4j;
 
 
 [MapName("org.slf4j.Logger", false), JavaInterface(typeof(ILogger))]
-public partial class Logger : Java.Lang.Object, IClassRef, IFromHandle<Logger>, ILogger
+public partial class Logger : Java.Lang.Object, IClassRef<Logger>, IFromHandle<Logger>, ILogger
 {
     [Signature("info", false)]
     public partial void Info(string msg);

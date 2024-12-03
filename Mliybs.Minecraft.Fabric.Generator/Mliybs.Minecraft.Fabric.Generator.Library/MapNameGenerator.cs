@@ -48,10 +48,14 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                     var name = string.Join("$", list.Reverse<string>()).Replace('/', '.');
 
+                    var attribute = @class.GetAttributes().FirstOrDefault(static x => x.AttributeClass?.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.StaticGenericAttribute")?.ConstructorArguments[0].Value as INamedTypeSymbol;
+
+                    var typeName = System.Text.RegularExpressions.Regex.Replace(attribute?.OriginalDefinition.GetFullyQualifiedName() ?? @class.GetFullyQualifiedName(), "<.*?>", "<Java.Lang.Object>");
+
                     bag.Add(($"MapName.{@class.GetFullyQualifiedNameForFile()}.g.cs", @class.NestedClassCompletion($$"""
                         internal static Names Names { get; } = {{(useMapping ? $"MapClassName(\"{name}\")" : $"(\"{name}\", \"{name.Replace('.', '/')}\", \"{name}\", \"{name.Replace('.', '/')}\")")}};
 
-                        public static Class ClassRef { get; } = FindClass(Names.MapSignature);
+                        public static Class<{{typeName}}> ClassRef { get; } = FindClass<{{typeName}}>(Names.MapSignature);
                         """, true)));
                 });
 

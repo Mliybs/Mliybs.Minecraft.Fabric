@@ -4,11 +4,11 @@ using System.Collections;
 namespace Mliybs.Minecraft.Fabric.Wrappers;
 
 [SuppressJavaClass]
-public sealed partial class ReadOnlyCollectionWrapper<T> : Java.Lang.Object, IClassRef, IFromHandle<ReadOnlyCollectionWrapper<T>>, IReadOnlyCollection<T>, Java.Util.ICollection<T> where T : Java.Lang.Object, IClassRef, IFromHandle<T>
+public sealed partial class ReadOnlyCollectionWrapper<T> : Java.Util.Collection<T>, IClassRef<ReadOnlyCollectionWrapper<Java.Lang.Object>>, IFromHandle<ReadOnlyCollectionWrapper<T>>, IReadOnlyCollection<T>, Java.Util.ICollection<T> where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
 {
     internal static Names Names => ReadOnlyCollectionWrapper.Names;
 
-    public static Class ClassRef => ReadOnlyCollectionWrapper.ClassRef;
+    public static Class<ReadOnlyCollectionWrapper<Java.Lang.Object>> ClassRef => ReadOnlyCollectionWrapper.ClassRef;
 
     private readonly IReadOnlyCollection<T> collection = default!;
 
@@ -40,7 +40,7 @@ public sealed partial class ReadOnlyCollectionWrapper<T> : Java.Lang.Object, ICl
     }
 }
 
-[MapName("com.mlinetles.nativeloader.wrappers.ReadOnlyCollectionWrapper", false)]
+[MapName("com.mlinetles.nativeloader.wrappers.ReadOnlyCollectionWrapper", false), StaticGeneric(typeof(ReadOnlyCollectionWrapper<>))]
 public static partial class ReadOnlyCollectionWrapper
 {
 }

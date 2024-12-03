@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -135,5 +136,11 @@ namespace Mliybs.Minecraft.Fabric.Generator
             Accessibility.Public => "public ",
             _ => ""
         };
+
+        public static INamedTypeSymbol InterfaceToClass(this ITypeSymbol symbol)
+        {
+            var attribute = symbol.GetAttributes().Single(x => x.AttributeClass.HasFullyQualifiedName("global::Mliybs.Minecraft.Fabric.JavaInterfaceAttribute"));
+            return (INamedTypeSymbol)attribute.ConstructorArguments[0].Value!;
+        }
     }
 }

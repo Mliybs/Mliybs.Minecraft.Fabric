@@ -1,8 +1,8 @@
 namespace Net.FabricMC.Loader.Api;
 
-public partial class MappingResolver : Java.Lang.Object, IClassRef, IFromHandle<MappingResolver>
+public partial class MappingResolver : Java.Lang.Object, IClassRef<MappingResolver>, IFromHandle<MappingResolver>
 {
-    public static Class ClassRef { get; } = FindClass("net/fabricmc/loader/api/MappingResolver");
+    public static Class<MappingResolver> ClassRef { get; } = FindClass<MappingResolver>("net/fabricmc/loader/api/MappingResolver");
 
     internal static readonly nint MapClassName_ = GetMethodID(ClassRef.ObjectRef, "mapClassName", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;");
 
