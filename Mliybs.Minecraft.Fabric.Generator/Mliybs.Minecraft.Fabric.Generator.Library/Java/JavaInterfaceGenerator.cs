@@ -19,24 +19,20 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
             {
                 AttributeLists.Count: > 0
             }, static (x, _) => (INamedTypeSymbol)x.SemanticModel.GetDeclaredSymbol(x.Node))
-                .Where(x => x.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.JavaInterfaceAttribute"))
-                .Collect();
+                .Where(x => x.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.JavaInterfaceAttribute"));
 
             context.RegisterSourceOutput(provider, static (x, y) =>
             {
-                foreach (var item in y.AsParallel().Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default))
+                var attribute = (INamedTypeSymbol)y.GetAttributes().Single(static x => x.AttributeClass?.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.JavaInterfaceAttribute").ConstructorArguments[0].Value;
+                var name = attribute?.OriginalDefinition.GetFullyQualifiedName();
+
+                if (y.TypeKind == TypeKind.Interface)
                 {
-                    var attribute = (INamedTypeSymbol)item.GetAttributes().Single(static x => x.AttributeClass?.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.JavaInterfaceAttribute").ConstructorArguments[0].Value;
-                    var name = attribute?.OriginalDefinition.GetFullyQualifiedName();
+                    x.AddSource($"JavaInterface.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
+                        internal static Names Names => {{name}}.Names;
 
-                    if (item.TypeKind == TypeKind.Interface)
-                    {
-                        x.AddSource($"JavaInterface.{item.GetFullyQualifiedNameForFile()}.g.cs", item.NestedClassCompletion($$"""
-                            internal static Names Names => {{name}}.Names;
-
-                            public static Class<{{(item.TypeParameters.Length == 0 ? name : System.Text.RegularExpressions.Regex.Replace(name, "<.*?>", "<Java.Lang.Object>"))}}> ClassRef => {{name}}.ClassRef;
-                            """, true, "IJavaClass"));
-                    }
+                        public static Class<{{(y.TypeParameters.Length == 0 ? name : System.Text.RegularExpressions.Regex.Replace(name, "(?<=(<|, )).*?(?=(>|, ))", "Java.Lang.Object"))}}> ClassRef => {{name}}.ClassRef;
+                        """, true, "IJavaClass"));
                 }
             });
         }

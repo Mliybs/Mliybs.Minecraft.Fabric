@@ -21,6 +21,13 @@ namespace Mliybs.Minecraft.Fabric.Generator
         /// <returns></returns>
         public static string GetFullyQualifiedName(this ISymbol symbol) => symbol.ToDisplayString(format);
 
+        public static string GetNotNullFullyQualifiedName(this ISymbol symbol)
+        {
+            var name = symbol.GetFullyQualifiedName();
+            if (name[name.Length - 1] == '?') return name.Substring(0, name.Length - 1);
+            return name;
+        }
+
         public static bool HasFullyQualifiedName(this ISymbol symbol, string name) => symbol.ToDisplayString(format) == name;
 
         /// <summary>

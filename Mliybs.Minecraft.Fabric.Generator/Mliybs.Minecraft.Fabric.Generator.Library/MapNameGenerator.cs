@@ -17,19 +17,15 @@ namespace Mliybs.Minecraft.Fabric.Generator
             {
                 AttributeLists.Count: > 0
             }, static (x, _) => (INamedTypeSymbol)x.SemanticModel.GetDeclaredSymbol(x.Node))
-                .Where(x => x.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.MapNameAttribute") && (x.IsStatic || x.HasBaseWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.Internals.JavaClass")))
-                .Collect();
+                .Where(x => x.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.MapNameAttribute") && (x.IsStatic || x.HasBaseWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.Internals.JavaClass")));
 
             context.RegisterSourceOutput(provider, static (x, y) =>
             {
-                var bag = new ConcurrentBag<(string, string)>();
-                y.AsParallel().Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default).ForAll(@class =>
-                {
                     var list = new List<string>();
 
                     var useMapping = true;
 
-                    var type = @class;
+                    var type = y;
 
                     while (type is not null)
                     {
@@ -48,19 +44,15 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                     var name = string.Join("$", list.Reverse<string>()).Replace('/', '.');
 
-                    var attribute = @class.GetAttributes().FirstOrDefault(static x => x.AttributeClass?.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.StaticGenericAttribute")?.ConstructorArguments[0].Value as INamedTypeSymbol;
+                    var attribute = y.GetAttributes().FirstOrDefault(static x => x.AttributeClass?.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.StaticGenericAttribute")?.ConstructorArguments[0].Value as INamedTypeSymbol;
 
-                    var typeName = System.Text.RegularExpressions.Regex.Replace(attribute?.OriginalDefinition.GetFullyQualifiedName() ?? @class.GetFullyQualifiedName(), "<.*?>", "<Java.Lang.Object>");
+                    var typeName = System.Text.RegularExpressions.Regex.Replace(attribute?.OriginalDefinition.GetFullyQualifiedName() ?? y.GetFullyQualifiedName(), "(?<=(<|, )).*?(?=(>|, ))", "Java.Lang.Object");
 
-                    bag.Add(($"MapName.{@class.GetFullyQualifiedNameForFile()}.g.cs", @class.NestedClassCompletion($$"""
+                    x.AddSource($"MapName.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
                         internal static Names Names { get; } = {{(useMapping ? $"MapClassName(\"{name}\")" : $"(\"{name}\", \"{name.Replace('.', '/')}\", \"{name}\", \"{name.Replace('.', '/')}\")")}};
 
                         public static Class<{{typeName}}> ClassRef { get; } = FindClass<{{typeName}}>(Names.MapSignature);
-                        """, true)));
-                });
-
-                for (var hasNext = bag.TryTake(out var tuple); hasNext; hasNext = bag.TryTake(out tuple))
-                    x.AddSource(tuple.Item1, tuple.Item2);
+                        """, true));
             });
         }
     }

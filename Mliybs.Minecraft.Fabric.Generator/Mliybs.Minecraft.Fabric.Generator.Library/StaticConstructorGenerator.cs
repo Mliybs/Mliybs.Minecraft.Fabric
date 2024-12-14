@@ -13,45 +13,47 @@ namespace Mliybs.Minecraft.Fabric.Generator
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
             var provider = context.SyntaxProvider.CreateSyntaxProvider(static (x, _) => x is ClassDeclarationSyntax
-                , static (x, _) => (INamedTypeSymbol)x.SemanticModel.GetDeclaredSymbol(x.Node))
-                .Collect();
+                , static (x, _) => (INamedTypeSymbol)x.SemanticModel.GetDeclaredSymbol(x.Node));
 
             context.RegisterSourceOutput(provider, static (x, y) =>
             {
-                foreach (var @class in y.AsParallel().Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default))
-                {
-                    var hasAttribute = false;
-                    var builder = new StringBuilder();
+                var init = Initializer.None;
+                var builder = new StringBuilder();
 
-                    if (@class.GetMembers().Any(x => x.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.SignatureAttribute")))
+                foreach (var member in y.GetMembers())
+                {
+                    if (!init.HasFlag(Initializer.Signature) && member.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.SignatureAttribute"))
                     {
                         builder.Append("\n    SignatureInitialize();");
-                        hasAttribute = true;
+                        init |= Initializer.Signature;
                     }
 
-                    if (@class.GetMembers().Any(x => x.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.JavaEnumAttribute")))
-                    {
-                        builder.Append("\n    JavaEnumInitialize();");
-                        hasAttribute = true;
-                    }
-
-                    if (@class.GetMembers().Any(x => x.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.JavaConstructorAttribute")))
+                    if (!init.HasFlag(Initializer.JavaConstructor) && member.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.JavaConstructorAttribute"))
                     {
                         builder.Append("\n    JavaConstructorInitialize();");
-                        hasAttribute = true;
+                        init |= Initializer.JavaConstructor;
                     }
 
-                    foreach (var method in @class.GetMembers().OfType<IMethodSymbol>().Where(x => x.Name.EndsWith("Initialize")))
-                        builder.Append($"\n    {method.Name}();");
-
-                    if (hasAttribute)
-                        x.AddSource($"StaticConstructor.{@class.GetFullyQualifiedNameForFile()}.g.cs", @class.NestedClassCompletion($$"""
-                            static {{@class.Name}}()
-                            {{{builder}}
-                            }
-                            """, true));
+                    if (member is IMethodSymbol && member.IsStatic && member.Name.EndsWith("Initialize"))
+                    {
+                        builder.Append($"\n    {member.Name}();");
+                    }
                 }
+
+                if (init != Initializer.None)
+                    x.AddSource($"StaticConstructor.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
+                        static {{y.Name}}()
+                        {{{builder}}
+                        }
+                        """, true));
             });
+        }
+
+        enum Initializer
+        {
+            None = 0,
+            Signature = 0b1,
+            JavaConstructor = 0b10
         }
     }
 }

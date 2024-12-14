@@ -35,6 +35,14 @@ namespace Mliybs.Minecraft.Fabric.Internals
                 this[i] = array[i];
         }
 
+        public JavaArray(T[] array) : base(nint.Zero)
+        {
+            ObjectRef = NewObjectArray(array.Length, T.ClassRef.ObjectRef);
+            length = array.Length;
+            for (var i = 0; i < array.Length; i++)
+                this[i] = array[i];
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             for (var i = 0; i < length; i++) yield return T.From(GetObjectArrayElement(ObjectRef, i));
@@ -51,5 +59,7 @@ namespace Mliybs.Minecraft.Fabric.Internals
         public int Length => length;
 
         public static JavaArray<T> From(nint handle) => new(handle);
+
+        public static implicit operator JavaArray<T>(T[] array) => new(array);
     }
 }

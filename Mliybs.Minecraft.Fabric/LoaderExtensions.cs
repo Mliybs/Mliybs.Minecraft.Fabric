@@ -205,4 +205,10 @@ public static class LoaderExtensions
         var global = NewGlobalRef(handle);
         return T.From(global);
     }
+
+    public static T? Nullable<T>(this T obj) where T : Java.Lang.Object
+    {
+        if (obj?.IsNull ?? true) return null;
+        return obj;
+    }
 }

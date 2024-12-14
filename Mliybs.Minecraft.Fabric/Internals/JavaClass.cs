@@ -108,6 +108,7 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
 
     public override int GetHashCode()
     {
+        if (this is Java.Lang.Object obj) return obj.HashCode();
         return base.GetHashCode();
     }
 }

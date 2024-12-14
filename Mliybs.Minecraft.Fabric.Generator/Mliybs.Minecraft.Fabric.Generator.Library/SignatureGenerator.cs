@@ -15,21 +15,15 @@ namespace Mliybs.Minecraft.Fabric.Generator
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            var provider = context.SyntaxProvider.CreateSyntaxProvider((x, _) => x is MethodDeclarationSyntax
-            {
-                AttributeLists.Count: > 0
-            } or PropertyDeclarationSyntax
-            {
-                AttributeLists.Count: > 0
-            }, (x, _) => x.SemanticModel.GetDeclaredSymbol(x.Node))
-                .Where(x => x.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.SignatureAttribute"))
-                .Collect();
+            var provider = context.SyntaxProvider.CreateSyntaxProvider((x, _) => x is ClassDeclarationSyntax,
+                (x, _) => (INamedTypeSymbol)x.SemanticModel.GetDeclaredSymbol(x.Node));
 
             context.RegisterSourceOutput(provider, static (x, y) =>
             {
-                var bag = new ConcurrentBag<(INamedTypeSymbol Key, IEnumerable<string>)>();
-                y.AsParallel().GroupBy<ISymbol, INamedTypeSymbol>(x => x.ContainingType, SymbolEqualityComparer.Default)
-                    .Select(group => (group.Key, group.Select(symbol =>
+                var result = string.Join("\n", y.GetMembers()
+                    .Where(x => x is IMethodSymbol or IPropertySymbol
+                        && x.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.SignatureAttribute"))
+                    .Select(symbol =>
                     {
                         if (symbol is IMethodSymbol method) return MethodSignatureGenerate(x, method);
                         if (symbol is IPropertySymbol property)
@@ -96,27 +90,27 @@ namespace Mliybs.Minecraft.Fabric.Generator
                                     break;
 
                                 default:
-                                    type = $"L{{({name}.Names.MapSignature)}};";
+                                    var ready = property.Type.GetNotNullFullyQualifiedName();
+                                    type = $"L{{({ready}.Names.MapSignature)}};";
                                     function = "Object";
-                                    @return = $"{name}.From";
+                                    @return = $"From<{ready}>";
                                     break;
                             }
-                            if (useMapping) return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, MapFieldName(Names.OriginName, "{{arg}}", $"{{type.Replace("MapSignature", "OriginSignature")}}"), $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}};""";
-                            else return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, "{{arg}}", $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}};""";
+                            if (useMapping) return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, MapFieldName(Names.OriginName, "{{arg}}", $"{{type.Replace("MapSignature", "OriginSignature")}}"), $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated ? '?' : "")}};""";
+                            else return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, "{{arg}}", $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated ? '?' : "")}};""";
                         }
 
                         throw new ArgumentException(nameof(symbol));
-                    }))).ForAll(bag.Add);
+                    }));
 
-                for (var hasNext = bag.TryTake(out var @class); hasNext; hasNext = bag.TryTake(out @class))
-                {
-                    x.AddSource($"SignatureInitialize.{@class.Key.GetFullyQualifiedNameForFile()}.g.cs", @class.Key.NestedClassCompletion($$"""
-                        private static void SignatureInitialize()
-                        {
-                        {{string.Join("\n", @class.Item2)}}
-                        }
-                        """, true));
-                }
+                if (result == string.Empty) return;
+
+                x.AddSource($"SignatureInitialize.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
+                    private static void SignatureInitialize()
+                    {
+                    {{result}}
+                    }
+                    """, true));
             });
         }
 
@@ -169,7 +163,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
                         var genericType = name.Slice(52, name.Length - 53);
                         // JavaArray的类型参数一定以global::开头，不以它开头的一定是泛型类型参数
                         if (!genericType.StartsWith("global::".AsSpan())) genericType = "Java.Lang.Object".AsSpan();
-                        var @string = regex.Replace(@genericType.ToString(), regexReplace);
+                        var @string = regex.Replace(@genericType.ToString(), regexReplace).Replace("?", "");
                         origin.Append($"[L{{({@string}.Names.OriginSignature)}};");
                         map.Append($"[L{{({@string}.Names.MapSignature)}};");
                         method.Append(regex.Replace(genericType.Slice(genericType.LastIndexOf('.') + 1).ToString(), string.Empty) + "Array");
@@ -297,7 +291,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                     else
                     {
-                        var @string = regex.Replace(returnType, regexReplace);
+                        var @string = regex.Replace(returnType, regexReplace).Replace("?", "");
                         origin.Append($"L{{({@string}.Names.OriginSignature)}};");
                         map.Append($"L{{({@string}.Names.MapSignature)}};");
                     }
@@ -438,9 +432,9 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
             // 两个分部声明必须都有unsafe修饰符，所以将unsafe移到方法体内部
             if (y.IsPartialDefinition) x.AddSource($"MethodBody.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}.g.cs", y.ContainingType.NestedClassCompletion($$"""
-                {{y.DeclaredAccessibility.GetAccessModifier()}}{{(y.IsStatic ? "static " : "")}}{{(y.IsVirtual ? "virtual " : "")}}partial {{(y.ReturnsVoid ? "void" : returnType!)}} {{methodFullName}}({{string.Join(", ", y.Parameters.Select(x => $"{x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}
-                {
                 #nullable enable
+                {{y.DeclaredAccessibility.GetAccessModifier()}}{{(y.IsStatic ? "static " : "")}}{{(y.IsVirtual ? "virtual " : "")}}{{(y.IsOverride ? "override " : "")}}partial {{(y.ReturnsVoid ? "void" : returnType!)}} {{methodFullName}}({{string.Join(", ", y.Parameters.Select(x => $"{x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}
+                {
                     unsafe
                     {
                         {{SetJValues(y.Parameters)}}{{(y.ReturnsVoid ? "" : "var result = ")}}{{function}}{{(y.IsStatic
@@ -449,40 +443,40 @@ namespace Mliybs.Minecraft.Fabric.Generator
                             )}};
 
                         return{{(y.ReturnsVoid ? "" : (returnType!.StartsWith("global::")
-                            ? $" {(check is null ? $"From<{returnType}>" : check + $".ReturnCheck")}(result)"
+                            ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : check + $".ReturnCheck")}(result)"
                             : (returnType == "string"
                                 ? " GetString(result)"
                                 : (y.ReturnType.TypeKind == TypeKind.TypeParameter
-                                    ? $" {(check is null ? $"From<{y.ReturnType.Name}>" : (check + $".ReturnCheck"))}(result)"
-                                    : " result"))))}};
+                                    ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : (check + $".ReturnCheck"))}(result)"
+                                    : " result"))))}}{{(y.ReturnType.NullableAnnotation == NullableAnnotation.Annotated ? ".Nullable()" : "")}};
                     }
                 }
                 """, true));
 
             if (!y.IsStatic) x.AddSource($"ProxyMethodBody.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}.g.cs", y.ContainingType.NestedClassCompletion($$"""
-                internal static {{(y.ReturnsVoid ? "void" : returnType!)}} {{methodFullName.Insert(insertIndex, "Proxy")}}(nint obj{{string.Join("", y.Parameters.Select(x => $", {x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}
-                {
                 #nullable enable
+                internal static {{(y.ReturnsVoid ? "void" : returnType!)}} {{methodFullName.Insert(insertIndex, "Proxy")}}(nint proxy{{string.Join("", y.Parameters.Select(x => $", {x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}
+                {
                     unsafe
                     {
-                        {{SetJValues(y.Parameters)}}{{(y.ReturnsVoid ? "" : "var result = ")}}{{function}}{{$"(Env, obj, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodName}, @params)"}};
+                        {{SetJValues(y.Parameters)}}{{(y.ReturnsVoid ? "" : "var result = ")}}{{function}}{{$"(Env, proxy, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodName}, @params)"}};
 
                         return{{(y.ReturnsVoid ? "" : (returnType!.StartsWith("global::")
-                            ? $" {(check is null ? $"From<{returnType}>" : check + $".ReturnCheck")}(result)"
+                            ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : check + $".ReturnCheck")}(result)"
                             : (returnType == "string"
                                 ? " GetString(result)"
                                 : (y.ReturnType.TypeKind == TypeKind.TypeParameter
-                                    ? $" {(check is null ? $"From<{y.ReturnType.Name}>" : (check + $".ReturnCheck"))}(result)"
-                                    : " result"))))}};
+                                    ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : (check + $".ReturnCheck"))}(result)"
+                                    : " result"))))}}{{(y.ReturnType.NullableAnnotation == NullableAnnotation.Annotated ? ".Nullable()" : "")}};
                     }
                 }
                 """, true));
 
             if (returnType == "string" && y.ContainingType.Interfaces.Any(x => x.OriginalDefinition.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.Internals.IWrapper<T>"))
                 x.AddSource($"RawMethodBody.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}.g.cs", y.ContainingType.NestedClassCompletion($$"""
+                    #nullable enable
                     protected {{(y.IsStatic ? "static " : "")}}nint {{methodFullName.Insert(insertIndex, "Raw")}}({{string.Join(", ", y.Parameters.Select(x => $"{x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}
                     {
-                    #nullable enable
                         unsafe
                         {
                             {{SetJValues(y.Parameters)}}return {{function}}{{(y.IsStatic
@@ -556,9 +550,9 @@ namespace Mliybs.Minecraft.Fabric.Generator
                 var nestedClass = x.Type.ContainingType.GetFullyQualifiedName();
                 return $"Mliybs.Minecraft.Fabric.Wrappers.InvocationHandlerWrapper.GetProxyOf({nestedClass}.ClassRef, {nestedClass}.Handle({x.GetFullyQualifiedName()}))";
             }
-            if (name.StartsWith("global::") || x.Type.TypeKind == TypeKind.TypeParameter) return $"{x.GetFullyQualifiedName()}{(x.NullableAnnotation == NullableAnnotation.Annotated ? "?.ObjectRef ?? nint.Zero" : ".ObjectRef")}";
+            if (name.StartsWith("global::") || x.Type.TypeKind == TypeKind.TypeParameter) return $"{x.GetFullyQualifiedName()}?.ObjectRef ?? nint.Zero";
             if (name == "string") return $"NewString({x.GetFullyQualifiedName()})";
             return x.GetFullyQualifiedName();
-    }
+        }
     }
 }
