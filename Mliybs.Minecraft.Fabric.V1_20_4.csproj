@@ -21,10 +21,6 @@
     <Compile Include="..\main\Mliybs.Minecraft.Fabric\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="..\main\Mliybs.Minecraft.Fabric\Internals\IConstructor.cs" />
-  </ItemGroup>
-
 
 	<ItemGroup>
 		<None Include="..\main\Mliybs.Minecraft.Fabric.Generator\Mliybs.Minecraft.Fabric.Generator.User\bin\$(Configuration)\netstandard2.0\Mliybs.Minecraft.Fabric.Generator.User.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />

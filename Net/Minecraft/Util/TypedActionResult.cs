@@ -1,6 +1,14 @@
 namespace Net.Minecraft.Util;
 
-[MapName("net/minecraft/class_1271")]
-public partial class TypedActionResult : Java.Lang.Object, IClassRef<TypedActionResult>, IFromHandle<TypedActionResult>
+public partial class TypedActionResult<T> : Java.Lang.Object, IClassRef<TypedActionResult<T>>, IFromHandle<TypedActionResult<T>> where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
 {
+    internal static Names Names => TypedActionResult.Names;
+
+    public static Class<TypedActionResult<Java.Lang.Object>> ClassRef => TypedActionResult.ClassRef;
+
+    static Class<TypedActionResult<T>> IClassRef<TypedActionResult<T>>.ClassRef => new(ClassRef.ObjectRef);
 }
+
+[MapName("net/minecraft/class_1271"), StaticGeneric(typeof(TypedActionResult<>))]
+public static partial class TypedActionResult
+{}
