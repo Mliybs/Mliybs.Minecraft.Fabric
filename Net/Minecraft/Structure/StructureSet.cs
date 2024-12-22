@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Structure;
 
 [MapName("net/minecraft/class_7059")]
-public partial class StructureSet : Java.Lang.Object, IClassRef<StructureSet>, IFromHandle<StructureSet>
+public partial class StructureSet : JavaObject, IClassRef<StructureSet>, IFromHandle<StructureSet>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Resource;
 
 [MapName("net/minecraft/class_7665")]
-public partial class DefaultResourcePackBuilder : Java.Lang.Object, IClassRef<DefaultResourcePackBuilder>, IFromHandle<DefaultResourcePackBuilder>
+public partial class DefaultResourcePackBuilder : JavaObject, IClassRef<DefaultResourcePackBuilder>, IFromHandle<DefaultResourcePackBuilder>
 {
 }

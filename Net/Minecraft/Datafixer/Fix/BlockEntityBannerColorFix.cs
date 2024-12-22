@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Datafixer.Fix;
 
 [MapName("net/minecraft/class_3564")]
-public partial class BlockEntityBannerColorFix : Java.Lang.Object, IClassRef<BlockEntityBannerColorFix>, IFromHandle<BlockEntityBannerColorFix>
+public partial class BlockEntityBannerColorFix : JavaObject, IClassRef<BlockEntityBannerColorFix>, IFromHandle<BlockEntityBannerColorFix>
 {
 }

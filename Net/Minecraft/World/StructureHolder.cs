@@ -1,6 +1,6 @@
 namespace Net.Minecraft.World;
 
 [MapName("net/minecraft/class_2810")]
-public partial class StructureHolder : Java.Lang.Object, IClassRef<StructureHolder>, IFromHandle<StructureHolder>
+public partial class StructureHolder : JavaObject, IClassRef<StructureHolder>, IFromHandle<StructureHolder>
 {
 }

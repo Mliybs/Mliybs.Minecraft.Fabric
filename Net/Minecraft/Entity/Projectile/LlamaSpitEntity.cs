@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Projectile;
 
 [MapName("net/minecraft/class_1673")]
-public partial class LlamaSpitEntity : Java.Lang.Object, IClassRef<LlamaSpitEntity>, IFromHandle<LlamaSpitEntity>
+public partial class LlamaSpitEntity : JavaObject, IClassRef<LlamaSpitEntity>, IFromHandle<LlamaSpitEntity>
 {
 }

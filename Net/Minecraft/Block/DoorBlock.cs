@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Block;
 
 [MapName("net/minecraft/class_2323")]
-public partial class DoorBlock : Java.Lang.Object, IClassRef<DoorBlock>, IFromHandle<DoorBlock>
+public partial class DoorBlock : JavaObject, IClassRef<DoorBlock>, IFromHandle<DoorBlock>
 {
 }

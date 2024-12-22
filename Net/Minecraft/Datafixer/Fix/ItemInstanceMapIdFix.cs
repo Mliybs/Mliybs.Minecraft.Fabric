@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Datafixer.Fix;
 
 [MapName("net/minecraft/class_1186")]
-public partial class ItemInstanceMapIdFix : Java.Lang.Object, IClassRef<ItemInstanceMapIdFix>, IFromHandle<ItemInstanceMapIdFix>
+public partial class ItemInstanceMapIdFix : JavaObject, IClassRef<ItemInstanceMapIdFix>, IFromHandle<ItemInstanceMapIdFix>
 {
 }

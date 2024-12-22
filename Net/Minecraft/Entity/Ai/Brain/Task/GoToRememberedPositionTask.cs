@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Ai.Brain.Task;
 
 [MapName("net/minecraft/class_4121")]
-public partial class GoToRememberedPositionTask : Java.Lang.Object, IClassRef<GoToRememberedPositionTask>, IFromHandle<GoToRememberedPositionTask>
+public partial class GoToRememberedPositionTask : JavaObject, IClassRef<GoToRememberedPositionTask>, IFromHandle<GoToRememberedPositionTask>
 {
 }

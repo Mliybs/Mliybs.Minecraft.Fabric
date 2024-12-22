@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Block;
 
 [MapName("net/minecraft/class_5778")]
-public partial class MultifaceGrowthBlock : Java.Lang.Object, IClassRef<MultifaceGrowthBlock>, IFromHandle<MultifaceGrowthBlock>
+public partial class MultifaceGrowthBlock : JavaObject, IClassRef<MultifaceGrowthBlock>, IFromHandle<MultifaceGrowthBlock>
 {
 }

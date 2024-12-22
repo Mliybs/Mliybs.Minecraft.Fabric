@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Structure.Processor;
 
 [MapName("net/minecraft/class_5399")]
-public partial class LavaSubmergedBlockStructureProcessor : Java.Lang.Object, IClassRef<LavaSubmergedBlockStructureProcessor>, IFromHandle<LavaSubmergedBlockStructureProcessor>
+public partial class LavaSubmergedBlockStructureProcessor : JavaObject, IClassRef<LavaSubmergedBlockStructureProcessor>, IFromHandle<LavaSubmergedBlockStructureProcessor>
 {
 }

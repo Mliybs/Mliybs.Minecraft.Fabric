@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Datafixer.Fix;
 
 [MapName("net/minecraft/class_1167")]
-public partial class EntityTransformFix : Java.Lang.Object, IClassRef<EntityTransformFix>, IFromHandle<EntityTransformFix>
+public partial class EntityTransformFix : JavaObject, IClassRef<EntityTransformFix>, IFromHandle<EntityTransformFix>
 {
 }

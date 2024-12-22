@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Resource;
 
 [MapName("net/minecraft/class_4080")]
-public partial class SinglePreparationResourceReloader : Java.Lang.Object, IClassRef<SinglePreparationResourceReloader>, IFromHandle<SinglePreparationResourceReloader>
+public partial class SinglePreparationResourceReloader : JavaObject, IClassRef<SinglePreparationResourceReloader>, IFromHandle<SinglePreparationResourceReloader>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Model;
 
 [MapName("net/minecraft/class_5610")]
-public partial class ModelPartData : Java.Lang.Object, IClassRef<ModelPartData>, IFromHandle<ModelPartData>
+public partial class ModelPartData : JavaObject, IClassRef<ModelPartData>, IFromHandle<ModelPartData>
 {
 }

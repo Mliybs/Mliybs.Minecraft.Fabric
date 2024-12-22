@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Ai.Goal;
 
 [MapName("net/minecraft/class_1337")]
-public partial class WolfBegGoal : Java.Lang.Object, IClassRef<WolfBegGoal>, IFromHandle<WolfBegGoal>
+public partial class WolfBegGoal : JavaObject, IClassRef<WolfBegGoal>, IFromHandle<WolfBegGoal>
 {
 }

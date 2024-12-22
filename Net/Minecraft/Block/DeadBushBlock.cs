@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Block;
 
 [MapName("net/minecraft/class_2311")]
-public partial class DeadBushBlock : Java.Lang.Object, IClassRef<DeadBushBlock>, IFromHandle<DeadBushBlock>
+public partial class DeadBushBlock : JavaObject, IClassRef<DeadBushBlock>, IFromHandle<DeadBushBlock>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Util.Profiler;
 
 [MapName("net/minecraft/class_4757")]
-public partial class TickTimeTracker : Java.Lang.Object, IClassRef<TickTimeTracker>, IFromHandle<TickTimeTracker>
+public partial class TickTimeTracker : JavaObject, IClassRef<TickTimeTracker>, IFromHandle<TickTimeTracker>
 {
 }

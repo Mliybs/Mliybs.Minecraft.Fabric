@@ -1,6 +1,6 @@
 namespace Net.Minecraft.World.Biome;
 
 [MapName("net/minecraft/class_4761")]
-public partial class BiomeParticleConfig : Java.Lang.Object, IClassRef<BiomeParticleConfig>, IFromHandle<BiomeParticleConfig>
+public partial class BiomeParticleConfig : JavaObject, IClassRef<BiomeParticleConfig>, IFromHandle<BiomeParticleConfig>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Structure.Pool;
 
 [MapName("net/minecraft/class_3782")]
-public partial class ListPoolElement : Java.Lang.Object, IClassRef<ListPoolElement>, IFromHandle<ListPoolElement>
+public partial class ListPoolElement : JavaObject, IClassRef<ListPoolElement>, IFromHandle<ListPoolElement>
 {
 }

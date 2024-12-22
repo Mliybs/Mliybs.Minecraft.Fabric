@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Server.Dedicated;
 
 [MapName("net/minecraft/class_3808")]
-public partial class AbstractPropertiesHandler : Java.Lang.Object, IClassRef<AbstractPropertiesHandler>, IFromHandle<AbstractPropertiesHandler>
+public partial class AbstractPropertiesHandler : JavaObject, IClassRef<AbstractPropertiesHandler>, IFromHandle<AbstractPropertiesHandler>
 {
 }

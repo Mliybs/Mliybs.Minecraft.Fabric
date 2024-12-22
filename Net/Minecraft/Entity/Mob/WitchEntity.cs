@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Mob;
 
 [MapName("net/minecraft/class_1640")]
-public partial class WitchEntity : Java.Lang.Object, IClassRef<WitchEntity>, IFromHandle<WitchEntity>
+public partial class WitchEntity : JavaObject, IClassRef<WitchEntity>, IFromHandle<WitchEntity>
 {
 }

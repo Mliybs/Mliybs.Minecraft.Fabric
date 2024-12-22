@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Render.Block.Entity;
 
 [MapName("net/minecraft/class_5616")]
-public partial class BlockEntityRendererFactories : Java.Lang.Object, IClassRef<BlockEntityRendererFactories>, IFromHandle<BlockEntityRendererFactories>
+public partial class BlockEntityRendererFactories : JavaObject, IClassRef<BlockEntityRendererFactories>, IFromHandle<BlockEntityRendererFactories>
 {
 }

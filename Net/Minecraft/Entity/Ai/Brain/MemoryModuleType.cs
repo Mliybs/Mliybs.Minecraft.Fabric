@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Ai.Brain;
 
 [MapName("net/minecraft/class_4140")]
-public partial class MemoryModuleType : Java.Lang.Object, IClassRef<MemoryModuleType>, IFromHandle<MemoryModuleType>
+public partial class MemoryModuleType : JavaObject, IClassRef<MemoryModuleType>, IFromHandle<MemoryModuleType>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Sound;
 
 [MapName("net/minecraft/class_1109")]
-public partial class PositionedSoundInstance : Java.Lang.Object, IClassRef<PositionedSoundInstance>, IFromHandle<PositionedSoundInstance>
+public partial class PositionedSoundInstance : JavaObject, IClassRef<PositionedSoundInstance>, IFromHandle<PositionedSoundInstance>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Block;
 
 [MapName("net/minecraft/class_2418")]
-public partial class MyceliumBlock : Java.Lang.Object, IClassRef<MyceliumBlock>, IFromHandle<MyceliumBlock>
+public partial class MyceliumBlock : JavaObject, IClassRef<MyceliumBlock>, IFromHandle<MyceliumBlock>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Particle;
 
 [MapName("net/minecraft/class_5743")]
-public partial class DustColorTransitionParticleEffect : Java.Lang.Object, IClassRef<DustColorTransitionParticleEffect>, IFromHandle<DustColorTransitionParticleEffect>
+public partial class DustColorTransitionParticleEffect : JavaObject, IClassRef<DustColorTransitionParticleEffect>, IFromHandle<DustColorTransitionParticleEffect>
 {
 }

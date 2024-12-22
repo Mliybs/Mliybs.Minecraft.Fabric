@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Realms.Gui.Screen;
 
 [MapName("net/minecraft/class_4899")]
-public partial class DisconnectedRealmsScreen : Java.Lang.Object, IClassRef<DisconnectedRealmsScreen>, IFromHandle<DisconnectedRealmsScreen>
+public partial class DisconnectedRealmsScreen : JavaObject, IClassRef<DisconnectedRealmsScreen>, IFromHandle<DisconnectedRealmsScreen>
 {
 }

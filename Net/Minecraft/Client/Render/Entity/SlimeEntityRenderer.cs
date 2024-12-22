@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Render.Entity;
 
 [MapName("net/minecraft/class_945")]
-public partial class SlimeEntityRenderer : Java.Lang.Object, IClassRef<SlimeEntityRenderer>, IFromHandle<SlimeEntityRenderer>
+public partial class SlimeEntityRenderer : JavaObject, IClassRef<SlimeEntityRenderer>, IFromHandle<SlimeEntityRenderer>
 {
 }

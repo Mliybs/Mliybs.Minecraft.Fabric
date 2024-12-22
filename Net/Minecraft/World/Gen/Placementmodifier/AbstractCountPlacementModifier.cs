@@ -1,6 +1,6 @@
 namespace Net.Minecraft.World.Gen.Placementmodifier;
 
 [MapName("net/minecraft/class_5857")]
-public partial class AbstractCountPlacementModifier : Java.Lang.Object, IClassRef<AbstractCountPlacementModifier>, IFromHandle<AbstractCountPlacementModifier>
+public partial class AbstractCountPlacementModifier : JavaObject, IClassRef<AbstractCountPlacementModifier>, IFromHandle<AbstractCountPlacementModifier>
 {
 }

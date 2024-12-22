@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Server.Function;
 
 [MapName("net/minecraft/class_2991")]
-public partial class CommandFunctionManager : Java.Lang.Object, IClassRef<CommandFunctionManager>, IFromHandle<CommandFunctionManager>
+public partial class CommandFunctionManager : JavaObject, IClassRef<CommandFunctionManager>, IFromHandle<CommandFunctionManager>
 {
 }

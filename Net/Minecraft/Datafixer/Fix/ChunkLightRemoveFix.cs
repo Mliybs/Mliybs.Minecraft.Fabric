@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Datafixer.Fix;
 
 [MapName("net/minecraft/class_3755")]
-public partial class ChunkLightRemoveFix : Java.Lang.Object, IClassRef<ChunkLightRemoveFix>, IFromHandle<ChunkLightRemoveFix>
+public partial class ChunkLightRemoveFix : JavaObject, IClassRef<ChunkLightRemoveFix>, IFromHandle<ChunkLightRemoveFix>
 {
 }

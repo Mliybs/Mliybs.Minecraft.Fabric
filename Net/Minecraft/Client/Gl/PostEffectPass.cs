@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Gl;
 
 [MapName("net/minecraft/class_283")]
-public partial class PostEffectPass : Java.Lang.Object, IClassRef<PostEffectPass>, IFromHandle<PostEffectPass>
+public partial class PostEffectPass : JavaObject, IClassRef<PostEffectPass>, IFromHandle<PostEffectPass>
 {
 }

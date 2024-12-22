@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Server.Command;
 
 [MapName("net/minecraft/class_3142")]
-public partial class TeamCommand : Java.Lang.Object, IClassRef<TeamCommand>, IFromHandle<TeamCommand>
+public partial class TeamCommand : JavaObject, IClassRef<TeamCommand>, IFromHandle<TeamCommand>
 {
 }

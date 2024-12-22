@@ -1,7 +1,7 @@
 namespace Net.Minecraft.Util;
 
 [MapName("net/minecraft/class_2960")]
-public partial class Identifier : Java.Lang.Object, IClassRef<Identifier>, IFromHandle<Identifier>
+public partial class Identifier : JavaObject, IClassRef<Identifier>, IFromHandle<Identifier>
 {
     [JavaConstructor]
     public Identifier(string @namespace, string path) : base(Identifier_StringStringInvoke(@namespace, path))

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Server.World;
 
 [MapName("net/minecraft/class_3228")]
-public partial class ChunkTicket : Java.Lang.Object, IClassRef<ChunkTicket>, IFromHandle<ChunkTicket>
+public partial class ChunkTicket : JavaObject, IClassRef<ChunkTicket>, IFromHandle<ChunkTicket>
 {
 }

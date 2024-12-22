@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Datafixer.Fix;
 
 [MapName("net/minecraft/class_8223")]
-public partial class RemoveFeatureTogglesFix : Java.Lang.Object, IClassRef<RemoveFeatureTogglesFix>, IFromHandle<RemoveFeatureTogglesFix>
+public partial class RemoveFeatureTogglesFix : JavaObject, IClassRef<RemoveFeatureTogglesFix>, IFromHandle<RemoveFeatureTogglesFix>
 {
 }

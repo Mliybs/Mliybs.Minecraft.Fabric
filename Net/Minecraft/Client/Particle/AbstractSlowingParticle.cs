@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Particle;
 
 [MapName("net/minecraft/class_4955")]
-public partial class AbstractSlowingParticle : Java.Lang.Object, IClassRef<AbstractSlowingParticle>, IFromHandle<AbstractSlowingParticle>
+public partial class AbstractSlowingParticle : JavaObject, IClassRef<AbstractSlowingParticle>, IFromHandle<AbstractSlowingParticle>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Item;
 
 [MapName("net/minecraft/class_1832")]
-public partial class ToolMaterial : Java.Lang.Object, IClassRef<ToolMaterial>, IFromHandle<ToolMaterial>
+public partial class ToolMaterial : JavaObject, IClassRef<ToolMaterial>, IFromHandle<ToolMaterial>
 {
 }

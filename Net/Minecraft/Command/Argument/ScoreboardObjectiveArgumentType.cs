@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Command.Argument;
 
 [MapName("net/minecraft/class_2214")]
-public partial class ScoreboardObjectiveArgumentType : Java.Lang.Object, IClassRef<ScoreboardObjectiveArgumentType>, IFromHandle<ScoreboardObjectiveArgumentType>
+public partial class ScoreboardObjectiveArgumentType : JavaObject, IClassRef<ScoreboardObjectiveArgumentType>, IFromHandle<ScoreboardObjectiveArgumentType>
 {
 }

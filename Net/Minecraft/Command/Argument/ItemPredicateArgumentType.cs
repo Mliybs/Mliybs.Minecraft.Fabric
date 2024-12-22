@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Command.Argument;
 
 [MapName("net/minecraft/class_2293")]
-public partial class ItemPredicateArgumentType : Java.Lang.Object, IClassRef<ItemPredicateArgumentType>, IFromHandle<ItemPredicateArgumentType>
+public partial class ItemPredicateArgumentType : JavaObject, IClassRef<ItemPredicateArgumentType>, IFromHandle<ItemPredicateArgumentType>
 {
 }

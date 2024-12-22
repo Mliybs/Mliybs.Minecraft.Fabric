@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Data;
 
 [MapName("net/minecraft/class_7403")]
-public partial class DataWriter : Java.Lang.Object, IClassRef<DataWriter>, IFromHandle<DataWriter>
+public partial class DataWriter : JavaObject, IClassRef<DataWriter>, IFromHandle<DataWriter>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Registry;
 
 [MapName("net/minecraft/class_8990")]
-public partial class RegistryCloner : Java.Lang.Object, IClassRef<RegistryCloner>, IFromHandle<RegistryCloner>
+public partial class RegistryCloner : JavaObject, IClassRef<RegistryCloner>, IFromHandle<RegistryCloner>
 {
 }

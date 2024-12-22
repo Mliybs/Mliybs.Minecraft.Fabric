@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Nbt;
 
 [MapName("net/minecraft/class_2499")]
-public partial class NbtList : Java.Lang.Object, IClassRef<NbtList>, IFromHandle<NbtList>
+public partial class NbtList : JavaObject, IClassRef<NbtList>, IFromHandle<NbtList>
 {
 }

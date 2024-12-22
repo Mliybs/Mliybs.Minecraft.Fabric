@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Datafixer.Fix;
 
 [MapName("net/minecraft/class_1183")]
-public partial class ItemPotionFix : Java.Lang.Object, IClassRef<ItemPotionFix>, IFromHandle<ItemPotionFix>
+public partial class ItemPotionFix : JavaObject, IClassRef<ItemPotionFix>, IFromHandle<ItemPotionFix>
 {
 }

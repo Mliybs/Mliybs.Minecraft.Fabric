@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Mob;
 
 [MapName("net/minecraft/class_1564")]
-public partial class EvokerEntity : Java.Lang.Object, IClassRef<EvokerEntity>, IFromHandle<EvokerEntity>
+public partial class EvokerEntity : JavaObject, IClassRef<EvokerEntity>, IFromHandle<EvokerEntity>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Effect;
 
 [MapName("net/minecraft/class_1292")]
-public partial class StatusEffectUtil : Java.Lang.Object, IClassRef<StatusEffectUtil>, IFromHandle<StatusEffectUtil>
+public partial class StatusEffectUtil : JavaObject, IClassRef<StatusEffectUtil>, IFromHandle<StatusEffectUtil>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Ai.Brain.Task;
 
 [MapName("net/minecraft/class_5326")]
-public partial class WorkStationCompetitionTask : Java.Lang.Object, IClassRef<WorkStationCompetitionTask>, IFromHandle<WorkStationCompetitionTask>
+public partial class WorkStationCompetitionTask : JavaObject, IClassRef<WorkStationCompetitionTask>, IFromHandle<WorkStationCompetitionTask>
 {
 }

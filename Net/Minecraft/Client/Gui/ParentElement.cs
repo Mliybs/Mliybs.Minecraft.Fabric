@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Gui;
 
 [MapName("net/minecraft/class_4069")]
-public partial class ParentElement : Java.Lang.Object, IClassRef<ParentElement>, IFromHandle<ParentElement>
+public partial class ParentElement : JavaObject, IClassRef<ParentElement>, IFromHandle<ParentElement>
 {
 }

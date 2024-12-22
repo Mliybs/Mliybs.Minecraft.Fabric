@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Datafixer.Fix;
 
 [MapName("net/minecraft/class_8625")]
-public partial class DropInvalidSignDatafixDataFix : Java.Lang.Object, IClassRef<DropInvalidSignDatafixDataFix>, IFromHandle<DropInvalidSignDatafixDataFix>
+public partial class DropInvalidSignDatafixDataFix : JavaObject, IClassRef<DropInvalidSignDatafixDataFix>, IFromHandle<DropInvalidSignDatafixDataFix>
 {
 }

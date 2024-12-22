@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client;
 
 [MapName("net/minecraft/class_310")]
-public partial class MinecraftClient : Java.Lang.Object, IClassRef<MinecraftClient>, IFromHandle<MinecraftClient>
+public partial class MinecraftClient : JavaObject, IClassRef<MinecraftClient>, IFromHandle<MinecraftClient>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Render.Entity.Model;
 
 [MapName("net/minecraft/class_626")]
-public partial class DragonHeadEntityModel : Java.Lang.Object, IClassRef<DragonHeadEntityModel>, IFromHandle<DragonHeadEntityModel>
+public partial class DragonHeadEntityModel : JavaObject, IClassRef<DragonHeadEntityModel>, IFromHandle<DragonHeadEntityModel>
 {
 }

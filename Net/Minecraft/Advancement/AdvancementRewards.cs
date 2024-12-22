@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Advancement;
 
 [MapName("net/minecraft/class_170")]
-public partial class AdvancementRewards : Java.Lang.Object, IClassRef<AdvancementRewards>, IFromHandle<AdvancementRewards>
+public partial class AdvancementRewards : JavaObject, IClassRef<AdvancementRewards>, IFromHandle<AdvancementRewards>
 {
 }

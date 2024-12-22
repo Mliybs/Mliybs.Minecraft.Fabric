@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Ai.Brain.Sensor;
 
 [MapName("net/minecraft/class_4143")]
-public partial class DummySensor : Java.Lang.Object, IClassRef<DummySensor>, IFromHandle<DummySensor>
+public partial class DummySensor : JavaObject, IClassRef<DummySensor>, IFromHandle<DummySensor>
 {
 }

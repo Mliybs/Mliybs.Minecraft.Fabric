@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Resource.Language;
 
 [MapName("net/minecraft/class_1077")]
-public partial class LanguageDefinition : Java.Lang.Object, IClassRef<LanguageDefinition>, IFromHandle<LanguageDefinition>
+public partial class LanguageDefinition : JavaObject, IClassRef<LanguageDefinition>, IFromHandle<LanguageDefinition>
 {
 }

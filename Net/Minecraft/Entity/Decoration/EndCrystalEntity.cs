@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Decoration;
 
 [MapName("net/minecraft/class_1511")]
-public partial class EndCrystalEntity : Java.Lang.Object, IClassRef<EndCrystalEntity>, IFromHandle<EndCrystalEntity>
+public partial class EndCrystalEntity : JavaObject, IClassRef<EndCrystalEntity>, IFromHandle<EndCrystalEntity>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Font;
 
 [MapName("net/minecraft/class_379")]
-public partial class Glyph : Java.Lang.Object, IClassRef<Glyph>, IFromHandle<Glyph>
+public partial class Glyph : JavaObject, IClassRef<Glyph>, IFromHandle<Glyph>
 {
 }

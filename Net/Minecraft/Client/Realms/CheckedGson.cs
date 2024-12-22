@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Realms;
 
 [MapName("net/minecraft/class_4869")]
-public partial class CheckedGson : Java.Lang.Object, IClassRef<CheckedGson>, IFromHandle<CheckedGson>
+public partial class CheckedGson : JavaObject, IClassRef<CheckedGson>, IFromHandle<CheckedGson>
 {
 }

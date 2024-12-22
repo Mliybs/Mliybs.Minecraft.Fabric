@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Block;
 
 [MapName("net/minecraft/class_8886")]
-public partial class CrafterBlock : Java.Lang.Object, IClassRef<CrafterBlock>, IFromHandle<CrafterBlock>
+public partial class CrafterBlock : JavaObject, IClassRef<CrafterBlock>, IFromHandle<CrafterBlock>
 {
 }

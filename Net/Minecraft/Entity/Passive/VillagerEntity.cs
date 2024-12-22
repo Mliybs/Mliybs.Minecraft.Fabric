@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Passive;
 
 [MapName("net/minecraft/class_1646")]
-public partial class VillagerEntity : Java.Lang.Object, IClassRef<VillagerEntity>, IFromHandle<VillagerEntity>
+public partial class VillagerEntity : JavaObject, IClassRef<VillagerEntity>, IFromHandle<VillagerEntity>
 {
 }

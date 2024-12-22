@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Gui.Screen.Ingame;
 
 [MapName("net/minecraft/class_8898")]
-public partial class CrafterScreen : Java.Lang.Object, IClassRef<CrafterScreen>, IFromHandle<CrafterScreen>
+public partial class CrafterScreen : JavaObject, IClassRef<CrafterScreen>, IFromHandle<CrafterScreen>
 {
 }

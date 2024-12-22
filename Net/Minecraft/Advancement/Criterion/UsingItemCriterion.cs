@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Advancement.Criterion;
 
 [MapName("net/minecraft/class_6409")]
-public partial class UsingItemCriterion : Java.Lang.Object, IClassRef<UsingItemCriterion>, IFromHandle<UsingItemCriterion>
+public partial class UsingItemCriterion : JavaObject, IClassRef<UsingItemCriterion>, IFromHandle<UsingItemCriterion>
 {
 }

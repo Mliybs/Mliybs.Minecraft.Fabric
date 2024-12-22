@@ -1,6 +1,6 @@
 namespace Net.Minecraft.World.Gen.Feature;
 
 [MapName("net/minecraft/class_4643")]
-public partial class TreeFeatureConfig : Java.Lang.Object, IClassRef<TreeFeatureConfig>, IFromHandle<TreeFeatureConfig>
+public partial class TreeFeatureConfig : JavaObject, IClassRef<TreeFeatureConfig>, IFromHandle<TreeFeatureConfig>
 {
 }

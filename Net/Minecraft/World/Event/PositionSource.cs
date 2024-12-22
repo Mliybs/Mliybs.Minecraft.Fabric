@@ -1,6 +1,6 @@
 namespace Net.Minecraft.World.Event;
 
 [MapName("net/minecraft/class_5716")]
-public partial class PositionSource : Java.Lang.Object, IClassRef<PositionSource>, IFromHandle<PositionSource>
+public partial class PositionSource : JavaObject, IClassRef<PositionSource>, IFromHandle<PositionSource>
 {
 }

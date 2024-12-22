@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Item;
 
 [MapName("net/minecraft/class_1808")]
-public partial class MinecartItem : Java.Lang.Object, IClassRef<MinecartItem>, IFromHandle<MinecartItem>
+public partial class MinecartItem : JavaObject, IClassRef<MinecartItem>, IFromHandle<MinecartItem>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Gui.Screen.Option;
 
 [MapName("net/minecraft/class_7944")]
-public partial class TelemetryInfoScreen : Java.Lang.Object, IClassRef<TelemetryInfoScreen>, IFromHandle<TelemetryInfoScreen>
+public partial class TelemetryInfoScreen : JavaObject, IClassRef<TelemetryInfoScreen>, IFromHandle<TelemetryInfoScreen>
 {
 }

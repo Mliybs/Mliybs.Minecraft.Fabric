@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Advancement.Criterion;
 
 [MapName("net/minecraft/class_2069")]
-public partial class ItemDurabilityChangedCriterion : Java.Lang.Object, IClassRef<ItemDurabilityChangedCriterion>, IFromHandle<ItemDurabilityChangedCriterion>
+public partial class ItemDurabilityChangedCriterion : JavaObject, IClassRef<ItemDurabilityChangedCriterion>, IFromHandle<ItemDurabilityChangedCriterion>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.World.Gen;
 
 [MapName("net/minecraft/class_3133")]
-public partial class ProbabilityConfig : Java.Lang.Object, IClassRef<ProbabilityConfig>, IFromHandle<ProbabilityConfig>
+public partial class ProbabilityConfig : JavaObject, IClassRef<ProbabilityConfig>, IFromHandle<ProbabilityConfig>
 {
 }

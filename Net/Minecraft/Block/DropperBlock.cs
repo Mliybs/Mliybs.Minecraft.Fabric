@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Block;
 
 [MapName("net/minecraft/class_2325")]
-public partial class DropperBlock : Java.Lang.Object, IClassRef<DropperBlock>, IFromHandle<DropperBlock>
+public partial class DropperBlock : JavaObject, IClassRef<DropperBlock>, IFromHandle<DropperBlock>
 {
 }

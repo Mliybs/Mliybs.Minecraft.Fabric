@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Server.Dedicated.Command;
 
 [MapName("net/minecraft/class_3088")]
-public partial class PardonIpCommand : Java.Lang.Object, IClassRef<PardonIpCommand>, IFromHandle<PardonIpCommand>
+public partial class PardonIpCommand : JavaObject, IClassRef<PardonIpCommand>, IFromHandle<PardonIpCommand>
 {
 }

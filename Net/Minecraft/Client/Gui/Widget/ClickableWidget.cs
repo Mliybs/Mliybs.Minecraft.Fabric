@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Gui.Widget;
 
 [MapName("net/minecraft/class_339")]
-public partial class ClickableWidget : Java.Lang.Object, IClassRef<ClickableWidget>, IFromHandle<ClickableWidget>
+public partial class ClickableWidget : JavaObject, IClassRef<ClickableWidget>, IFromHandle<ClickableWidget>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Scoreboard;
 
 [MapName("net/minecraft/class_268")]
-public partial class Team : Java.Lang.Object, IClassRef<Team>, IFromHandle<Team>
+public partial class Team : JavaObject, IClassRef<Team>, IFromHandle<Team>
 {
 }

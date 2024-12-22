@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Datafixer.Fix;
 
 [MapName("net/minecraft/class_4962")]
-public partial class WorldUuidFix : Java.Lang.Object, IClassRef<WorldUuidFix>, IFromHandle<WorldUuidFix>
+public partial class WorldUuidFix : JavaObject, IClassRef<WorldUuidFix>, IFromHandle<WorldUuidFix>
 {
 }

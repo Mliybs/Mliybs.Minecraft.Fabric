@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Realms.Dto;
 
 [MapName("net/minecraft/class_4876")]
-public partial class RealmsNews : Java.Lang.Object, IClassRef<RealmsNews>, IFromHandle<RealmsNews>
+public partial class RealmsNews : JavaObject, IClassRef<RealmsNews>, IFromHandle<RealmsNews>
 {
 }

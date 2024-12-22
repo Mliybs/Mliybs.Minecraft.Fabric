@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Ai.Brain.Task;
 
 [MapName("net/minecraft/class_4242")]
-public partial class CelebrateRaidWinTask : Java.Lang.Object, IClassRef<CelebrateRaidWinTask>, IFromHandle<CelebrateRaidWinTask>
+public partial class CelebrateRaidWinTask : JavaObject, IClassRef<CelebrateRaidWinTask>, IFromHandle<CelebrateRaidWinTask>
 {
 }

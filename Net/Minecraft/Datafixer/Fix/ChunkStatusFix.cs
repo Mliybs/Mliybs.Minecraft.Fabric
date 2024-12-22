@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Datafixer.Fix;
 
 [MapName("net/minecraft/class_3589")]
-public partial class ChunkStatusFix : Java.Lang.Object, IClassRef<ChunkStatusFix>, IFromHandle<ChunkStatusFix>
+public partial class ChunkStatusFix : JavaObject, IClassRef<ChunkStatusFix>, IFromHandle<ChunkStatusFix>
 {
 }

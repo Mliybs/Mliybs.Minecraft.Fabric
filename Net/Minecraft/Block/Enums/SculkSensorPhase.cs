@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Block.Enums;
 
 [MapName("net/minecraft/class_5705")]
-public partial class SculkSensorPhase : Java.Lang.Object, IClassRef<SculkSensorPhase>, IFromHandle<SculkSensorPhase>
+public partial class SculkSensorPhase : JavaObject, IClassRef<SculkSensorPhase>, IFromHandle<SculkSensorPhase>
 {
 }

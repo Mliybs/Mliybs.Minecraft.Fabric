@@ -1,6 +1,6 @@
 namespace Net.Minecraft.World.Gen.Feature;
 
 [MapName("net/minecraft/class_2977")]
-public partial class CoralMushroomFeature : Java.Lang.Object, IClassRef<CoralMushroomFeature>, IFromHandle<CoralMushroomFeature>
+public partial class CoralMushroomFeature : JavaObject, IClassRef<CoralMushroomFeature>, IFromHandle<CoralMushroomFeature>
 {
 }

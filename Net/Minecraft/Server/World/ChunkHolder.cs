@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Server.World;
 
 [MapName("net/minecraft/class_3193")]
-public partial class ChunkHolder : Java.Lang.Object, IClassRef<ChunkHolder>, IFromHandle<ChunkHolder>
+public partial class ChunkHolder : JavaObject, IClassRef<ChunkHolder>, IFromHandle<ChunkHolder>
 {
 }

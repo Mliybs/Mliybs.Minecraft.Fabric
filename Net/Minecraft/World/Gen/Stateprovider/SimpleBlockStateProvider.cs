@@ -1,6 +1,6 @@
 namespace Net.Minecraft.World.Gen.Stateprovider;
 
 [MapName("net/minecraft/class_4656")]
-public partial class SimpleBlockStateProvider : Java.Lang.Object, IClassRef<SimpleBlockStateProvider>, IFromHandle<SimpleBlockStateProvider>
+public partial class SimpleBlockStateProvider : JavaObject, IClassRef<SimpleBlockStateProvider>, IFromHandle<SimpleBlockStateProvider>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Ai.Brain.Task;
 
 [MapName("net/minecraft/class_4110")]
-public partial class LookAroundTask : Java.Lang.Object, IClassRef<LookAroundTask>, IFromHandle<LookAroundTask>
+public partial class LookAroundTask : JavaObject, IClassRef<LookAroundTask>, IFromHandle<LookAroundTask>
 {
 }

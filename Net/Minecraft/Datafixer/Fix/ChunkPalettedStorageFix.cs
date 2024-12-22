@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Datafixer.Fix;
 
 [MapName("net/minecraft/class_3582")]
-public partial class ChunkPalettedStorageFix : Java.Lang.Object, IClassRef<ChunkPalettedStorageFix>, IFromHandle<ChunkPalettedStorageFix>
+public partial class ChunkPalettedStorageFix : JavaObject, IClassRef<ChunkPalettedStorageFix>, IFromHandle<ChunkPalettedStorageFix>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Realms.Gui.Screen;
 
 [MapName("net/minecraft/class_4419")]
-public partial class RealmsSelectWorldTemplateScreen : Java.Lang.Object, IClassRef<RealmsSelectWorldTemplateScreen>, IFromHandle<RealmsSelectWorldTemplateScreen>
+public partial class RealmsSelectWorldTemplateScreen : JavaObject, IClassRef<RealmsSelectWorldTemplateScreen>, IFromHandle<RealmsSelectWorldTemplateScreen>
 {
 }

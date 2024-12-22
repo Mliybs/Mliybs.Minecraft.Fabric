@@ -1,6 +1,6 @@
 namespace Net.Minecraft.World.Gen.Foliage;
 
 [MapName("net/minecraft/class_4650")]
-public partial class SpruceFoliagePlacer : Java.Lang.Object, IClassRef<SpruceFoliagePlacer>, IFromHandle<SpruceFoliagePlacer>
+public partial class SpruceFoliagePlacer : JavaObject, IClassRef<SpruceFoliagePlacer>, IFromHandle<SpruceFoliagePlacer>
 {
 }

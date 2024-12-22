@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Render.Entity;
 
 [MapName("net/minecraft/class_4042")]
-public partial class FoxEntityRenderer : Java.Lang.Object, IClassRef<FoxEntityRenderer>, IFromHandle<FoxEntityRenderer>
+public partial class FoxEntityRenderer : JavaObject, IClassRef<FoxEntityRenderer>, IFromHandle<FoxEntityRenderer>
 {
 }

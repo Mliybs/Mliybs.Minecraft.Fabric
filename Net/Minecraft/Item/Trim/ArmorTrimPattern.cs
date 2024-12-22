@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Item.Trim;
 
 [MapName("net/minecraft/class_8056")]
-public partial class ArmorTrimPattern : Java.Lang.Object, IClassRef<ArmorTrimPattern>, IFromHandle<ArmorTrimPattern>
+public partial class ArmorTrimPattern : JavaObject, IClassRef<ArmorTrimPattern>, IFromHandle<ArmorTrimPattern>
 {
 }

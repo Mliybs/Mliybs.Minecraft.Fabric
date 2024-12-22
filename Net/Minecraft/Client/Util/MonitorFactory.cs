@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Util;
 
 [MapName("net/minecraft/class_3676")]
-public partial class MonitorFactory : Java.Lang.Object, IClassRef<MonitorFactory>, IFromHandle<MonitorFactory>
+public partial class MonitorFactory : JavaObject, IClassRef<MonitorFactory>, IFromHandle<MonitorFactory>
 {
 }

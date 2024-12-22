@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Inventory;
 
 [MapName("net/minecraft/class_1265")]
-public partial class InventoryChangedListener : Java.Lang.Object, IClassRef<InventoryChangedListener>, IFromHandle<InventoryChangedListener>
+public partial class InventoryChangedListener : JavaObject, IClassRef<InventoryChangedListener>, IFromHandle<InventoryChangedListener>
 {
 }

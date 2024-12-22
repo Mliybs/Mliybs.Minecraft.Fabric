@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Effect;
 
 [MapName("net/minecraft/class_8631")]
-public partial class BadOmenStatusEffect : Java.Lang.Object, IClassRef<BadOmenStatusEffect>, IFromHandle<BadOmenStatusEffect>
+public partial class BadOmenStatusEffect : JavaObject, IClassRef<BadOmenStatusEffect>, IFromHandle<BadOmenStatusEffect>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Server.Network;
 
 [MapName("net/minecraft/class_3244")]
-public partial class ServerPlayNetworkHandler : Java.Lang.Object, IClassRef<ServerPlayNetworkHandler>, IFromHandle<ServerPlayNetworkHandler>
+public partial class ServerPlayNetworkHandler : JavaObject, IClassRef<ServerPlayNetworkHandler>, IFromHandle<ServerPlayNetworkHandler>
 {
 }

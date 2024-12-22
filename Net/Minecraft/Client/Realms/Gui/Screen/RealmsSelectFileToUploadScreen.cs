@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Realms.Gui.Screen;
 
 [MapName("net/minecraft/class_4416")]
-public partial class RealmsSelectFileToUploadScreen : Java.Lang.Object, IClassRef<RealmsSelectFileToUploadScreen>, IFromHandle<RealmsSelectFileToUploadScreen>
+public partial class RealmsSelectFileToUploadScreen : JavaObject, IClassRef<RealmsSelectFileToUploadScreen>, IFromHandle<RealmsSelectFileToUploadScreen>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Server.Command;
 
 [MapName("net/minecraft/class_3065")]
-public partial class GameRuleCommand : Java.Lang.Object, IClassRef<GameRuleCommand>, IFromHandle<GameRuleCommand>
+public partial class GameRuleCommand : JavaObject, IClassRef<GameRuleCommand>, IFromHandle<GameRuleCommand>
 {
 }

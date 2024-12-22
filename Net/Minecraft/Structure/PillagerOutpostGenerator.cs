@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Structure;
 
 [MapName("net/minecraft/class_3791")]
-public partial class PillagerOutpostGenerator : Java.Lang.Object, IClassRef<PillagerOutpostGenerator>, IFromHandle<PillagerOutpostGenerator>
+public partial class PillagerOutpostGenerator : JavaObject, IClassRef<PillagerOutpostGenerator>, IFromHandle<PillagerOutpostGenerator>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.State;
 
 [MapName("net/minecraft/class_2689")]
-public partial class StateManager : Java.Lang.Object, IClassRef<StateManager>, IFromHandle<StateManager>
+public partial class StateManager : JavaObject, IClassRef<StateManager>, IFromHandle<StateManager>
 {
 }

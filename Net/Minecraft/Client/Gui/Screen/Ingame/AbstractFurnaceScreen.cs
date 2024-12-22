@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Gui.Screen.Ingame;
 
 [MapName("net/minecraft/class_489")]
-public partial class AbstractFurnaceScreen : Java.Lang.Object, IClassRef<AbstractFurnaceScreen>, IFromHandle<AbstractFurnaceScreen>
+public partial class AbstractFurnaceScreen : JavaObject, IClassRef<AbstractFurnaceScreen>, IFromHandle<AbstractFurnaceScreen>
 {
 }

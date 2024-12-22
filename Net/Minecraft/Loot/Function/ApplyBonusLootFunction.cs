@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Loot.Function;
 
 [MapName("net/minecraft/class_94")]
-public partial class ApplyBonusLootFunction : Java.Lang.Object, IClassRef<ApplyBonusLootFunction>, IFromHandle<ApplyBonusLootFunction>
+public partial class ApplyBonusLootFunction : JavaObject, IClassRef<ApplyBonusLootFunction>, IFromHandle<ApplyBonusLootFunction>
 {
 }

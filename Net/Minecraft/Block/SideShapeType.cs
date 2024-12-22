@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Block;
 
 [MapName("net/minecraft/class_5431")]
-public partial class SideShapeType : Java.Lang.Object, IClassRef<SideShapeType>, IFromHandle<SideShapeType>
+public partial class SideShapeType : JavaObject, IClassRef<SideShapeType>, IFromHandle<SideShapeType>
 {
 }

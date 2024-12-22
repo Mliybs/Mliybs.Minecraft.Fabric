@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Structure;
 
 [MapName("net/minecraft/class_5189")]
-public partial class RuinedPortalStructurePiece : Java.Lang.Object, IClassRef<RuinedPortalStructurePiece>, IFromHandle<RuinedPortalStructurePiece>
+public partial class RuinedPortalStructurePiece : JavaObject, IClassRef<RuinedPortalStructurePiece>, IFromHandle<RuinedPortalStructurePiece>
 {
 }

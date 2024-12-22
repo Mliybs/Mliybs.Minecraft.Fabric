@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client;
 
 [MapName("net/minecraft/class_3678")]
-public partial class WindowEventHandler : Java.Lang.Object, IClassRef<WindowEventHandler>, IFromHandle<WindowEventHandler>
+public partial class WindowEventHandler : JavaObject, IClassRef<WindowEventHandler>, IFromHandle<WindowEventHandler>
 {
 }

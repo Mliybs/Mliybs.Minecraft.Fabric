@@ -1,6 +1,6 @@
 namespace Net.Minecraft.World.Level.Storage;
 
 [MapName("net/minecraft/class_34")]
-public partial class LevelSummary : Java.Lang.Object, IClassRef<LevelSummary>, IFromHandle<LevelSummary>
+public partial class LevelSummary : JavaObject, IClassRef<LevelSummary>, IFromHandle<LevelSummary>
 {
 }

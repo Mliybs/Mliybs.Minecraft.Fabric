@@ -1,6 +1,6 @@
 namespace Net.Minecraft.World.Gen.Feature;
 
 [MapName("net/minecraft/class_5153")]
-public partial class BasaltColumnsFeature : Java.Lang.Object, IClassRef<BasaltColumnsFeature>, IFromHandle<BasaltColumnsFeature>
+public partial class BasaltColumnsFeature : JavaObject, IClassRef<BasaltColumnsFeature>, IFromHandle<BasaltColumnsFeature>
 {
 }

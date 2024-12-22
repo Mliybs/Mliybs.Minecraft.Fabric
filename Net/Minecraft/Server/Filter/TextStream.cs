@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Server.Filter;
 
 [MapName("net/minecraft/class_5513")]
-public partial class TextStream : Java.Lang.Object, IClassRef<TextStream>, IFromHandle<TextStream>
+public partial class TextStream : JavaObject, IClassRef<TextStream>, IFromHandle<TextStream>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Particle;
 
 [MapName("net/minecraft/class_5165")]
-public partial class WhiteAshParticle : Java.Lang.Object, IClassRef<WhiteAshParticle>, IFromHandle<WhiteAshParticle>
+public partial class WhiteAshParticle : JavaObject, IClassRef<WhiteAshParticle>, IFromHandle<WhiteAshParticle>
 {
 }

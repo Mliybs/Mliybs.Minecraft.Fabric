@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Util;
 
 [MapName("net/minecraft/class_156")]
-public partial class Util : Java.Lang.Object, IClassRef<Util>, IFromHandle<Util>
+public partial class Util : JavaObject, IClassRef<Util>, IFromHandle<Util>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Datafixer.Fix;
 
 [MapName("net/minecraft/class_7442")]
-public partial class GoatHornIdFix : Java.Lang.Object, IClassRef<GoatHornIdFix>, IFromHandle<GoatHornIdFix>
+public partial class GoatHornIdFix : JavaObject, IClassRef<GoatHornIdFix>, IFromHandle<GoatHornIdFix>
 {
 }

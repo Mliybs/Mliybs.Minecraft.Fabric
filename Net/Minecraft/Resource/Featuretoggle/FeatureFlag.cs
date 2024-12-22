@@ -1,6 +1,6 @@
-namespace Net.Minecraft.Resource.Featuretoggle;
+namespace Net.Minecraft.Resource.FeatureToggle;
 
 [MapName("net/minecraft/class_7696")]
-public partial class FeatureFlag : Java.Lang.Object, IClassRef<FeatureFlag>, IFromHandle<FeatureFlag>
+public partial class FeatureFlag : JavaObject, IClassRef<FeatureFlag>, IFromHandle<FeatureFlag>
 {
 }

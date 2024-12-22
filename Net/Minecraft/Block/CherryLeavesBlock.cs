@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Block;
 
 [MapName("net/minecraft/class_8167")]
-public partial class CherryLeavesBlock : Java.Lang.Object, IClassRef<CherryLeavesBlock>, IFromHandle<CherryLeavesBlock>
+public partial class CherryLeavesBlock : JavaObject, IClassRef<CherryLeavesBlock>, IFromHandle<CherryLeavesBlock>
 {
 }

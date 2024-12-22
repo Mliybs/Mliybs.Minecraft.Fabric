@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Potion;
 
 [MapName("net/minecraft/class_1847")]
-public partial class Potions : Java.Lang.Object, IClassRef<Potions>, IFromHandle<Potions>
+public partial class Potions : JavaObject, IClassRef<Potions>, IFromHandle<Potions>
 {
 }

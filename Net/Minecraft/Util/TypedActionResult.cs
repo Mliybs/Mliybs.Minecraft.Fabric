@@ -1,10 +1,10 @@
 namespace Net.Minecraft.Util;
 
-public partial class TypedActionResult<T> : Java.Lang.Object, IClassRef<TypedActionResult<T>>, IFromHandle<TypedActionResult<T>> where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
+public partial class TypedActionResult<T> : JavaObject, IClassRef<TypedActionResult<T>>, IFromHandle<TypedActionResult<T>> where T : JavaObject, IClassRef<T>, IFromHandle<T>
 {
     internal static Names Names => TypedActionResult.Names;
 
-    public static Class<TypedActionResult<Java.Lang.Object>> ClassRef => TypedActionResult.ClassRef;
+    public static Class<TypedActionResult<JavaObject>> ClassRef => TypedActionResult.ClassRef;
 
     static Class<TypedActionResult<T>> IClassRef<TypedActionResult<T>>.ClassRef => new(ClassRef.ObjectRef);
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Render.Entity.Model;
 
 [MapName("net/minecraft/class_574")]
-public partial class IronGolemEntityModel : Java.Lang.Object, IClassRef<IronGolemEntityModel>, IFromHandle<IronGolemEntityModel>
+public partial class IronGolemEntityModel : JavaObject, IClassRef<IronGolemEntityModel>, IFromHandle<IronGolemEntityModel>
 {
 }

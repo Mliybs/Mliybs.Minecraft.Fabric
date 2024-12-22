@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Render.Entity;
 
 [MapName("net/minecraft/class_960")]
-public partial class VexEntityRenderer : Java.Lang.Object, IClassRef<VexEntityRenderer>, IFromHandle<VexEntityRenderer>
+public partial class VexEntityRenderer : JavaObject, IClassRef<VexEntityRenderer>, IFromHandle<VexEntityRenderer>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Client.Render;
 
 [MapName("net/minecraft/class_4585")]
-public partial class FixedColorVertexConsumer : Java.Lang.Object, IClassRef<FixedColorVertexConsumer>, IFromHandle<FixedColorVertexConsumer>
+public partial class FixedColorVertexConsumer : JavaObject, IClassRef<FixedColorVertexConsumer>, IFromHandle<FixedColorVertexConsumer>
 {
 }

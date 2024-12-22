@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity.Ai.Goal;
 
 [MapName("net/minecraft/class_1387")]
-public partial class HorseBondWithPlayerGoal : Java.Lang.Object, IClassRef<HorseBondWithPlayerGoal>, IFromHandle<HorseBondWithPlayerGoal>
+public partial class HorseBondWithPlayerGoal : JavaObject, IClassRef<HorseBondWithPlayerGoal>, IFromHandle<HorseBondWithPlayerGoal>
 {
 }

@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Loot.Function;
 
 [MapName("net/minecraft/class_117")]
-public partial class LootFunction : Java.Lang.Object, IClassRef<LootFunction>, IFromHandle<LootFunction>
+public partial class LootFunction : JavaObject, IClassRef<LootFunction>, IFromHandle<LootFunction>
 {
 }
