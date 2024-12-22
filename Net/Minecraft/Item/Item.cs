@@ -117,6 +117,10 @@ public partial class Item : JavaObject, IClassRef<Item>, IFromHandle<Item>, IWra
     [Signature("method_7846")]
     public virtual partial bool IsDamageable();
 
+    protected virtual bool IsDamageableHandler() => IsDamageable();
+
+    protected delegate bool IsDamageableDelegate();
+
     [Signature("method_31567")]
     public virtual partial bool IsItemBarVisible(ItemStack stack);
 
@@ -201,12 +205,12 @@ public partial class Item : JavaObject, IClassRef<Item>, IFromHandle<Item>, IWra
 
     protected delegate nint GetTranslationKeyDelegate();
 
-    [Signature("method_7866"), AlterDelegate(nameof(GetTranslationKeyDelegate_ItemStack))]
+    [Signature("method_7866"), Handler(nameof(GetTranslationKey_ItemStackDelegate))]
     public virtual partial string GetTranslationKey(ItemStack stack);
 
-    protected virtual nint GetTranslationKeyHandler(nint stack) => NewString(GetTranslationKey(ItemStack.From(stack)));
+    protected virtual nint GetTranslationKey_ItemStackHandler(nint stack) => NewString(GetTranslationKey(ItemStack.From(stack)));
 
-    protected delegate nint GetTranslationKeyDelegate_ItemStack(nint stack);
+    protected delegate nint GetTranslationKey_ItemStackDelegate(nint stack);
 
     [Signature("method_7887")]
     public virtual partial bool IsNbtSynced();
@@ -288,12 +292,12 @@ public partial class Item : JavaObject, IClassRef<Item>, IFromHandle<Item>, IWra
 
     protected delegate nint GetTooltipDataDelegate(nint stack);
 
-    [Signature("method_7864"), AlterDelegate(nameof(GetNameDelegate_ItemStack))]
+    [Signature("method_7864"), Handler(nameof(GetName_ItemStackDelegate))]
     public virtual partial Text.Text GetName(ItemStack stack);
 
-    protected virtual nint GetNameHandler(nint stack) => GetName(ItemStack.From(stack)).ObjectRef;
+    protected virtual nint GetName_ItemStackHandler(nint stack) => GetName(ItemStack.From(stack)).ObjectRef;
 
-    protected delegate nint GetNameDelegate_ItemStack(nint stack);
+    protected delegate nint GetName_ItemStackDelegate(nint stack);
 
     [Signature("method_7886")]
     public virtual partial bool HasGlint(ItemStack stack);
@@ -321,6 +325,10 @@ public partial class Item : JavaObject, IClassRef<Item>, IFromHandle<Item>, IWra
 
     [Signature("method_7837")]
     public virtual partial int GetEnchantability();
+
+    protected virtual int GetEnchantabilityHandler() => GetEnchantability();
+
+    protected delegate int GetEnchantabilityDelegate();
 
     [Signature("method_7878")]
     public virtual partial bool CanRepair(ItemStack stack, ItemStack ingredient);
@@ -418,6 +426,7 @@ public partial class Item : JavaObject, IClassRef<Item>, IFromHandle<Item>, IWra
         public nint GetMiningSpeedMultiplier;
         public nint Use;
         public nint FinishUsing;
+        public nint IsDamageable;
         public nint IsItemBarVisible;
         public nint GetItemBarStep;
         public nint GetItemBarColor;
@@ -446,8 +455,10 @@ public partial class Item : JavaObject, IClassRef<Item>, IFromHandle<Item>, IWra
         public nint HasGlint;
         public nint GetRarity;
         public nint IsEnchantable;
+        public nint GetEnchantability;
         public nint CanRepair;
         public nint GetAttributeModifiers;
+        public nint IsUsedOnRelease;
         public nint GetDefaultStack;
         public nint IsFood;
         public nint GetFoodComponent;
