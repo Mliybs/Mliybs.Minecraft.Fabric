@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Java.Lang
 {
     [MapName("java.lang.Byte", false), SuppressJavaClass]
-    public partial class Byte : Java.Lang.Object, IClassRef<Byte>, IFromHandle<Byte>
+    public partial class Byte : JavaObject, IClassRef<Byte>, IFromHandle<Byte>
     {
         internal Byte(nint handle) : base(handle)
         {}

@@ -44,15 +44,29 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                     var name = string.Join("$", list.Reverse<string>()).Replace('/', '.');
 
-                    var attribute = y.GetAttributes().FirstOrDefault(static x => x.AttributeClass?.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.StaticGenericAttribute")?.ConstructorArguments[0].Value as INamedTypeSymbol;
+                    if (y.GetMembers().OfType<IPropertySymbol>().FirstOrDefault(x => x.Name == "ClassRef") is not null and IPropertySymbol symbol)
+                    {
+                        var typeName = symbol.Type.GetFullyQualifiedName();
 
-                    var typeName = System.Text.RegularExpressions.Regex.Replace(attribute?.OriginalDefinition.GetFullyQualifiedName() ?? y.GetFullyQualifiedName(), "(?<=(<|, )).*?(?=(>|, ))", "Java.Lang.Object");
+                        x.AddSource($"MapName.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
+                            internal static Names Names { get; } = {{(useMapping ? $"MapClassName(\"{name}\")" : $"(\"{name}\", \"{name.Replace('.', '/')}\", \"{name}\", \"{name.Replace('.', '/')}\")")}};
 
-                    x.AddSource($"MapName.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
-                        internal static Names Names { get; } = {{(useMapping ? $"MapClassName(\"{name}\")" : $"(\"{name}\", \"{name.Replace('.', '/')}\", \"{name}\", \"{name.Replace('.', '/')}\")")}};
+                            private static readonly {{typeName}} _classRef = FindClass<{{System.Text.RegularExpressions.Regex.Match(typeName, "(?<=<).*(?=>)").Value}}>(Names.MapSignature);
+                            """, true));
+                    }
 
-                        public static Class<{{typeName}}> ClassRef { get; } = FindClass<{{typeName}}>(Names.MapSignature);
-                        """, true));
+                    else
+                    {
+                        var attribute = y.GetAttributes().FirstOrDefault(static x => x.AttributeClass?.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.StaticGenericAttribute")?.ConstructorArguments[0].Value as INamedTypeSymbol;
+
+                        var typeName = System.Text.RegularExpressions.Regex.Replace(attribute?.OriginalDefinition.GetFullyQualifiedName() ?? y.GetFullyQualifiedName(), "(?<=(<|, )).*?(?=(>|, ))", "Java.Lang.Object");
+
+                        x.AddSource($"MapName.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
+                            internal static Names Names { get; } = {{(useMapping ? $"MapClassName(\"{name}\")" : $"(\"{name}\", \"{name.Replace('.', '/')}\", \"{name}\", \"{name.Replace('.', '/')}\")")}};
+
+                            public static Class<{{typeName}}> ClassRef { get; } = FindClass<{{typeName}}>(Names.MapSignature);
+                            """, true));
+                    }
             });
         }
     }

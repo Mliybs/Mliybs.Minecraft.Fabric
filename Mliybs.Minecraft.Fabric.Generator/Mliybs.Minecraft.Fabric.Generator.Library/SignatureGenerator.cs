@@ -139,7 +139,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
             var function = string.Empty;
 
-            var regex = new Regex("<.*?>");
+            var regex = new Regex("<.*?>+");
 
             // var regexReplace = y.ContainingType.TypeParameters.Any() ? "<Mliybs.Minecraft.Fabric.Internals.InternalClass>" : string.Empty;
             const string regexReplace = "";
@@ -182,6 +182,14 @@ namespace Mliybs.Minecraft.Fabric.Generator
                         else
                             method.Append(regex.Replace(param.Type.TypeKind == TypeKind.Interface ? param.Type.GetQualifiedName().Substring(1) : param.Type.GetQualifiedName(), regexReplace).Replace("?", ""));
                     }
+                }
+
+                else if (param.Type is ITypeParameterSymbol symbol && symbol.ConstraintTypes.Where(x => x.TypeKind == TypeKind.Class).SingleOrDefault() is INamedTypeSymbol type)
+                {
+                    var @string = regex.Replace(type.GetFullyQualifiedName(), regexReplace).Replace("?", "");
+                    origin.Append($"L{{({@string}.Names.OriginSignature)}};");
+                    map.Append($"L{{({@string}.Names.MapSignature)}};");
+                    method.Append(regex.Replace(type.GetQualifiedName(), regexReplace).Replace("?", ""));
                 }
 
                 else

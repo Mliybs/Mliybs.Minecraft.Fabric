@@ -6,7 +6,11 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
 {
     private nint objectRef = nint.Zero;
 
-    protected internal unsafe nint ObjectRef
+    private protected bool deleteOnFinalize = true;
+
+    private protected void SetObjectRef(nint handle) => objectRef = handle;
+
+    internal unsafe nint ObjectRef
     {
         get => objectRef;
         set
@@ -31,16 +35,16 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
 
     unsafe ~JavaClass()
     {
-        if (objectRef != 0)
+        if (objectRef != 0 && deleteOnFinalize)
             Env->Functions->DeleteGlobalRef(Env, objectRef);
     }
 
-    public bool Is<T>() where T : Java.Lang.Object, IClassRef<T>
+    public bool Is<T>() where T : JavaObject, IClassRef<T>, IFromHandle<T>
     {
         return IsInstanceOf(objectRef, T.ClassRef.objectRef);
     }
 
-    public bool Is<T>([NotNullWhen(true)] out T? obj) where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
+    public bool Is<T>([NotNullWhen(true)] out T? obj) where T : JavaObject, IClassRef<T>, IFromHandle<T>
     {
         if (IsInstanceOf(objectRef, T.ClassRef.objectRef))
         {
@@ -51,7 +55,7 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
         return false;
     }
 
-    public bool Is<T>(Predicate<T> predicate, [NotNullWhen(true)] out T? obj) where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
+    public bool Is<T>(Predicate<T> predicate, [NotNullWhen(true)] out T? obj) where T : JavaObject, IClassRef<T>, IFromHandle<T>
     {
         if (IsInstanceOf(objectRef, T.ClassRef.objectRef))
         {
@@ -66,16 +70,16 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
         return false;
     }
 
-    public T? As<T>() where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
+    public T? As<T>() where T : JavaObject, IClassRef<T>, IFromHandle<T>
     {
         return IsInstanceOf(objectRef, T.ClassRef.objectRef) ? T.From(objectRef) : default;
     }
 
     [return: NotNull]
-    public T To<T>() where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T> =>
+    public T To<T>() where T : JavaObject, IClassRef<T>, IFromHandle<T> =>
         As<T>() ?? throw new InvalidCastException();
 
-    public bool InstanceOf<T>() where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T> =>
+    public bool InstanceOf<T>() where T : JavaObject, IClassRef<T>, IFromHandle<T> =>
         Is<T>();
 
     public static bool operator ==(JavaClass x, JavaClass y)
@@ -108,12 +112,12 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
 
     public override int GetHashCode()
     {
-        if (this is Java.Lang.Object obj) return obj.HashCode();
+        if (this is JavaObject obj) return obj.HashCode();
         return base.GetHashCode();
     }
 }
 
 public interface IJavaClass
 {
-    protected internal nint ObjectRef { get; set; }
+    internal nint ObjectRef { get; set; }
 }

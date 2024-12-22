@@ -3,9 +3,9 @@ using System;
 namespace Java.Lang;
 
 [MapName("java/lang/String", false)]
-public partial class String : Java.Lang.Object, IClassRef<String>, IFromHandle<String>
+public partial class String : JavaObject, IClassRef<JavaString>, IFromHandle<JavaString>
 {
-    public static implicit operator String(string @string) => new(NewString(@string));
+    public static implicit operator JavaString(string @string) => new(NewString(@string));
 
-    public static implicit operator string(String @string) => GetString(@string.ObjectRef);
+    public static implicit operator string(JavaString @string) => GetString(@string.ObjectRef);
 }

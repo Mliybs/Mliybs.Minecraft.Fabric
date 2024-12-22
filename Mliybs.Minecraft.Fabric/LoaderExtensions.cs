@@ -51,7 +51,7 @@ unsafe partial class Loader
     // 因为对于类和方法签名来说只会出现ASCII字符，所以可以直接使用.NET的自动封送
     // 直接使用中文会乱码
 
-    internal static Class<T> FindClass<T>(string classSignature) where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T> =>
+    internal static Class<T> FindClass<T>(string classSignature) where T : JavaObject, IClassRef<T>, IFromHandle<T> =>
         new(Env->Functions->FindClass(Env, classSignature));
 
     internal static nint GetConstructorID(nint classRef, string methodSignature) =>
@@ -199,14 +199,14 @@ public static class LoaderExtensions
     internal static IHandle<T> AsHandle<T>(this nint handle) => new DefaultHandle<T>(handle);
 
     // 在有可能会返回已有对象时，调用该函数
-    internal static T ReturnCheck<T>(this T obj, nint handle, [CallerMemberName] string caller = default!) where T : Java.Lang.Object, IFromHandle<T>
+    internal static T ReturnCheck<T>(this T obj, nint handle, [CallerMemberName] string caller = default!) where T : JavaObject, IFromHandle<T>
     {
         if (IsSameObject(obj.ObjectRef, handle)) return obj;
         var global = NewGlobalRef(handle);
         return T.From(global);
     }
 
-    public static T? Nullable<T>(this T obj) where T : Java.Lang.Object
+    public static T? Nullable<T>(this T obj) where T : JavaObject
     {
         if (obj?.IsNull ?? true) return null;
         return obj;

@@ -11,6 +11,8 @@ global using Java.Util;
 
 global using static Mliybs.Minecraft.Fabric.Loader;
 global using Names = (string OriginName, string OriginSignature, string MapName, string MapSignature);
+global using JavaObject = Java.Lang.Object;
+global using JavaString = Java.Lang.String;
 global using unsafe MethodVoid = delegate* unmanaged[Cdecl]<Mliybs.JNI.JNIEnv*, void>;
 global using unsafe MethodPtrVoid = delegate* unmanaged[Cdecl]<Mliybs.JNI.JNIEnv*, nint, void>;
 global using unsafe Method2PtrVoid = delegate* unmanaged[Cdecl]<Mliybs.JNI.JNIEnv*, nint, nint, void>;

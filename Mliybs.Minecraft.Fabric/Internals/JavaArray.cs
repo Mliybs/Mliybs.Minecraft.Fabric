@@ -6,7 +6,7 @@ using System.Linq;
 namespace Mliybs.Minecraft.Fabric.Internals
 {
     [SuppressJavaClass]
-    public partial class JavaArray<T> : Java.Lang.Object, IFromHandle<JavaArray<T>>, IEnumerable<T> where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
+    public partial class JavaArray<T> : JavaObject, IFromHandle<JavaArray<T>>, IEnumerable<T> where T : JavaObject, IClassRef<T>, IFromHandle<T>
     {
         private readonly int length;
 

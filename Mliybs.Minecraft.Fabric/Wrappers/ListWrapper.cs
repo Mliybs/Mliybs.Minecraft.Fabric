@@ -4,11 +4,11 @@ using System.Collections;
 namespace Mliybs.Minecraft.Fabric.Wrappers;
 
 [SuppressJavaClass]
-public sealed partial class ListWrapper<T> : Java.Lang.Object, IClassRef<ListWrapper<Java.Lang.Object>>, IFromHandle<ListWrapper<T>>, IReadOnlyList<T> where T : Java.Lang.Object, IClassRef<T>
+public sealed partial class ListWrapper<T> : JavaObject, IClassRef<ListWrapper<JavaObject>>, IFromHandle<ListWrapper<T>>, IReadOnlyList<T> where T : JavaObject, IClassRef<T>, IFromHandle<T>
 {
     internal static Names Names => ListWrapper.Names;
 
-    public static Class<ListWrapper<Java.Lang.Object>> ClassRef => ListWrapper.ClassRef;
+    public static Class<ListWrapper<JavaObject>> ClassRef => ListWrapper.ClassRef;
 
     private readonly System.Collections.Generic.IList<T> _list;
 

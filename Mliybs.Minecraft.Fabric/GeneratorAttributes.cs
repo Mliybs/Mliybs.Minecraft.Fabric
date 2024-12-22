@@ -71,4 +71,11 @@ namespace Mliybs.Minecraft.Fabric
     public sealed class FabricModAttribute : Attribute
     {
     }
+
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    public sealed class HandlerAttribute : Attribute
+    {
+        public HandlerAttribute(string name)
+        {}
+    }
 }

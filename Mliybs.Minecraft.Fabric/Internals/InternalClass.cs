@@ -1,6 +1,6 @@
 namespace Mliybs.Minecraft.Fabric.Internals;
 
-public sealed partial class InternalClass : Java.Lang.Object, IClassRef<InternalClass>, IFromHandle<InternalClass>
+public sealed partial class InternalClass : JavaObject, IClassRef<InternalClass>, IFromHandle<InternalClass>
 {
     public static Class<InternalClass> ClassRef
     {

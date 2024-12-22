@@ -3,13 +3,13 @@ using System;
 namespace Java.Lang;
 
 [SuppressJavaClass]
-public partial class Enum<T> : Java.Lang.Object, IClassRef<Enum<T>>, IFromHandle<Enum<T>> where T : Java.Lang.Object, IClassRef<T>, IFromHandle<T>
+public partial class Enum<T> : JavaObject, IClassRef<Enum<T>>, IFromHandle<Enum<T>> where T : JavaObject, IClassRef<T>, IFromHandle<T>
 {
     internal static Names Names => Enum.Names;
 
-    public static Class<Enum<Java.Lang.Object>> ClassRef => Enum.ClassRef;
+    public static Class<Enum<JavaObject>> ClassRef => Enum.ClassRef;
 
-    static Class<Enum<T>> IClassRef<Enum<T>>.ClassRef => new(ClassRef.ObjectRef);
+    static Class<Enum<T>> IClassRef<Enum<T>>.ClassRef => Class.Proxy<Enum<T>>(ClassRef.ObjectRef);
 
     internal Enum(nint handle) : base(handle)
     {}

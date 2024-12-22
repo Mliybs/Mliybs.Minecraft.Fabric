@@ -4,11 +4,11 @@ using System.Collections;
 namespace Mliybs.Minecraft.Fabric.Wrappers;
 
 [SuppressJavaClass]
-public sealed partial class IteratorWrapper<T> : Java.Lang.Object, IClassRef<IteratorWrapper<Java.Lang.Object>>, IFromHandle<IteratorWrapper<T>>, IEnumerator<T> where T : Java.Lang.Object, IClassRef<T>
+public sealed partial class IteratorWrapper<T> : JavaObject, IClassRef<IteratorWrapper<JavaObject>>, IFromHandle<IteratorWrapper<T>>, IEnumerator<T> where T : JavaObject, IClassRef<T>, IFromHandle<T>
 {
     internal static Names Names => IteratorWrapper.Names;
 
-    public static Class<IteratorWrapper<Java.Lang.Object>> ClassRef => IteratorWrapper.ClassRef;
+    public static Class<IteratorWrapper<JavaObject>> ClassRef => IteratorWrapper.ClassRef;
 
     private readonly IEnumerator<T> _enumerator;
 

@@ -28,10 +28,9 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
                 .Collect();
             #endif
 
-            var methodProvider = context.SyntaxProvider.CreateSyntaxProvider(static (x, _) => x is ClassDeclarationSyntax
-            {
-                AttributeLists.Count: > 0
-            }, static (x, _) => (INamedTypeSymbol)x.SemanticModel.GetDeclaredSymbol(x.Node));
+            var methodProvider = context.SyntaxProvider.CreateSyntaxProvider(static (x, _) => x is ClassDeclarationSyntax,
+                static (x, _) => (INamedTypeSymbol)x.SemanticModel.GetDeclaredSymbol(x.Node))
+                .Where(x => x.HasBaseWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.Internals.JavaClass"));
 
             #if SIMPLE_FROM
             context.RegisterSourceOutput(classProvider, static (x, y) =>
@@ -105,13 +104,14 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
         }
         static string JavaConstructorGenerate(SourceProductionContext x, IMethodSymbol y)
         {
-            var method = new StringBuilder()
-                .Append(y.ContainingType.Name)
-                .Append('_');
+            var method = new StringBuilder();
 
             var map = new StringBuilder().Append("$\"(");
 
-            var regex = new Regex("<.+?>");
+            var regex = new Regex("<.*?>+");
+
+            method.Append(regex.Replace(y.ContainingType.Name, ""))
+                .Append('_');
 
             foreach (var param in y.Parameters)
             {

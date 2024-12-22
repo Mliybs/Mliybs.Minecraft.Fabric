@@ -1,6 +1,6 @@
 namespace Net.FabricMC.Loader.Api;
 
-public partial class MappingResolver : Java.Lang.Object, IClassRef<MappingResolver>, IFromHandle<MappingResolver>
+public partial class MappingResolver : JavaObject, IClassRef<MappingResolver>, IFromHandle<MappingResolver>
 {
     public static Class<MappingResolver> ClassRef { get; } = FindClass<MappingResolver>("net/fabricmc/loader/api/MappingResolver");
 

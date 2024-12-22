@@ -6,17 +6,17 @@ using System.Linq;
 namespace Mliybs.Minecraft.Fabric.Wrappers
 {
     [MapName("com/mlinetles/nativeloader/wrappers/InvocationHandlerWrapper", false)]
-    internal partial class InvocationHandlerWrapper : Java.Lang.Object, IClassRef<InvocationHandlerWrapper>, IFromHandle<InvocationHandlerWrapper>
+    internal partial class InvocationHandlerWrapper : JavaObject, IClassRef<InvocationHandlerWrapper>, IFromHandle<InvocationHandlerWrapper>
     {
         private static readonly ConcurrentBag<Delegate> KeepAlive = new();
 
         [Signature("getProxyOf", false)]
-        private static nint GetProxyOf<T>(Class<T> @class, long handle) where T : Java.Lang.Object, IFromHandle<T>
+        private static nint GetProxyOf<T>(Class<T> @class, long handle) where T : JavaObject, IClassRef<T>, IFromHandle<T>
         {
             throw new NotSupportedException();
         }
 
-        public unsafe static nint GetProxyOf<T, K>(Class<K> @class, T @delegate) where T : Delegate where K : Java.Lang.Object, IFromHandle<K>
+        public unsafe static nint GetProxyOf<T, K>(Class<K> @class, T @delegate) where T : Delegate where K : JavaObject, IClassRef<K>, IFromHandle<K>
         {
             JValue* @params = stackalloc JValue[2];
             @params[0].l = @class.ObjectRef;

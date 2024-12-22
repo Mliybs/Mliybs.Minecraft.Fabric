@@ -31,11 +31,12 @@ namespace Mliybs.Minecraft.Fabric.Generator.Wrappers
         {
             var overriddens = y.GetMembers()
                 .OfType<IMethodSymbol>()
-                .Distinct<IMethodSymbol>(SymbolEqualityComparer.Default)
                 .Where(x => x.IsOverride)
                 .Select(x =>
                 {
                     var span = x.GetFullyQualifiedName().AsSpan();
+                    if (x.OverriddenMethod.GetAttributes().FirstOrDefault(x => x.AttributeClass.HasFullyQualifiedName("global::Mliybs.Minecraft.Fabric.HandlerAttribute")) is not null and AttributeData data)
+                        return ((string)data.ConstructorArguments[0].Value).AsSpan().Slice(0, span.Length - 8).ToString();
                     if (span.EndsWith("Handler".AsSpan())) return span.Slice(0, span.Length - 7).ToString();
                     return span.ToString();
                 })

@@ -1,12 +1,12 @@
 namespace Java.Util;
 
-public partial class Optional<T> : Java.Lang.Object, IClassRef<Optional<T>>, IFromHandle<Optional<T>> where T : Lang.Object, IClassRef<T>, IFromHandle<T>
+public partial class Optional<T> : JavaObject, IClassRef<Optional<T>>, IFromHandle<Optional<T>> where T : JavaObject, IClassRef<T>, IFromHandle<T>
 {
     internal static Names Names => Optional.Names;
 
-    public static Class<Optional<Java.Lang.Object>> ClassRef => Optional.ClassRef;
+    public static Class<Optional<JavaObject>> ClassRef => Optional.ClassRef;
 
-    static Class<Optional<T>> IClassRef<Optional<T>>.ClassRef => new(ClassRef.ObjectRef);
+    static Class<Optional<T>> IClassRef<Optional<T>>.ClassRef => Class.Proxy<Optional<T>>(ClassRef.ObjectRef);
 
     [Signature("get", false)]
     public partial T Get();
