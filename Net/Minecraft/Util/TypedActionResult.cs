@@ -6,7 +6,11 @@ public partial class TypedActionResult<T> : JavaObject, IClassRef<TypedActionRes
 
     public static Class<TypedActionResult<JavaObject>> ClassRef => TypedActionResult.ClassRef;
 
-    static Class<TypedActionResult<T>> IClassRef<TypedActionResult<T>>.ClassRef => new(ClassRef.ObjectRef);
+    static Class<TypedActionResult<T>> IClassRef<TypedActionResult<T>>.ClassRef => Class.Proxy<TypedActionResult<T>>(ClassRef.ObjectRef);
+
+    [JavaConstructor]
+    public TypedActionResult(ActionResult result, T value) : base(TypedActionResult_ActionResultObjectInvoke(result, value))
+    {}
 }
 
 [MapName("net/minecraft/class_1271"), StaticGeneric(typeof(TypedActionResult<>))]

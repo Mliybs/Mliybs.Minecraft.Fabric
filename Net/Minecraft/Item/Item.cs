@@ -20,15 +20,65 @@ using Net.Minecraft.Inventory;
 
 namespace Net.Minecraft.Item;
 
+[MapName("com/mlinetles/nativeloader/wrappers/ItemWrapper", false)]
+public partial class ItemWrapper : JavaObject, IClassRef<ItemWrapper>, IFromHandle<ItemWrapper>
+{
+    [JavaConstructor]
+    private ItemWrapper(Item.Settings settings, long handle) : base(nint.Zero)
+    {
+        throw new NotSupportedException();
+    }
+
+    internal static nint Wrap(Item.Settings settings, long handle) => ItemWrapper_SettingsLongInvoke(settings, handle);
+
+    [Signature("setOnFinalize")]
+    public static partial void SetOnFinalize(long handle);
+}
+
 [MapName("net/minecraft/class_1792")]
 public partial class Item : JavaObject, IClassRef<Item>, IFromHandle<Item>, IWrapper<Item>, IItemConvertible, IToggleableFeature
 {
-    protected readonly static ConcurrentBag<Delegate> KeepAlive = new();
+    private static int _id = 0;
+
+    private static readonly ConcurrentDictionary<int, ConcurrentBag<Delegate>> _items = new();
+
+    protected static int Add(ConcurrentBag<Delegate> bag)
+    {
+        var id = Interlocked.Increment(ref _id);
+        _items.TryAdd(id, bag);
+        return _id;
+    }
+
+    private static void OnFinalize(int id)
+    {
+        _items.TryRemove(id, out _);
+    }
+
+    private static void OnFinalizeInitialize()
+    {
+        ItemWrapper.SetOnFinalize(Marshal.GetFunctionPointerForDelegate<WrapperStatics.IntVoidDelegate>(OnFinalize));
+    }
+
+    public void Dispose()
+    {
+        disposed = true;
+        ObjectRef = nint.Zero;
+    }
+
+    protected static Names WrapperNames => ItemWrapper.Names;
+
+    protected static Class<ItemWrapper> WrapperClassRef => ItemWrapper.ClassRef;
 
     [JavaConstructor]
-    public Item(Settings settings) : base(nint.Zero)
+    public unsafe Item(Settings settings) : base(nint.Zero)
     {
-        ObjectRef = Item_SettingsInvoke(settings);
+        if (TryGetWrapper(out var wrapper))
+        {
+            ObjectRef = ItemWrapper.Wrap(settings, (long)&wrapper);
+        }
+
+        else
+            ObjectRef = Item_SettingsInvoke(settings);
     }
 
     [Signature("method_7880")]
@@ -416,6 +466,7 @@ public partial class Item : JavaObject, IClassRef<Item>, IFromHandle<Item>, IWra
     [StructLayout(LayoutKind.Sequential)]
     public struct Wrapper
     {
+        public int Id;
         public nint AsItem;
         public nint GetRequiredFeatures;
         public nint UsageTick;
