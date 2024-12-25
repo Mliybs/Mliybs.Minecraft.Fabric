@@ -30,7 +30,7 @@ namespace Java.Lang
         [Signature("forName", false)]
         public static partial Class<JavaObject> ForName(string className);
 
-        internal static Class<T> Proxy<T>(nint handle) where T : JavaObject, IClassRef<T>, IFromHandle<T>
+        public static Class<T> Proxy<T>(nint handle) where T : JavaObject, IClassRef<T>, IFromHandle<T>
         {
             return new ClassProxy<T>(handle);
         }

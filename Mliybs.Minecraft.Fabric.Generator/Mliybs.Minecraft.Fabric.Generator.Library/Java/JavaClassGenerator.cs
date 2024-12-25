@@ -36,7 +36,7 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
             context.RegisterSourceOutput(classProvider, static (x, y) =>
             {
                 x.AddSource($"JavaClass.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
-                    internal {{y.Name}}(nint handle) : base(handle) {}
+                    {{(y.Interfaces.Any(x => x.OriginalDefinition.HasFullyQualifiedName("global::Mliybs.Minecraft.Fabric.Internals.IWrapper<T>")) ? "protected internal" : "internal")}} {{y.Name}}(nint handle) : base(handle) {}
 
                     #pragma warning disable CS0108
                     public static {{y.GetQualifiedName()}} From(nint handle)

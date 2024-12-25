@@ -13,7 +13,7 @@ public partial class Predicate<T> : JavaObject, IClassRef<Predicate<T>>, IFromHa
     public partial bool Test(T t);
 }
 
-[MapName("java.util.Predicate"), StaticGeneric(typeof(Predicate<>))]
+[MapName("java.util.function.Predicate"), StaticGeneric(typeof(Predicate<>))]
 public static partial class Predicate
 {
     public delegate bool PredicateDelegate<in T>(T t) where T : JavaObject, IClassRef<T>, IFromHandle<T>;

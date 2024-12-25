@@ -1,5 +1,5 @@
 namespace Mliybs.Minecraft.Fabric.Internals;
 
-internal interface IWrapper<T> where T : JavaObject, IWrapper<T>
+internal interface IWrapper<T> : IDisposable where T : JavaObject, IWrapper<T>
 {
 }

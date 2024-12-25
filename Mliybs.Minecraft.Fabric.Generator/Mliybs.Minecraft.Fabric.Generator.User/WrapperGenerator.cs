@@ -41,16 +41,24 @@ namespace Mliybs.Minecraft.Fabric.Generator.Wrappers
                     return span.ToString();
                 })
                 .Distinct(StringComparer.Ordinal)
-                .Select(x => $"{x}Delegate _{x} = {x}Handler;\n    wrapper.{x} = System.Runtime.InteropServices.Marshal.GetFunctionPointerForDelegate<{x}Delegate>(_{x});\n    Add(_{x});");
+                .Select(x => $"{x}Delegate _{x} = {x}Handler;\n    wrapper.{x} = System.Runtime.InteropServices.Marshal.GetFunctionPointerForDelegate<{x}Delegate>(_{x});\n    keepAlive.Add(_{x});");
 
+            var name = y.GetFullyQualifiedName();
+            
             x.AddSource($"Wrapper.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
+                static (string OriginName, string OriginSignature, string MapName, string MapSignature) Names => WrapperNames;
+                
+                static global::Java.Lang.Class<{{name}}> global::Mliybs.Minecraft.Fabric.Internals.IClassRef<{{name}}>.ClassRef => global::Java.Lang.Class.Proxy<{{name}}>(global::Mliybs.Minecraft.Fabric.Loader.GetObjectRef(WrapperClassRef));
+                
                 protected override bool TryGetWrapper(out Wrapper wrapper)
                 {
+                    var keepAlive = new System.Collections.Concurrent.ConcurrentBag<Delegate>();
                     wrapper = new Wrapper();
                     {{string.Join("\n    ", overriddens)}}
+                    wrapper.Id = Add(keepAlive);
                     return true;
                 }
-                """, false, $"Mliybs.Minecraft.Fabric.Internals.IFromHandle<{y.GetQualifiedName()}>"));
+                """, false, $"global::Mliybs.Minecraft.Fabric.Internals.IClassRef<{name}>, global::Mliybs.Minecraft.Fabric.Internals.IFromHandle<{name}>"));
         }
     }
 }

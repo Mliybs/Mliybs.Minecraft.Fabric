@@ -24,7 +24,7 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
                 foreach (var @class in y.Distinct<INamedTypeSymbol>(SymbolEqualityComparer.Default))
                 {
                     x.AddSource($"JavaClass.{@class.GetFullyQualifiedNameForFile()}.g.cs", @class.NestedClassCompletion($$"""
-                        {{(@class.AllInterfaces.Any(x => x.OriginalDefinition.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.Internals.IWrapper<T>") ? "public" : "internal")}} {{@class.Name}}(nint handle) : base(handle) {}
+                        protected {{@class.Name}}(nint handle) : base(handle) {}
 
                         #pragma warning disable CS0108
                         public static {{@class.GetQualifiedName()}} From(nint handle)

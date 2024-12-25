@@ -8,11 +8,13 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
 
     private protected bool deleteOnFinalize = true;
 
+    private protected bool disposed = false;
+
     private protected void SetObjectRef(nint handle) => objectRef = handle;
 
     internal unsafe nint ObjectRef
     {
-        get => objectRef;
+        get => disposed ? throw new ObjectDisposedException(GetType().Name) : objectRef;
         set
         {
             if (objectRef != nint.Zero) Env->Functions->DeleteGlobalRef(Env, objectRef);
