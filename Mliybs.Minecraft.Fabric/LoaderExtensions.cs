@@ -143,6 +143,7 @@ unsafe partial class Loader
 
     public static string GetString(nint @string, bool isUtf8 = false)
     {
+        if (@string == nint.Zero) return null!;
         if (isUtf8) return GetString((byte*)@string);
         var chars = Env->Functions->GetStringChars(Env, @string, out var isCopy);
         var result = new string(chars);

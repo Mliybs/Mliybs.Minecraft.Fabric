@@ -1,6 +1,8 @@
 namespace Java.Util.Stream;
 
+[JavaInterface(typeof(IStream<>))]
 public partial class Stream<T> : JavaObject, IClassRef<Stream<T>>, IFromHandle<Stream<T>>
+    where T : JavaObject, IClassRef<T>, IFromHandle<T>
 {
     internal static Names Names => Stream.Names;
 
@@ -11,4 +13,8 @@ public partial class Stream<T> : JavaObject, IClassRef<Stream<T>>, IFromHandle<S
 
 [MapName("java.util.stream.Stream", false), StaticGeneric(typeof(Stream<>))]
 public static partial class Stream
+{}
+
+[JavaInterface(typeof(Stream<>))]
+public partial interface IStream<T> where T : JavaObject, IClassRef<T>, IFromHandle<T>
 {}

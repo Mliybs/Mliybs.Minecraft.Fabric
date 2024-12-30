@@ -1,4 +1,4 @@
-#define SIMPLE_FROM
+// #define SIMPLE_FROM
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -55,13 +55,26 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
 
                 foreach (var @class in classes)
                 {
-                    if (@class.BaseType!.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.Internals.JavaClass") continue;
+                    var mode = (FromModes)(@class.GetAttributes()
+                        .SingleOrDefault(x => x.AttributeClass!.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.FromModeAttribute")
+                        ?.ConstructorArguments[0].Value ?? FromModes.Default);
 
-                    if (dictionary.TryGetValue(@class.BaseType!.GetFullyQualifiedName(), out var list))
+                    var baseMode = (FromModes)(@class.BaseType!.GetAttributes()
+                        .SingleOrDefault(x => x.AttributeClass!.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.FromModeAttribute")
+                        ?.ConstructorArguments[0].Value ?? FromModes.Default);
+                    
+                    var baseSuppress = @class.BaseType!.GetAttributes()
+                        .SingleOrDefault(x => x.AttributeClass!.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.SuppressJavaClassAttribute") is not null;
+
+                    if (baseSuppress || mode == FromModes.NotUsedInFrom || baseMode == FromModes.SimpleFrom) continue;
+
+                    var name = @class.BaseType!.GetFullyQualifiedName();
+
+                    if (dictionary.TryGetValue(name, out var list))
                         list.Add($"if (IsInstanceOf(handle, {@class.GetFullyQualifiedName()}.ClassRef.ObjectRef)) return {@class.GetFullyQualifiedName()}.From(handle);\n    ");
 
                     else
-                        dictionary.Add(@class.BaseType!.GetFullyQualifiedName(), new()
+                        dictionary.Add(name, new()
                         {
                             $"if (IsInstanceOf(handle, {@class.GetFullyQualifiedName()}.ClassRef.ObjectRef)) return {@class.GetFullyQualifiedName()}.From(handle);\n    "
                         });
@@ -99,7 +112,7 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
                 {
                 {{result}}
                 }
-                """, true));
+                """, true, removeClassGeneric: true));
             });
         }
         static string JavaConstructorGenerate(SourceProductionContext x, IMethodSymbol y)
@@ -200,13 +213,17 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
 
             var methodName = method.ToString();
 
+            var methodOwner = regex.Replace(y.ContainingType.GetFullyQualifiedName(), "");
+
             x.AddSource($"JavaConstructor.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}", y.ContainingType.NestedClassCompletion($$"""
                 internal static nint {{methodName}} { get; private set; }
+                """, true, removeClassGeneric: true));
 
+            x.AddSource($"JavaConstructor.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}Invoke", y.ContainingType.NestedClassCompletion($$"""
                 #nullable enable
                 private static unsafe nint {{methodName}}Invoke({{string.Join(", ", y.Parameters.Select(x => $"{x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}})
                 {
-                    {{SetJValues(y.Parameters)}}return Env->Functions->NewObjectA{{$"(Env, ClassRef.ObjectRef, {methodName}, @params)"}};
+                    {{SetJValues(y.Parameters)}}return Env->Functions->NewObjectA{{$"(Env, ClassRef.ObjectRef, {methodOwner}.{methodName}, @params)"}};
                 }
                 """, true));
 
@@ -277,5 +294,12 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
             if (name == "string") return $"NewString({x.GetFullyQualifiedName()})";
             return x.GetFullyQualifiedName();
         }
+    }
+
+    public enum FromModes
+    {
+        Default,
+        SimpleFrom,
+        NotUsedInFrom
     }
 }

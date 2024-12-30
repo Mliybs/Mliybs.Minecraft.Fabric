@@ -78,4 +78,18 @@ namespace Mliybs.Minecraft.Fabric
         public HandlerAttribute(string name)
         {}
     }
+
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public sealed class FromModeAttribute : Attribute
+    {
+        public FromModeAttribute(FromModes mode = FromModes.SimpleFrom)
+        {}
+    }
+
+    public enum FromModes
+    {
+        Default,
+        SimpleFrom,
+        NotUsedInFrom
+    }
 }

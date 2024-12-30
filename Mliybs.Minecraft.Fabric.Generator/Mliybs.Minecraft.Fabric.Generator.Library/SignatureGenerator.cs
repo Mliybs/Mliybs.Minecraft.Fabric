@@ -105,12 +105,21 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                 if (result == string.Empty) return;
 
-                x.AddSource($"SignatureInitialize.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
-                    private static void SignatureInitialize()
-                    {
-                    {{result}}
-                    }
-                    """, true));
+                if (y.IsStatic)
+                    x.AddSource($"SignatureInitialize.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
+                        private static void StaticSignatureInitialize()
+                        {
+                        {{result}}
+                        }
+                        """, true, removeClassGeneric: true));
+                
+                else
+                    x.AddSource($"SignatureInitialize.{y.GetFullyQualifiedNameForFile()}.g.cs", y.NestedClassCompletion($$"""
+                        private static void SignatureInitialize()
+                        {
+                        {{result}}
+                        }
+                        """, true, removeClassGeneric: true));
             });
         }
 
@@ -184,7 +193,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
                     }
                 }
 
-                else if (param.Type is ITypeParameterSymbol symbol && symbol.ConstraintTypes.Where(x => x.TypeKind == TypeKind.Class).SingleOrDefault() is INamedTypeSymbol type)
+                else if (param.Type is ITypeParameterSymbol symbol && GetGenericDescriptor(symbol) is ITypeSymbol type)
                 {
                     var @string = regex.Replace(type.GetFullyQualifiedName(), regexReplace).Replace("?", "");
                     origin.Append($"L{{({@string}.Names.OriginSignature)}};");
@@ -304,6 +313,16 @@ namespace Mliybs.Minecraft.Fabric.Generator
                         map.Append($"L{{({@string}.Names.MapSignature)}};");
                     }
 
+                    if (y.IsStatic) function = "Env->Functions->CallStaticObjectMethodA";
+                    else if (y.IsVirtual) function = "Env->Functions->CallNonvirtualObjectMethodA";
+                    else function = "Env->Functions->CallObjectMethodA";
+                }
+
+                else if (y.ReturnType is ITypeParameterSymbol symbol && GetGenericDescriptor(symbol) is ITypeSymbol type)
+                {
+                    var @string = regex.Replace(type.GetFullyQualifiedName(), regexReplace).Replace("?", "");
+                    origin.Append($"L{{({@string}.Names.OriginSignature)}};");
+                    map.Append($"L{{({@string}.Names.MapSignature)}};");
                     if (y.IsStatic) function = "Env->Functions->CallStaticObjectMethodA";
                     else if (y.IsVirtual) function = "Env->Functions->CallNonvirtualObjectMethodA";
                     else function = "Env->Functions->CallObjectMethodA";
@@ -430,13 +449,15 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
             x.AddSource($"Signature.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}.g.cs", y.ContainingType.NestedClassCompletion($$"""
                 internal static nint {{methodName}} { get; private set; }
-                """, true));
+                """, true, removeClassGeneric: true));
 
             var methodFullName = y.GetFullyQualifiedName();
 
             var insertIndex = methodFullName.LastIndexOf('<');
 
             if (insertIndex == -1) insertIndex = methodFullName.Length;
+
+            var methodOwner = regex.Replace(y.ContainingType.GetFullyQualifiedName(), "");
 
             // 两个分部声明必须都有unsafe修饰符，所以将unsafe移到方法体内部
             if (y.IsPartialDefinition) x.AddSource($"MethodBody.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}.g.cs", y.ContainingType.NestedClassCompletion($$"""
@@ -446,8 +467,8 @@ namespace Mliybs.Minecraft.Fabric.Generator
                     unsafe
                     {
                         {{SetJValues(y.Parameters)}}{{(y.ReturnsVoid ? "" : "var result = ")}}{{function}}{{(y.IsStatic
-                                ? $"(Env, ClassRef.ObjectRef, {methodName}, @params)"
-                                : $"(Env, ObjectRef, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodName}, @params)"
+                                ? $"(Env, ClassRef.ObjectRef, {methodOwner}.{methodName}, @params)"
+                                : $"(Env, ObjectRef, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodOwner}.{methodName}, @params)"
                             )}};
 
                         return{{(y.ReturnsVoid ? "" : (returnType!.StartsWith("global::")
@@ -467,7 +488,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
                 {
                     unsafe
                     {
-                        {{SetJValues(y.Parameters)}}{{(y.ReturnsVoid ? "" : "var result = ")}}{{function}}{{$"(Env, proxy, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodName}, @params)"}};
+                        {{SetJValues(y.Parameters)}}{{(y.ReturnsVoid ? "" : "var result = ")}}{{function}}{{$"(Env, proxy, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodOwner}.{methodName}, @params)"}};
 
                         return{{(y.ReturnsVoid ? "" : (returnType!.StartsWith("global::")
                             ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : check + $".ReturnCheck")}(result)"
@@ -488,8 +509,8 @@ namespace Mliybs.Minecraft.Fabric.Generator
                         unsafe
                         {
                             {{SetJValues(y.Parameters)}}return {{function}}{{(y.IsStatic
-                                    ? $"(Env, ClassRef.ObjectRef, {methodName}, @params)"
-                                    : $"(Env, ObjectRef, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodName}, @params)")}};
+                                    ? $"(Env, ClassRef.ObjectRef, {methodOwner}.{methodName}, @params)"
+                                    : $"(Env, ObjectRef, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodOwner}.{methodName}, @params)")}};
                         }
                     }
                     """, true));
@@ -561,6 +582,21 @@ namespace Mliybs.Minecraft.Fabric.Generator
             if (name.StartsWith("global::") || x.Type.TypeKind == TypeKind.TypeParameter) return $"{x.GetFullyQualifiedName()}?.ObjectRef ?? nint.Zero";
             if (name == "string") return $"NewString({x.GetFullyQualifiedName()})";
             return x.GetFullyQualifiedName();
+        }
+
+        public static ITypeSymbol? GetGenericDescriptor(ITypeParameterSymbol symbol)
+        {
+            var obj = symbol.ConstraintTypes.First(x => x.TypeKind == TypeKind.Class);
+
+            if (obj.HasFullyQualifiedName("global::Java.Lang.Object"))
+            {
+                return symbol.ConstraintTypes
+                    .FirstOrDefault(x => x.TypeKind == TypeKind.Interface &&
+                    x.HasBaseWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.Internals.IJavaClass"))
+                    ?? obj;
+            }
+
+            return obj;
         }
     }
 }
