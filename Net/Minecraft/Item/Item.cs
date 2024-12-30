@@ -32,7 +32,7 @@ public partial class ItemWrapper : JavaObject, IClassRef<ItemWrapper>, IFromHand
     internal static nint Wrap(Item.Settings settings, long handle) => ItemWrapper_SettingsLongInvoke(settings, handle);
 
     [Signature("setOnFinalize")]
-    public static partial void SetOnFinalize(long handle);
+    internal static partial void SetOnFinalize(long handle);
 }
 
 [MapName("net/minecraft/class_1792")]
