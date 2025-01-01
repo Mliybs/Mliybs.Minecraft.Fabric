@@ -35,7 +35,7 @@ public partial class ItemWrapper : JavaObject, IClassRef<ItemWrapper>, IFromHand
     internal static partial void SetOnFinalize(long handle);
 }
 
-[MapName("net/minecraft/class_1792")]
+[MapName("net/minecraft/class_1792"), FromMode(FromModes.SimpleFrom)]
 public partial class Item : JavaObject, IClassRef<Item>, IFromHandle<Item>, IWrapper<Item>, IItemConvertible, IToggleableFeature
 {
     private static int _id = 0;

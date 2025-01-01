@@ -1,10 +1,31 @@
 using Java.Util.Stream;
+using Net.Minecraft.Entity.Data;
+using Net.Minecraft.Entity.Player;
+using Net.Minecraft.Entity.Damage;
+using Net.Minecraft.Nbt;
+using Net.Minecraft.Item;
+using Net.Minecraft.Fluid;
+using Net.Minecraft.Registry.Tag;
 using Net.Minecraft.Util;
+using Net.Minecraft.Util.Hit;
 using Net.Minecraft.Util.Math;
+using Net.Minecraft.Util.Shape;
+using Net.Minecraft.Util.Crash;
+using Net.Minecraft.Sound;
+using Net.Minecraft.Block;
+using Net.Minecraft.Block.Piston;
 using Net.Minecraft.World;
+using Net.Minecraft.World.Event;
 using Net.Minecraft.World.Entity;
+using Net.Minecraft.World.Explosion;
+using Net.Minecraft.Server;
+using Net.Minecraft.Server.World;
+using Net.Minecraft.Server.Network;
 using Net.Minecraft.Server.Command;
 using Net.Minecraft.Scoreboard;
+using Net.Minecraft.Network.Packet.S2c.Play;
+using Net.Minecraft.Inventory;
+using Net.Minecraft.Text;
 
 namespace Net.Minecraft.Entity;
 
@@ -18,6 +39,7 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
     public Text.Text GetDisplayName() => Nameable.GetDisplayNameProxy(ObjectRef);
 
     public Text.Text? GetCustomName() => Nameable.GetCustomNameProxy(ObjectRef);
+
     public int GetId() => EntityLike.GetIdProxy(ObjectRef);
 
     public UUID GetUuid() => EntityLike.GetUuidProxy(ObjectRef);
@@ -54,8 +76,6 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
 
     public Text.Text GetStyledDisplayName() => ScoreHolder.GetStyledDisplayNameProxy(ObjectRef);
 
-    #if false
-
     [Signature("method_30632")]
     public partial bool CollidesWithStateAtPos(BlockPos pos, BlockState state);
 
@@ -74,20 +94,20 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
     [Signature("method_43389")]
     public partial TrackedPosition GetTrackedPosition();
 
-    // [Signature("method_5864")]
-    // public partial EntityType<?> GetType();
+    [Signature("method_5864")]
+    public partial EntityType<Entity> GetType();
 
     [Signature("method_5838")]
     public partial void SetId(int id);
 
-    // [Signature("method_5752")]
-    // public partial Set<String> GetCommandTags();
+    [Signature("method_5752")]
+    public partial Set<JavaString> GetCommandTags();
 
     [Signature("method_5780")]
-    public partial bool AddCommandTag(String tag);
+    public partial bool AddCommandTag(string tag);
 
     [Signature("method_5738")]
-    public partial bool RemoveCommandTag(String tag);
+    public partial bool RemoveCommandTag(string tag);
 
     [Signature("method_5768")]
     public partial void Kill();
@@ -96,16 +116,10 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
     public partial void Discard();
 
     [Signature("method_5693")]
-    protected abstract void InitDataTracker();
+    protected partial void InitDataTracker();
 
     [Signature("method_5841")]
     public partial DataTracker GetDataTracker();
-
-    [Signature("equals")]
-    public partial bool Equals(Object o);
-
-    [Signature("hashCode", false)]
-    public partial int HashCode();
 
     [Signature("method_5650")]
     public partial void Remove(Entity.RemovalReason reason);
@@ -129,7 +143,7 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
     public partial bool IsInRange(Entity entity, double horizontalRadius, double verticalRadius);
 
     [Signature("method_5710")]
-    protected void SetRotation(float yaw, float pitch);
+    protected partial void SetRotation(float yaw, float pitch);
 
     [Signature("method_33574")]
     public partial void SetPosition(Vec3d pos);
@@ -138,10 +152,10 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
     public partial void SetPosition(double x, double y, double z);
 
     [Signature("method_33332")]
-    protected Box CalculateBoundingBox();
+    protected partial Box CalculateBoundingBox();
 
     [Signature("method_23311")]
-    protected void RefreshPosition();
+    protected partial void RefreshPosition();
 
     [Signature("method_5872")]
     public partial void ChangeLookDirection(double cursorDeltaX, double cursorDeltaY);
@@ -171,7 +185,7 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
     public partial bool HasPortalCooldown();
 
     [Signature("method_5760")]
-    protected void TickPortalCooldown();
+    protected partial void TickPortalCooldown();
 
     [Signature("method_5741")]
     public partial int GetMaxNetherPortalTime();
@@ -192,13 +206,13 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
     public partial void Extinguish();
 
     [Signature("method_5825")]
-    protected void TickInVoid();
+    protected partial void TickInVoid();
 
     [Signature("method_5654")]
     public partial bool DoesNotCollide(double offsetX, double offsetY, double offsetZ);
 
     [Signature("method_5629")]
-    private bool DoesNotCollide(Box box);
+    private partial bool DoesNotCollide(Box box);
 
     [Signature("method_24830")]
     public partial void SetOnGround(bool onGround);
@@ -210,7 +224,7 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
     public partial bool IsSupportedBy(BlockPos pos);
 
     [Signature("method_51703")]
-    protected void UpdateSupportingBlockPos(bool onGround, Vec3d? movement);
+    protected partial void UpdateSupportingBlockPos(bool onGround, Vec3d? movement);
 
     [Signature("method_24828")]
     public partial bool IsOnGround();
@@ -218,81 +232,65 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
     [Signature("method_5784")]
     public partial void Move(MovementType movementType, Vec3d movement);
 
-    [Signature("method_51702")]
-    private bool CanClimb(BlockState state);
-
-    [Signature("method_51701")]
-    private bool StepOnBlock(BlockPos pos, BlockState state, bool playSound, bool emitEvent, Vec3d movement);
-
     [Signature("method_39759")]
-    protected bool HasCollidedSoftly(Vec3d adjustedMovement);
+    protected partial bool HasCollidedSoftly(Vec3d adjustedMovement);
 
     [Signature("method_36974")]
-    protected void TryCheckBlockCollision();
+    protected partial void TryCheckBlockCollision();
 
     [Signature("method_36975")]
-    protected void PlayExtinguishSound();
+    protected partial void PlayExtinguishSound();
 
     [Signature("method_46395")]
     public partial void ExtinguishWithSound();
 
     [Signature("method_33573")]
-    protected void AddAirTravelEffects();
+    protected partial void AddAirTravelEffects();
 
-    [Signature("method_43260")]
-    @Deprecated
-public BlockPos GetLandingPos();
+    [Signature("method_43260"), Obsolete]
+    public partial BlockPos GetLandingPos();
 
     [Signature("method_23314")]
-    protected BlockPos GetVelocityAffectingPos();
+    protected partial BlockPos GetVelocityAffectingPos();
 
     [Signature("method_23312")]
     public partial BlockPos GetSteppingPos();
 
     [Signature("method_43258")]
-    protected BlockPos GetPosWithYOffset(float offset);
+    protected partial BlockPos GetPosWithYOffset(float offset);
 
     [Signature("method_23313")]
-    protected float GetJumpVelocityMultiplier();
+    protected partial float GetJumpVelocityMultiplier();
 
     [Signature("method_23326")]
-    protected float GetVelocityMultiplier();
+    protected partial float GetVelocityMultiplier();
 
     [Signature("method_18796")]
-    protected Vec3d AdjustMovementForSneaking(Vec3d movement, MovementType type);
+    protected partial Vec3d AdjustMovementForSneaking(Vec3d movement, MovementType type);
 
     [Signature("method_18794")]
-    protected Vec3d AdjustMovementForPiston(Vec3d movement);
-
-    [Signature("method_18797")]
-    private double CalculatePistonMovementFactor(Direction.Axis axis, double offsetFactor);
-
-    [Signature("method_17835")]
-    private Vec3d AdjustMovementForCollisions(Vec3d movement);
+    protected partial Vec3d AdjustMovementForPiston(Vec3d movement);
 
     [Signature("method_20736")]
-    public static partial Vec3d AdjustMovementForCollisions(Entity? entity, Vec3d movement, Box entityBoundingBox, World world, List<VoxelShape> collisions);
-
-    [Signature("method_20737")]
-    private static Vec3d AdjustMovementForCollisions(Vec3d movement, Box entityBoundingBox, List<VoxelShape> collisions);
+    public static partial Vec3d AdjustMovementForCollisions(Entity? entity, Vec3d movement, Box entityBoundingBox, World.World world, Java.Util.List<VoxelShape> collisions);
 
     [Signature("method_5867")]
-    protected float CalculateNextStepSoundDistance();
+    protected partial float CalculateNextStepSoundDistance();
 
     [Signature("method_5737")]
-    protected SoundEvent GetSwimSound();
+    protected partial SoundEvent GetSwimSound();
 
     [Signature("method_5625")]
-    protected SoundEvent GetSplashSound();
+    protected partial SoundEvent GetSplashSound();
 
     [Signature("method_5672")]
-    protected SoundEvent GetHighSpeedSplashSound();
+    protected partial SoundEvent GetHighSpeedSplashSound();
 
     [Signature("method_5852")]
-    protected void CheckBlockCollision();
+    protected partial void CheckBlockCollision();
 
     [Signature("method_5622")]
-    protected void OnBlockCollision(BlockState state);
+    protected partial void OnBlockCollision(BlockState state);
 
     [Signature("method_32875")]
     public partial void EmitGameEvent(GameEvent @event, Entity? entity);
@@ -301,34 +299,28 @@ public BlockPos GetLandingPos();
     public partial void EmitGameEvent(GameEvent @event);
 
     [Signature("method_51295")]
-    protected void PlaySwimSound();
+    protected partial void PlaySwimSound();
 
     [Signature("method_49788")]
-    protected BlockPos GetStepSoundPos(BlockPos pos);
+    protected partial BlockPos GetStepSoundPos(BlockPos pos);
 
     [Signature("method_49787")]
-    protected void PlayCombinationStepSounds(BlockState primaryState, BlockState secondaryState);
+    protected partial void PlayCombinationStepSounds(BlockState primaryState, BlockState secondaryState);
 
     [Signature("method_51296")]
-    protected void PlaySecondaryStepSound(BlockState state);
+    protected partial void PlaySecondaryStepSound(BlockState state);
 
     [Signature("method_5712")]
-    protected void PlayStepSound(BlockPos pos, BlockState state);
-
-    [Signature("method_49790")]
-    private bool ShouldPlayAmethystChimeSound(BlockState state);
-
-    [Signature("method_37215")]
-    private void PlayAmethystChimeSound();
+    protected partial void PlayStepSound(BlockPos pos, BlockState state);
 
     [Signature("method_5734")]
-    protected void PlaySwimSound(float volume);
+    protected partial void PlaySwimSound(float volume);
 
     [Signature("method_5801")]
-    protected void AddFlapEffects();
+    protected partial void AddFlapEffects();
 
     [Signature("method_5776")]
-    protected bool IsFlappingWings();
+    protected partial bool IsFlappingWings();
 
     [Signature("method_5783")]
     public partial void PlaySound(SoundEvent sound, float volume, float pitch);
@@ -349,13 +341,13 @@ public BlockPos GetLandingPos();
     public partial void SetNoGravity(bool noGravity);
 
     [Signature("method_33570")]
-    protected Entity.MoveEffect GetMoveEffect();
+    protected partial Entity.MoveEffect GetMoveEffect();
 
     [Signature("method_33189")]
     public partial bool OccludeVibrationSignals();
 
     [Signature("method_5623")]
-    protected void Fall(double heightDifference, bool onGround, BlockState state, BlockPos landedPosition);
+    protected partial void Fall(double heightDifference, bool onGround, BlockState state, BlockPos landedPosition);
 
     [Signature("method_5753")]
     public partial bool IsFireImmune();
@@ -365,12 +357,6 @@ public BlockPos GetLandingPos();
 
     [Signature("method_5799")]
     public partial bool IsTouchingWater();
-
-    [Signature("method_5778")]
-    private bool IsBeingRainedOn();
-
-    [Signature("method_5798")]
-    private bool IsInsideBubbleColumn();
 
     [Signature("method_5721")]
     public partial bool IsTouchingWaterOrRain();
@@ -391,20 +377,13 @@ public BlockPos GetLandingPos();
     public partial void UpdateSwimming();
 
     [Signature("method_5876")]
-    protected bool UpdateWaterState();
-
-    [Signature("method_5713")]
-    void CheckWaterState();
-
-    [Signature("method_5630")]
-    private void UpdateSubmergedInWaterState();
+    protected partial bool UpdateWaterState();
 
     [Signature("method_5746")]
-    protected void OnSwimmingStart();
+    protected partial void OnSwimmingStart();
 
-    [Signature("method_43261")]
-    @Deprecated
-protected BlockState GetLandingBlockState();
+    [Signature("method_43261"), Obsolete]
+    protected partial BlockState GetLandingBlockState();
 
     [Signature("method_25936")]
     public partial BlockState GetSteppingBlockState();
@@ -413,10 +392,10 @@ protected BlockState GetLandingBlockState();
     public partial bool ShouldSpawnSprintingParticles();
 
     [Signature("method_5839")]
-    protected void SpawnSprintingParticles();
+    protected partial void SpawnSprintingParticles();
 
     [Signature("method_5777")]
-    public partial bool IsSubmergedIn(TagKey<Fluid> fluidTag);
+    public partial bool IsSubmergedIn(TagKey<Fluid.Fluid> fluidTag);
 
     [Signature("method_5771")]
     public partial bool IsInLava();
@@ -424,12 +403,8 @@ protected BlockState GetLandingBlockState();
     [Signature("method_5724")]
     public partial void UpdateVelocity(float speed, Vec3d movementInput);
 
-    [Signature("method_18795")]
-    private static Vec3d MovementInputToVelocity(Vec3d movementInput, float speed, float yaw);
-
-    [Signature("method_5718")]
-    @Deprecated
-public float GetBrightnessAtEyes();
+    [Signature("method_5718"), Obsolete]
+    public partial float GetBrightnessAtEyes();
 
     [Signature("method_5641")]
     public partial void UpdatePositionAndAngles(double x, double y, double z, float yaw, float pitch);
@@ -474,7 +449,7 @@ public float GetBrightnessAtEyes();
     public partial void AddVelocity(double deltaX, double deltaY, double deltaZ);
 
     [Signature("method_5785")]
-    protected void ScheduleVelocityUpdate();
+    protected partial void ScheduleVelocityUpdate();
 
     [Signature("method_5643")]
     public partial bool Damage(DamageSource source, float amount);
@@ -489,13 +464,13 @@ public float GetBrightnessAtEyes();
     public partial float GetYaw(float tickDelta);
 
     [Signature("method_5631")]
-    protected Vec3d GetRotationVector(float pitch, float yaw);
+    protected partial Vec3d GetRotationVector(float pitch, float yaw);
 
     [Signature("method_18864")]
     public partial Vec3d GetOppositeRotationVector(float tickDelta);
 
     [Signature("method_18863")]
-    protected Vec3d GetOppositeRotationVector(float pitch, float yaw);
+    protected partial Vec3d GetOppositeRotationVector(float pitch, float yaw);
 
     [Signature("method_33571")]
     public partial Vec3d GetEyePos();
@@ -543,34 +518,34 @@ public float GetBrightnessAtEyes();
     public partial void ReadNbt(NbtCompound nbt);
 
     [Signature("method_5638")]
-    protected bool ShouldSetPositionOnLoad();
+    protected partial bool ShouldSetPositionOnLoad();
 
     [Signature("method_5653")]
     protected partial string? GetSavedEntityId();
 
     [Signature("method_5749")]
-    protected abstract void ReadCustomDataFromNbt(NbtCompound nbt);
+    protected partial void ReadCustomDataFromNbt(NbtCompound nbt);
 
     [Signature("method_5652")]
-    protected abstract void WriteCustomDataToNbt(NbtCompound nbt);
+    protected partial void WriteCustomDataToNbt(NbtCompound nbt);
 
-    [Signature("method_5846")]
-    protected NbtList ToNbtList(double[] values);
+    // [Signature("method_5846")]
+    // protected partial NbtList ToNbtList(double[] values);
 
-    [Signature("method_5726")]
-    protected NbtList ToNbtList(float[] values);
+    // [Signature("method_5726")]
+    // protected partial NbtList ToNbtList(float[] values);
 
     [Signature("method_5706")]
-    public ItemEntity? DropItem(ItemConvertible item);
+    public partial ItemEntity? DropItem(ItemConvertible item);
 
     [Signature("method_5870")]
-    public ItemEntity? DropItem(ItemConvertible item, int yOffset);
+    public partial ItemEntity? DropItem(ItemConvertible item, int yOffset);
 
     [Signature("method_5775")]
-    public ItemEntity? DropStack(ItemStack stack);
+    public partial ItemEntity? DropStack(ItemStack stack);
 
     [Signature("method_5699")]
-    public ItemEntity? DropStack(ItemStack stack, float yOffset);
+    public partial ItemEntity? DropStack(ItemStack stack, float yOffset);
 
     [Signature("method_5805")]
     public partial bool IsAlive();
@@ -594,7 +569,7 @@ public float GetBrightnessAtEyes();
     public partial void UpdatePassengerPosition(Entity passenger);
 
     [Signature("method_5865")]
-    protected void UpdatePassengerPosition(Entity passenger, Entity.PositionUpdater positionUpdater);
+    protected partial void UpdatePassengerPosition(Entity passenger, Entity.PositionUpdater.PositionUpdaterDelegate positionUpdater);
 
     [Signature("method_5644")]
     public partial void OnPassengerLookAround(Entity passenger);
@@ -603,13 +578,13 @@ public float GetBrightnessAtEyes();
     public partial float GetRidingOffset(Entity vehicle);
 
     [Signature("method_52537")]
-    protected float GetUnscaledRidingOffset(Entity vehicle);
+    protected partial float GetUnscaledRidingOffset(Entity vehicle);
 
     [Signature("method_52538")]
     public partial Vec3d GetPassengerRidingPos(Entity passenger);
 
-    [Signature("method_52533")]
-    protected Vector3f GetPassengerAttachmentPos(Entity passenger, EntityDimensions dimensions, float scaleFactor);
+    // [Signature("method_52533")]
+    // protected partial Vector3f GetPassengerAttachmentPos(Entity passenger, EntityDimensions dimensions, float scaleFactor);
 
     [Signature("method_5804")]
     public partial bool StartRiding(Entity entity);
@@ -621,7 +596,7 @@ public float GetBrightnessAtEyes();
     public partial bool StartRiding(Entity entity, bool force);
 
     [Signature("method_5860")]
-    protected bool CanStartRiding(Entity entity);
+    protected partial bool CanStartRiding(Entity entity);
 
     [Signature("method_5772")]
     public partial void RemoveAllPassengers();
@@ -633,16 +608,16 @@ public float GetBrightnessAtEyes();
     public partial void StopRiding();
 
     [Signature("method_5627")]
-    protected void AddPassenger(Entity passenger);
+    protected partial void AddPassenger(Entity passenger);
 
     [Signature("method_5793")]
-    protected void RemovePassenger(Entity passenger);
+    protected partial void RemovePassenger(Entity passenger);
 
     [Signature("method_5818")]
-    protected bool CanAddPassenger(Entity passenger);
+    protected partial bool CanAddPassenger(Entity passenger);
 
     [Signature("method_48921")]
-    protected bool CouldAcceptPassenger();
+    protected partial bool CouldAcceptPassenger();
 
     [Signature("method_5759")]
     public partial void UpdateTrackedPositionAndAngles(double x, double y, double z, float yaw, float pitch, int interpolationSteps);
@@ -672,7 +647,7 @@ public float GetBrightnessAtEyes();
     public partial Vec3d GetRotationVector();
 
     [Signature("method_40123")]
-    public partial Vec3d GetHandPosOffset(Item item);
+    public partial Vec3d GetHandPosOffset(Item.Item item);
 
     [Signature("method_5802")]
     public partial Vec2f GetRotationClient();
@@ -684,7 +659,7 @@ public float GetBrightnessAtEyes();
     public partial void SetInNetherPortal(BlockPos pos);
 
     [Signature("method_18379")]
-    protected void TickPortal();
+    protected partial void TickPortal();
 
     [Signature("method_5806")]
     public partial int GetDefaultPortalCooldown();
@@ -785,11 +760,11 @@ public float GetBrightnessAtEyes();
     [Signature("method_52172")]
     public partial bool IsOnRail();
 
-    [Signature("method_42147")]
-    public partial void UpdateEventHandler(BiConsumer<EntityGameEventHandler<?>,ServerWorld> callback);
+    // [Signature("method_42147")]
+    // public partial void UpdateEventHandler(BiConsumer<EntityGameEventHandler<?>, ServerWorld> callback);
 
     [Signature("method_5781")]
-    public Team? GetScoreboardTeam();
+    public partial Team? GetScoreboardTeam();
 
     [Signature("method_5722")]
     public partial bool IsTeammate(Entity other);
@@ -801,10 +776,10 @@ public float GetBrightnessAtEyes();
     public partial void SetInvisible(bool invisible);
 
     [Signature("method_5795")]
-    protected bool GetFlag(int index);
+    protected partial bool GetFlag(int index);
 
     [Signature("method_5729")]
-    protected void SetFlag(int index, bool value);
+    protected partial void SetFlag(int index, bool value);
 
     [Signature("method_5748")]
     public partial int GetMaxAir();
@@ -849,18 +824,13 @@ public float GetBrightnessAtEyes();
     public partial void OnLanding();
 
     [Signature("method_5632")]
-    protected void PushOutOfBlocks(double x, double y, double z);
+    protected partial void PushOutOfBlocks(double x, double y, double z);
 
     [Signature("method_5844")]
     public partial void SlowMovement(BlockState state, Vec3d multiplier);
 
-    [Signature("method_5856")]
-    private static Text RemoveClickEvents(Text textComponent);
-
-
-
     [Signature("method_23315")]
-    protected Text GetDefaultName();
+    protected partial Text.Text GetDefaultName();
 
     [Signature("method_5779")]
     public partial bool IsPartOf(Entity entity);
@@ -880,9 +850,6 @@ public float GetBrightnessAtEyes();
     [Signature("method_5698")]
     public partial bool HandleAttack(Entity attacker);
 
-    [Signature("toString", false)]
-    public partial String ToString();
-
     [Signature("method_5679")]
     public partial bool IsInvulnerableTo(DamageSource damageSource);
 
@@ -899,19 +866,19 @@ public float GetBrightnessAtEyes();
     public partial void CopyFrom(Entity original);
 
     [Signature("method_5731")]
-    public Entity? MoveToWorld(ServerWorld destination);
+    public partial Entity? MoveToWorld(ServerWorld destination);
 
     [Signature("method_30076")]
-    protected void RemoveFromDimension();
+    protected partial void RemoveFromDimension();
 
     [Signature("method_30329")]
-    protected TeleportTarget? GetTeleportTarget(ServerWorld destination);
+    protected partial TeleportTarget? GetTeleportTarget(ServerWorld destination);
 
-    [Signature("method_30633")]
-    protected Vec3d PositionInPortal(Direction.Axis portalAxis, BlockLocating.Rectangle portalRect);
+    // [Signature("method_30633")]
+    // protected partial Vec3d PositionInPortal(Direction.Axis portalAxis, BlockLocating.Rectangle portalRect);
 
-    [Signature("method_30330")]
-    protected Optional<BlockLocating.Rectangle> GetPortalRect(ServerWorld destWorld, BlockPos destPos, bool destIsNether, WorldBorder worldBorder);
+    // [Signature("method_30330")]
+    // protected partial Optional<BlockLocating.Rectangle> GetPortalRect(ServerWorld destWorld, BlockPos destPos, bool destIsNether, WorldBorder worldBorder);
 
     [Signature("method_5822")]
     public partial bool CanUsePortals();
@@ -937,12 +904,8 @@ public float GetBrightnessAtEyes();
     [Signature("method_5826")]
     public partial void SetUuid(UUID uuid);
 
-
-
     [Signature("method_5845")]
-    public partial String GetUuidAsString();
-
-
+    public partial string GetUuidAsString();
 
     [Signature("method_5675")]
     public partial bool IsPushedByFluids();
@@ -974,24 +937,20 @@ public float GetBrightnessAtEyes();
     [Signature("method_5859")]
     public partial void RequestTeleport(double destX, double destY, double destZ);
 
-    [Signature("method_49792")]
-    private void TeleportPassengers();
-
     [Signature("method_45166")]
     public partial void RequestTeleportOffset(double offsetX, double offsetY, double offsetZ);
 
     [Signature("method_5733")]
     public partial bool ShouldRenderName();
 
-    [Signature("method_48850")]
-    public partial void OnDataTrackerUpdate(List<DataTracker.SerializedEntry<?>> dataEntries);
+    // [Signature("method_48850")]
+    // public partial void OnDataTrackerUpdate(List<DataTracker.SerializedEntry<?>> dataEntries);
 
-    [Signature("method_5674")]
-    public partial void OnTrackedDataSet(TrackedData<?> data);
+    // [Signature("method_5674")]
+    // public partial void OnTrackedDataSet(TrackedData<?> data);
 
-    [Signature("method_46396")]
-    @Deprecated
-protected void ReinitDimensions();
+    [Signature("method_46396"), Obsolete]
+    protected partial void ReinitDimensions();
 
     [Signature("method_18382")]
     public partial void CalculateDimensions();
@@ -1003,12 +962,10 @@ protected void ReinitDimensions();
     public partial Direction GetMovementDirection();
 
     [Signature("method_5769")]
-    protected HoverEvent GetHoverEvent();
+    protected partial HoverEvent GetHoverEvent();
 
     [Signature("method_5680")]
     public partial bool CanBeSpectated(ServerPlayerEntity spectator);
-
-
 
     [Signature("method_5830")]
     public partial Box GetVisibilityBoundingBox();
@@ -1017,7 +974,7 @@ protected void ReinitDimensions();
     public partial void SetBoundingBox(Box boundingBox);
 
     [Signature("method_18378")]
-    protected float GetEyeHeight(EntityPose pose, EntityDimensions dimensions);
+    protected partial float GetEyeHeight(EntityPose pose, EntityDimensions dimensions);
 
     [Signature("method_18381")]
     public partial float GetEyeHeight(EntityPose pose);
@@ -1029,15 +986,13 @@ protected void ReinitDimensions();
     public partial Vec3d GetLeashOffset(float tickDelta);
 
     [Signature("method_29919")]
-    protected Vec3d GetLeashOffset();
+    protected partial Vec3d GetLeashOffset();
 
     [Signature("method_32318")]
     public partial StackReference GetStackReference(int mappedIndex);
 
-
-
     [Signature("method_5770")]
-    public partial World GetEntityWorld();
+    public partial World.World GetEntityWorld();
 
     [Signature("method_5682")]
     public partial MinecraftServer? GetServer();
@@ -1067,7 +1022,7 @@ protected void ReinitDimensions();
     public partial bool EntityDataRequiresOperator();
 
     [Signature("method_5642")]
-    public LivingEntity? GetControllingPassenger();
+    public partial LivingEntity? GetControllingPassenger();
 
     [Signature("method_42148")]
     public partial bool HasControllingPassenger();
@@ -1076,13 +1031,13 @@ protected void ReinitDimensions();
     public partial Java.Util.List<Entity> GetPassengerList();
 
     [Signature("method_31483")]
-    public Entity? GetFirstPassenger();
+    public partial Entity? GetFirstPassenger();
 
     [Signature("method_5626")]
     public partial bool HasPassenger(Entity passenger);
 
     [Signature("method_5703")]
-    public partial bool HasPassenger(Predicate<Entity> predicate);
+    public partial bool HasPassenger(Java.Util.Function.Predicate<Entity> predicate);
 
     [Signature("method_5736")]
     public partial Iterable<Entity> GetPassengersDeep();
@@ -1109,7 +1064,7 @@ protected void ReinitDimensions();
     public partial bool CanMoveVoluntarily();
 
     [Signature("method_24826")]
-    protected static Vec3d GetPassengerDismountOffset(double vehicleWidth, double passengerWidth, float passengerYaw);
+    protected static partial Vec3d GetPassengerDismountOffset(double vehicleWidth, double passengerWidth, float passengerYaw);
 
     [Signature("method_24829")]
     public partial Vec3d UpdatePassengerForDismount(LivingEntity passenger);
@@ -1127,7 +1082,7 @@ protected void ReinitDimensions();
     public partial SoundCategory GetSoundCategory();
 
     [Signature("method_5676")]
-    protected int GetBurningDuration();
+    protected partial int GetBurningDuration();
 
     [Signature("method_5671")]
     public partial ServerCommandSource GetCommandSource();
@@ -1142,13 +1097,13 @@ protected void ReinitDimensions();
     // public partial void LookAt(EntityAnchorArgumentType.EntityAnchor anchorPoint, Vec3d target);
 
     [Signature("method_5692")]
-    public partial bool UpdateMovementInFluid(TagKey<Fluid> tag, double speed);
+    public partial bool UpdateMovementInFluid(TagKey<Fluid.Fluid> tag, double speed);
 
     [Signature("method_33724")]
     public partial bool IsRegionUnloaded();
 
     [Signature("method_5861")]
-    public partial double GetFluidHeight(TagKey<Fluid> fluid);
+    public partial double GetFluidHeight(TagKey<Fluid.Fluid> fluid);
 
     [Signature("method_29241")]
     public partial double GetSwimHeight();
@@ -1283,26 +1238,25 @@ protected void ReinitDimensions();
     public partial bool IsRemoved();
 
     [Signature("method_35049")]
-    public Entity.RemovalReason? GetRemovalReason();
+    public partial Entity.RemovalReason? GetRemovalReason();
 
     [Signature("method_31482")]
-    protected void UnsetRemoved();
+    protected partial void UnsetRemoved();
 
     [Signature("method_36971")]
-    public partial bool CanModifyAt(World world, BlockPos pos);
+    public partial bool CanModifyAt(World.World world, BlockPos pos);
 
     [Signature("method_37908")]
-    public partial World GetWorld();
+    public partial World.World GetWorld();
 
     [Signature("method_51502")]
-    protected void SetWorld(World world);
+    protected partial void SetWorld(World.World world);
 
     [Signature("method_48923")]
     public partial DamageSources GetDamageSources();
 
     [Signature("method_52532")]
     protected partial void LerpPosAndRotation(int step, double x, double y, double z, double yaw, double pitch);
-    #endif
 
     [MapName("class_5529")]
     public partial class RemovalReason : Enum<RemovalReason>, IClassRef<RemovalReason>, IFromHandle<RemovalReason>
@@ -1321,5 +1275,34 @@ protected void ReinitDimensions();
 
         [Signature("field_27002")]
         public static RemovalReason CHANGED_DIMENSION { get; private set; }
+    }
+
+    [MapName("class_5799")]
+    public partial class MoveEffect : Enum<MoveEffect>, IClassRef<MoveEffect>, IFromHandle<MoveEffect>
+    {
+        [Signature("field_28630")]
+        public static MoveEffect NONE { get; private set; }
+
+        [Signature("field_28631")]
+        public static MoveEffect SOUNDS { get; private set; }
+
+        [Signature("field_28632")]
+        public static MoveEffect EVENTS { get; private set; }
+
+        [Signature("field_28633")]
+        public static MoveEffect ALL { get; private set; }
+    }
+
+    [MapName("class_4738")]
+    public partial class PositionUpdater : JavaObject, IClassRef<PositionUpdater>, IFromHandle<PositionUpdater>
+    {
+        [Signature("accept", false)]
+        public partial void Accept(Entity entity, double x, double y, double z);
+
+        public delegate void PositionUpdaterDelegate(Entity entity, double x, double y, double z);
+
+        public delegate void PositionUpdaterDelegateHandler(nint entity, double x, double y, double z);
+
+        internal static PositionUpdaterDelegateHandler Handle(PositionUpdaterDelegate @delegate) => (entity, x, y, z) => @delegate(Entity.From(entity), x, y, z);
     }
 }
