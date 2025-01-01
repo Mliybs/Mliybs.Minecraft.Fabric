@@ -60,6 +60,9 @@ unsafe partial class Loader
     internal static nint GetMethodID(nint classRef, string methodName, string methodSignature) =>
         Env->Functions->GetMethodID(Env, classRef, methodName, methodSignature);
 
+    internal static nint GetFieldID(nint classRef, string fieldName, string fieldSignature) =>
+        Env->Functions->GetFieldID(Env, classRef, fieldName, fieldSignature);
+
     internal static nint GetStaticMethodID(nint classRef, string methodName, string methodSignature) =>
         Env->Functions->GetStaticMethodID(Env, classRef, methodName, methodSignature);
 
@@ -125,8 +128,9 @@ unsafe partial class Loader
 
     internal static nint NewObjectArray(int length, nint @class, nint initObject = 0) => Env->Functions->NewObjectArray(Env, length, @class, initObject);
 
-    public static nint NewString(string text)
+    public static nint NewString(string? text)
     {
+        if (text is null) return nint.Zero;
         fixed (char* chars = text)
         {
             return Env->Functions->NewString(Env, chars, text.Length);

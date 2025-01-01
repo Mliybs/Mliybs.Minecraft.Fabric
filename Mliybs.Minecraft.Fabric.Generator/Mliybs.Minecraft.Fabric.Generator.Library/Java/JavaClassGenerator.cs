@@ -87,7 +87,7 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
                         text = string.Join("", list);
 
                     x.AddSource($"JavaClass.{@class.GetFullyQualifiedNameForFile()}.g.cs", @class.NestedClassCompletion($$"""
-                        internal {{@class.Name}}(nint handle) : base(handle) {}
+                        {{(@class.Interfaces.Any(x => x.OriginalDefinition.HasFullyQualifiedName("global::Mliybs.Minecraft.Fabric.Internals.IWrapper<T>")) ? "protected internal" : "internal")}} {{@class.Name}}(nint handle) : base(handle) {}
 
                         #pragma warning disable CS0108
                         public static {{@class.GetQualifiedName()}} From(nint handle)
@@ -120,8 +120,6 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
             var method = new StringBuilder();
 
             var map = new StringBuilder().Append("$\"(");
-
-            var regex = new Regex("<.*?>+");
 
             method.Append(regex.Replace(y.ContainingType.Name, ""))
                 .Append('_');

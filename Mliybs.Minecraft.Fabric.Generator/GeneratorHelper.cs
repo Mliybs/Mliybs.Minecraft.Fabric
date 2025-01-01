@@ -1,3 +1,4 @@
+global using static Mliybs.Minecraft.Fabric.Generator.GlobalUsings;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -65,8 +66,8 @@ namespace Mliybs.Minecraft.Fabric.Generator
             var index = span.IndexOf('<');
             if (removeClassGeneric)
             {
-                if (index == -1) return Regex.Replace(span.Slice(name.LastIndexOf('.') + 1).ToString(), "<.*?>+", "");
-                return Regex.Replace(span.Slice(span.Slice(0, index).LastIndexOf('.') + 1).ToString(), "<.*?>+", "");
+                if (index == -1) return regex.Replace(span.Slice(name.LastIndexOf('.') + 1).ToString(), "");
+                return regex.Replace(span.Slice(span.Slice(0, index).LastIndexOf('.') + 1).ToString(), "");
             }
 
             else
@@ -78,7 +79,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
         public static string GetFullyQualifiedNameForFile(this ISymbol symbol)
         {
-            var name = Regex.Replace(symbol.GetFullyQualifiedName(), "<.+?>", "_T");
+            var name = regex.Replace(symbol.GetFullyQualifiedName(), "_T");
             return name.Substring(8);
         }
 
@@ -158,5 +159,10 @@ namespace Mliybs.Minecraft.Fabric.Generator
             var attribute = symbol.GetAttributes().Single(x => x.AttributeClass.HasFullyQualifiedName("global::Mliybs.Minecraft.Fabric.JavaInterfaceAttribute"));
             return (INamedTypeSymbol)attribute.ConstructorArguments[0].Value!;
         }
+    }
+
+    public static class GlobalUsings
+    {
+        public static readonly Regex regex = new("<.*?>+");
     }
 }

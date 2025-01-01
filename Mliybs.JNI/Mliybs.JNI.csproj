@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	<Version>0.7.2</Version>
+	<Version>0.7.3</Version>
 	<Authors>Mliybs</Authors>
 	<Company>Mlinetles</Company>
 	<Description>Mliybs.JNI</Description>

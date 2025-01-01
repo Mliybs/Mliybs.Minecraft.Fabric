@@ -21,6 +21,8 @@ namespace Mliybs.Minecraft.Fabric.Generator
                 var builder = new StringBuilder();
                 var generic = (y.GetAttributes().SingleOrDefault(x => x.AttributeClass!.HasFullyQualifiedName("global::Mliybs.Minecraft.Fabric.StaticGenericAttribute"))?.ConstructorArguments[0].Value as INamedTypeSymbol)?.OriginalDefinition;
 
+                if (!y.IsStatic && !y.TypeParameters.IsEmpty) return;
+
                 foreach (var member in y.GetMembers())
                 {
                     if (!init.HasFlag(Initializer.Signature) && member.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.SignatureAttribute"))
@@ -30,9 +32,15 @@ namespace Mliybs.Minecraft.Fabric.Generator
                         init |= Initializer.Signature;
                     }
 
+                    if (!init.HasFlag(Initializer.JavaConstructor) && !y.IsStatic && member.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.JavaConstructorAttribute"))
+                    {
+                        builder.Append("\n    JavaConstructorInitialize();");
+                        init |= Initializer.JavaConstructor;
+                    }
+
                     if (member is IMethodSymbol && member.IsStatic && member.Name.EndsWith("Initialize"))
                     {
-                        builder.Append($"\n    {member.Name}();");
+                        builder.Append($"\n    {y.GetFullyQualifiedName()}.{member.Name}();");
                     }
                 }
                 
@@ -53,7 +61,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                         if (member is IMethodSymbol && member.IsStatic && member.Name.EndsWith("Initialize"))
                         {
-                            builder.Append($"\n    {member.Name}();");
+                            builder.Append($"\n    {generic.GetFullyQualifiedName()}.{member.Name}();");
                         }
                     }
 

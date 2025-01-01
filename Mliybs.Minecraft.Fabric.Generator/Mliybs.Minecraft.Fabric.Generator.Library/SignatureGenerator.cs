@@ -84,6 +84,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
                                     break;
 
                                 case "string":
+                                case "string?":
                                     type = "Ljava/lang/String;";
                                     function = "Object";
                                     @return = "GetString";
@@ -96,8 +97,48 @@ namespace Mliybs.Minecraft.Fabric.Generator
                                     @return = $"From<{ready}>";
                                     break;
                             }
-                            if (useMapping) return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, MapFieldName(Names.OriginName, "{{arg}}", $"{{type.Replace("MapSignature", "OriginSignature")}}"), $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated ? '?' : "")}};""";
-                            else return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, "{{arg}}", $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated ? '?' : "")}};""";
+
+                            if (property.IsStatic)
+                            {
+                                if (useMapping) return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, MapFieldName(Names.OriginName, "{{arg}}", $"{{type.Replace("MapSignature", "OriginSignature")}}"), $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated && @return.StartsWith("From") ? ".Nullable()" : "")}};""";
+                                else return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, "{{arg}}", $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated && @return.StartsWith("From") ? ".Nullable()" : "")}};""";
+                            }
+
+                            else
+                            {
+                                var owner = regex.Replace(y.GetFullyQualifiedName(), "");
+
+                                x.AddSource($"Signature.{y.GetFullyQualifiedNameForFile()}.{property.Name}.g.cs", y.NestedClassCompletion($$"""
+                                internal static nint {{property.Name}}_ { get; private set; }
+                                """, true, removeClassGeneric: true));
+
+                                x.AddSource($"SignatureBody.{y.GetFullyQualifiedNameForFile()}.{property.Name}.g.cs", y.NestedClassCompletion($$"""
+                                #nullable enable
+                                {{property.DeclaredAccessibility.GetAccessModifier()}}partial {{name}} {{property.Name}}
+                                {
+                                    get
+                                    {
+                                        unsafe
+                                        {
+                                            return {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}Env->Functions->Get{{function}}Field(Env, ObjectRef, {{owner}}.{{property.Name}}_){{(@return.Length == 0 ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated && @return.StartsWith("From") ? ".Nullable()" : "")}};
+                                        }
+                                    }
+                                    {{(property.SetMethod is not null ? $$"""
+
+                                    set
+                                    {
+                                        unsafe
+                                        {
+                                            Env->Functions->Set{{function}}Field(Env, ObjectRef, {{owner}}.{{property.Name}}_, {{(@return == "GetString" ? "NewString(" : "")}}value{{(@return.StartsWith("From") ? "?.ObjectRef ?? nint.Zero" : "")}}{{(@return.Length == 0 ? "" : ")")}});
+                                        }
+                                    }
+                                """ : "")}}
+                                }
+                                """, true));
+
+                                if (useMapping) return $$"""    {{property.Name}}_ = GetFieldID(ClassRef.ObjectRef, MapFieldName(Names.OriginName, "{{arg}}", $"{{type.Replace("MapSignature", "OriginSignature")}}"), $"{{type}}");""";
+                                else return $$"""    {{property.Name}}_ = GetFieldID(ClassRef.ObjectRef, "{{arg}}", $"{{type}}");""";
+                            }
                         }
 
                         throw new ArgumentException(nameof(symbol));
@@ -147,8 +188,6 @@ namespace Mliybs.Minecraft.Fabric.Generator
             var map = new StringBuilder().Append("$\"(");
 
             var function = string.Empty;
-
-            var regex = new Regex("<.*?>+");
 
             // var regexReplace = y.ContainingType.TypeParameters.Any() ? "<Mliybs.Minecraft.Fabric.Internals.InternalClass>" : string.Empty;
             const string regexReplace = "";
@@ -259,6 +298,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
                             break;
 
                         case "string":
+                        case "string?":
                             origin.Append("Ljava/lang/String;");
                             map.Append("Ljava/lang/String;");
                             method.Append("String");
@@ -404,6 +444,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
                             break;
 
                         case "string":
+                        case "string?":
                             origin.Append("Ljava/lang/String;");
                             map.Append("Ljava/lang/String;");
                             if (y.IsStatic) function = "Env->Functions->CallStaticObjectMethodA";
@@ -473,11 +514,11 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                         return{{(y.ReturnsVoid ? "" : (returnType!.StartsWith("global::")
                             ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : check + $".ReturnCheck")}(result)"
-                            : (returnType == "string"
+                            : ((returnType == "string" || returnType == "string?")
                                 ? " GetString(result)"
                                 : (y.ReturnType.TypeKind == TypeKind.TypeParameter
                                     ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : (check + $".ReturnCheck"))}(result)"
-                                    : " result"))))}}{{(y.ReturnType.NullableAnnotation == NullableAnnotation.Annotated ? ".Nullable()" : "")}};
+                                    : " result"))))}}{{((y.ReturnType.NullableAnnotation == NullableAnnotation.Annotated && returnType != "string?") ? ".Nullable()" : "")}};
                     }
                 }
                 """, true));
@@ -492,16 +533,16 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                         return{{(y.ReturnsVoid ? "" : (returnType!.StartsWith("global::")
                             ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : check + $".ReturnCheck")}(result)"
-                            : (returnType == "string"
+                            : ((returnType == "string" || returnType == "string?")
                                 ? " GetString(result)"
                                 : (y.ReturnType.TypeKind == TypeKind.TypeParameter
                                     ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : (check + $".ReturnCheck"))}(result)"
-                                    : " result"))))}}{{(y.ReturnType.NullableAnnotation == NullableAnnotation.Annotated ? ".Nullable()" : "")}};
+                                    : " result"))))}}{{((y.ReturnType.NullableAnnotation == NullableAnnotation.Annotated && returnType != "string?") ? ".Nullable()" : "")}};
                     }
                 }
                 """, true));
 
-            if (returnType == "string" && y.ContainingType.Interfaces.Any(x => x.OriginalDefinition.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.Internals.IWrapper<T>"))
+            if ((returnType == "string" || returnType == "string?") && y.ContainingType.Interfaces.Any(x => x.OriginalDefinition.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.Internals.IWrapper<T>"))
                 x.AddSource($"RawMethodBody.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}.g.cs", y.ContainingType.NestedClassCompletion($$"""
                     #nullable enable
                     protected {{(y.IsStatic ? "static " : "")}}nint {{methodFullName.Insert(insertIndex, "Raw")}}({{string.Join(", ", y.Parameters.Select(x => $"{x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}}){{generic}}

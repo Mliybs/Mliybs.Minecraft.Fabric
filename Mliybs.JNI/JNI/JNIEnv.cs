@@ -287,7 +287,7 @@ public readonly unsafe struct JNIEnv
         public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, JValue*, void> CallNonvirtualVoidMethodA;
 
         // jfieldID (JNICALL *GetFieldID) (JNIEnv* env, jclass clazz, const char* name, const char* sig);
-        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint, nint> GetFieldID;
+        public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, string, string, nint> GetFieldID;
 
         // jobject (JNICALL *GetObjectField) (JNIEnv* env, jobject obj, jfieldID fieldID);
         public readonly delegate* unmanaged[Cdecl]<JNIEnv*, nint, nint, nint> GetObjectField;
