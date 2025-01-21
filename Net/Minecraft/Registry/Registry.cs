@@ -1,3 +1,5 @@
+using Net.Minecraft.Util;
+
 namespace Net.Minecraft.Registry;
 
 [JavaInterface(typeof(IRegistry<>))]
@@ -14,7 +16,10 @@ public partial class Registry<T> : JavaObject, IClassRef<Registry<T>>, IFromHand
 [MapName("net/minecraft/class_2378"), StaticGeneric(typeof(Registry<>))]
 public static partial class Registry
 {
-    [Signature("method_10226")]
+    [Signature("method_10230"), ReturnCheck(nameof(entry))]
+    public static partial TEntry Register<TRegistry, TEntry>(IRegistry<TRegistry> registry, Identifier id, TEntry entry) where TRegistry : JavaObject, IClassRef<TRegistry>, IFromHandle<TRegistry> where TEntry : JavaObject, TRegistry, IClassRef<TEntry>, IFromHandle<TEntry>;
+
+    [Signature("method_10226"), ReturnCheck(nameof(entry))]
     public static partial TEntry Register<TRegistry, TEntry>(IRegistry<TRegistry> registry, string id, TEntry entry) where TRegistry : JavaObject, IClassRef<TRegistry>, IFromHandle<TRegistry> where TEntry : JavaObject, TRegistry, IClassRef<TEntry>, IFromHandle<TEntry>;
 }
 

@@ -16,6 +16,7 @@ using Net.Minecraft.Block.Pattern;
 using Net.Minecraft.Sound;
 using Net.Minecraft.Util;
 using Net.Minecraft.Util.Math;
+using Net.Minecraft.Text;
 using Net.Minecraft.Inventory;
 using Net.Minecraft.Screen.Slot;
 using Net.Minecraft.Resource.FeatureToggle;
@@ -67,10 +68,10 @@ public partial class ItemStack : JavaObject, IClassRef<ItemStack>, IFromHandle<I
     public partial bool ItemMatches(Java.Util.Function.Predicate<RegistryEntry<Item>> predicate);
 
     [Signature("method_41406")]
-    public partial bool ItemMatches(RegistryEntry<Item> itemEntry);
+    public partial bool ItemMatches(IRegistryEntry<Item> itemEntry);
 
     [Signature("method_53187")]
-    public partial bool ItemMatches(RegistryEntryList<Item> registryEntryList);
+    public partial bool ItemMatches(IRegistryEntryList<Item> registryEntryList);
 
     [Signature("method_40133")]
     public partial Stream<TagKey<Item>> StreamTags();
@@ -211,7 +212,7 @@ public partial class ItemStack : JavaObject, IClassRef<ItemStack>, IFromHandle<I
     public partial Text.Text GetName();
 
     [Signature("method_7977")]
-    public partial ItemStack SetCustomName(Text.Text? name);
+    public partial ItemStack SetCustomName(IText? name);
 
     [Signature("method_7925")]
     public partial void RemoveCustomName();
@@ -226,7 +227,7 @@ public partial class ItemStack : JavaObject, IClassRef<ItemStack>, IFromHandle<I
     public partial void AddHideFlag(ItemStack.TooltipSection tooltipSection);
 
     [Signature("method_17870")]
-    public static partial void AppendEnchantments(Java.Util.List<Text.Text> tooltip, NbtList enchantments);
+    public static partial void AppendEnchantments(Java.Util.IList<Text.Text> tooltip, NbtList enchantments);
 
     [Signature("method_7958")]
     public partial bool HasGlint();

@@ -60,7 +60,7 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
 
     public bool IsPlayer() => EntityLike.IsPlayerProxy(ObjectRef);
 
-    public void SendMessage(Text.Text message) => CommandOutput.SendMessageProxy(ObjectRef, message);
+    public void SendMessage(IText message) => CommandOutput.SendMessageProxy(ObjectRef, message);
     
     public bool ShouldReceiveFeedback() => CommandOutput.ShouldReceiveFeedbackProxy(ObjectRef);
     
@@ -272,7 +272,7 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
     protected partial Vec3d AdjustMovementForPiston(Vec3d movement);
 
     [Signature("method_20736")]
-    public static partial Vec3d AdjustMovementForCollisions(Entity? entity, Vec3d movement, Box entityBoundingBox, World.World world, Java.Util.List<VoxelShape> collisions);
+    public static partial Vec3d AdjustMovementForCollisions(Entity? entity, Vec3d movement, Box entityBoundingBox, World.World world, Java.Util.IList<VoxelShape> collisions);
 
     [Signature("method_5867")]
     protected partial float CalculateNextStepSoundDistance();
@@ -917,7 +917,7 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
     public static partial void SetRenderDistanceMultiplier(double value);
 
     [Signature("method_5665")]
-    public partial void SetCustomName(Text.Text? name);
+    public partial void SetCustomName(IText? name);
 
     [Signature("method_5880")]
     public partial void SetCustomNameVisible(bool visible);

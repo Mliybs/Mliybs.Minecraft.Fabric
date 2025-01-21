@@ -329,7 +329,7 @@ public partial class Item : JavaObject, IClassRef<Item>, IFromHandle<Item>, IWra
     protected delegate void OnStoppedUsingDelegate(nint stack, nint world, nint user, int remainingUseTicks);
 
     [Signature("method_7851")]
-    public virtual partial void AppendTooltip(ItemStack stack, World.World? world, Java.Util.List<Text.Text> tooltip, TooltipContext context);
+    public virtual partial void AppendTooltip(ItemStack stack, World.World? world, Java.Util.IList<Text.Text> tooltip, TooltipContext context);
 
     protected virtual void AppendTooltipHandler(nint stack, nint world, nint tooltip, nint context) => AppendTooltip(ItemStack.From(stack), World.World.From(world), Java.Util.List<Text.Text>.From(tooltip), TooltipContext.From(context));
 

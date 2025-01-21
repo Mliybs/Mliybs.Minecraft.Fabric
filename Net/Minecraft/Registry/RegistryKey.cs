@@ -9,7 +9,7 @@ public partial class RegistryKey<T> : JavaObject, IClassRef<RegistryKey<T>>, IFr
 
     public static Class<RegistryKey<JavaObject>> ClassRef => RegistryKey.ClassRef;
 
-    static Class<RegistryKey<T>> IClassRef<RegistryKey<T>>.ClassRef => new(ClassRef.ObjectRef);
+    static Class<RegistryKey<T>> IClassRef<RegistryKey<T>>.ClassRef => Class.Proxy<RegistryKey<T>>(ClassRef.ObjectRef);
 
     [Signature("method_31163")]
     public partial bool IsOf<E>(RegistryKey<E> registry) where E : JavaObject, IRegistry<E>, IClassRef<E>, IFromHandle<E>;

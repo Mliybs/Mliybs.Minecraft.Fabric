@@ -8,9 +8,9 @@
     <PublishAot>true</PublishAot>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EmitCompilerGeneratedFiles>false</EmitCompilerGeneratedFiles>
-    <DefineConstants>FABRIC_LIBRARY;USE_SLF4J</DefineConstants>
+    <DefineConstants>FABRIC_LIBRARY;USE_SLF4J;CLIENT</DefineConstants>
     <NoWarn>108</NoWarn>
-    <Version>0.7.0</Version>
+    <Version>0.7.1</Version>
     <Authors>Mliybs</Authors>
     <Company>Mlinetles</Company>
     <Description>Mliybs.Minecraft.Fabric</Description>
@@ -22,6 +22,10 @@
     <Compile Include="..\main\Mliybs.Minecraft.Fabric\**\*.cs" />
   </ItemGroup>
 
+  <!-- <ItemGroup>
+    <Compile Remove="Com\**" />
+    <Compile Remove="Net\**" />
+  </ItemGroup> -->
 
 	<ItemGroup>
 		<None Include="..\main\Mliybs.Minecraft.Fabric.Generator\Mliybs.Minecraft.Fabric.Generator.User\bin\$(Configuration)\netstandard2.0\Mliybs.Minecraft.Fabric.Generator.User.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
@@ -29,7 +33,7 @@
 
 
 	<ItemGroup>
-	  <PackageReference Include="Mliybs.JNI" Version="0.7.3" />
+	  <PackageReference Include="Mliybs.JNI" Version="0.7.5" />
 	</ItemGroup>
 
 </Project>
