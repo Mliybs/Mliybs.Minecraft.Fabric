@@ -1,5 +1,3 @@
-using System.Collections.Concurrent;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Mliybs.Minecraft.Fabric;
@@ -13,7 +11,7 @@ unsafe partial class Loader
     /// <returns></returns>
     internal static Names MapClassName(string className)
     {
-        var name = GetString(Resolver.MapClassName("intermediary", className));
+        var name = Resolver.MapClassName("intermediary", className);
         ThrowHelper.ThrowIfNull(name);
         return (className, className.Replace('.', '/'), name, name.Replace('.', '/'));
     }
@@ -27,7 +25,7 @@ unsafe partial class Loader
     /// <returns></returns>
     internal static string MapMethodName(string className, string methodName, string descriptor)
     {
-        var name = GetString(Resolver.MapMethodName("intermediary", className, methodName, descriptor));
+        var name = Resolver.MapMethodName("intermediary", className, methodName, descriptor);
         ThrowHelper.ThrowIfNull(name);
         return name.Replace('.', '/');
     }
@@ -41,83 +39,191 @@ unsafe partial class Loader
     /// <returns></returns>
     internal static string MapFieldName(string className, string fieldName, string descriptor)
     {
-        var name = GetString(Resolver.MapFieldName("intermediary", className, fieldName, descriptor));
+        var name = Resolver.MapFieldName("intermediary", className, fieldName, descriptor);
         ThrowHelper.ThrowIfNull(name);
         return name.Replace('.', '/');
     }
 
     // DeleteLocalRef的参数为jobject
     // jmethodID与jfieldID不继承自jobject，不需要创建全局引用
-    // 因为对于类和方法签名来说只会出现ASCII字符，所以可以直接使用.NET的自动封送
-    // 直接使用中文会乱码
+    // stackalloc加一的意义为NULL结尾的字符串
+    // UTF8字面量结尾会额外有一个NULL（不在Span内）
 
-    internal static Class<T> FindClass<T>(string classSignature) where T : JavaObject, IClassRef<T>, IFromHandle<T> =>
-        new(Env->Functions->FindClass(Env, classSignature));
+    internal static Class<T> FindClass<T>(string classSignature) where T : JavaObject, IClassRef<T>, IFromHandle<T>
+    {
+        Span<byte> span = stackalloc byte[Encoding.UTF8.GetByteCount(classSignature) + 1];
+        Encoding.UTF8.GetBytes(classSignature, span);
+        fixed (byte* bytes = span)
+        return new(Env->Functions->FindClass(Env, bytes));
+    }
 
-    internal static nint GetConstructorID(nint classRef, string methodSignature) =>
-        Env->Functions->GetMethodID(Env, classRef, "<init>", methodSignature);
+    internal static nint GetConstructorID(nint classRef, string methodSignature)
+    {
+        Span<byte> bytes = stackalloc byte[Encoding.UTF8.GetByteCount(methodSignature) + 1];
+        Encoding.UTF8.GetBytes(methodSignature, bytes);
+        fixed (byte* init = "<init>"u8)
+        fixed (byte* sig = bytes)
+        return Env->Functions->GetMethodID(Env, classRef, init, sig);
+    }
 
-    internal static nint GetMethodID(nint classRef, string methodName, string methodSignature) =>
-        Env->Functions->GetMethodID(Env, classRef, methodName, methodSignature);
+    internal static nint GetMethodID(nint classRef, string methodName, string methodSignature)
+    {
+        Span<byte> nameSpan = stackalloc byte[Encoding.UTF8.GetByteCount(methodName) + 1];
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(methodSignature) + 1];
+        Encoding.UTF8.GetBytes(methodName, nameSpan);
+        Encoding.UTF8.GetBytes(methodSignature, sigSpan);
+        fixed (byte* name = nameSpan)
+        fixed (byte* sig = sigSpan)
+        return Env->Functions->GetMethodID(Env, classRef, name, sig);
+    }
 
-    internal static nint GetFieldID(nint classRef, string fieldName, string fieldSignature) =>
-        Env->Functions->GetFieldID(Env, classRef, fieldName, fieldSignature);
+    internal static nint GetFieldID(nint classRef, string fieldName, string fieldSignature)
+    {
+        Span<byte> nameSpan = stackalloc byte[Encoding.UTF8.GetByteCount(fieldName) + 1];
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(fieldSignature) + 1];
+        Encoding.UTF8.GetBytes(fieldName, nameSpan);
+        Encoding.UTF8.GetBytes(fieldSignature, sigSpan);
+        fixed (byte* name = nameSpan)
+        fixed (byte* sig = sigSpan)
+        return Env->Functions->GetFieldID(Env, classRef, name, sig);
+    }
 
-    internal static nint GetStaticMethodID(nint classRef, string methodName, string methodSignature) =>
-        Env->Functions->GetStaticMethodID(Env, classRef, methodName, methodSignature);
+    internal static nint GetStaticMethodID(nint classRef, string methodName, string methodSignature)
+    {
+        Span<byte> nameSpan = stackalloc byte[Encoding.UTF8.GetByteCount(methodName) + 1];
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(methodSignature) + 1];
+        Encoding.UTF8.GetBytes(methodName, nameSpan);
+        Encoding.UTF8.GetBytes(methodSignature, sigSpan);
+        fixed (byte* name = nameSpan)
+        fixed (byte* sig = sigSpan)
+        return Env->Functions->GetStaticMethodID(Env, classRef, name, sig);
+    }
 
     internal static nint GetStaticObjectField(nint classRef, string fieldSignature, string type)
     {
-        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
-        return NewGlobalRef(Env->Functions->GetStaticObjectField(Env, classRef, id));
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(fieldSignature) + 1];
+        Span<byte> typeSpan = stackalloc byte[Encoding.UTF8.GetByteCount(type) + 1];
+        Encoding.UTF8.GetBytes(fieldSignature, sigSpan);
+        Encoding.UTF8.GetBytes(type, typeSpan);
+        fixed (byte* sig = sigSpan)
+        fixed (byte* typePtr = typeSpan)
+        {
+            var id = Env->Functions->GetStaticFieldID(Env, classRef, sig, typePtr);
+            return NewGlobalRef(Env->Functions->GetStaticObjectField(Env, classRef, id));
+        }
     }
 
     internal static int GetStaticIntField(nint classRef, string fieldSignature, string type)
     {
-        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
-        return Env->Functions->GetStaticIntField(Env, classRef, id);
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(fieldSignature) + 1];
+        Span<byte> typeSpan = stackalloc byte[Encoding.UTF8.GetByteCount(type) + 1];
+        Encoding.UTF8.GetBytes(fieldSignature, sigSpan);
+        Encoding.UTF8.GetBytes(type, typeSpan);
+        fixed (byte* sig = sigSpan)
+        fixed (byte* typePtr = typeSpan)
+        {
+            var id = Env->Functions->GetStaticFieldID(Env, classRef, sig, typePtr);
+            return Env->Functions->GetStaticIntField(Env, classRef, id);
+        }
     }
 
     internal static short GetStaticShortField(nint classRef, string fieldSignature, string type)
     {
-        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
-        return Env->Functions->GetStaticShortField(Env, classRef, id);
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(fieldSignature) + 1];
+        Span<byte> typeSpan = stackalloc byte[Encoding.UTF8.GetByteCount(type) + 1];
+        Encoding.UTF8.GetBytes(fieldSignature, sigSpan);
+        Encoding.UTF8.GetBytes(type, typeSpan);
+        fixed (byte* sig = sigSpan)
+        fixed (byte* typePtr = typeSpan)
+        {
+            var id = Env->Functions->GetStaticFieldID(Env, classRef, sig, typePtr);
+            return Env->Functions->GetStaticShortField(Env, classRef, id);
+        }
     }
 
     internal static long GetStaticLongField(nint classRef, string fieldSignature, string type)
     {
-        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
-        return Env->Functions->GetStaticLongField(Env, classRef, id);
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(fieldSignature) + 1];
+        Span<byte> typeSpan = stackalloc byte[Encoding.UTF8.GetByteCount(type) + 1];
+        Encoding.UTF8.GetBytes(fieldSignature, sigSpan);
+        Encoding.UTF8.GetBytes(type, typeSpan);
+        fixed (byte* sig = sigSpan)
+        fixed (byte* typePtr = typeSpan)
+        {
+            var id = Env->Functions->GetStaticFieldID(Env, classRef, sig, typePtr);
+            return Env->Functions->GetStaticLongField(Env, classRef, id);
+        }
     }
 
     internal static sbyte GetStaticByteField(nint classRef, string fieldSignature, string type)
     {
-        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
-        return Env->Functions->GetStaticByteField(Env, classRef, id);
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(fieldSignature) + 1];
+        Span<byte> typeSpan = stackalloc byte[Encoding.UTF8.GetByteCount(type) + 1];
+        Encoding.UTF8.GetBytes(fieldSignature, sigSpan);
+        Encoding.UTF8.GetBytes(type, typeSpan);
+        fixed (byte* sig = sigSpan)
+        fixed (byte* typePtr = typeSpan)
+        {
+            var id = Env->Functions->GetStaticFieldID(Env, classRef, sig, typePtr);
+            return Env->Functions->GetStaticByteField(Env, classRef, id);
+        }
     }
 
     internal static bool GetStaticBooleanField(nint classRef, string fieldSignature, string type)
     {
-        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
-        return Env->Functions->GetStaticBooleanField(Env, classRef, id);
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(fieldSignature) + 1];
+        Span<byte> typeSpan = stackalloc byte[Encoding.UTF8.GetByteCount(type) + 1];
+        Encoding.UTF8.GetBytes(fieldSignature, sigSpan);
+        Encoding.UTF8.GetBytes(type, typeSpan);
+        fixed (byte* sig = sigSpan)
+        fixed (byte* typePtr = typeSpan)
+        {
+            var id = Env->Functions->GetStaticFieldID(Env, classRef, sig, typePtr);
+            return Env->Functions->GetStaticBooleanField(Env, classRef, id).Boolean();
+        }
     }
 
     internal static char GetStaticCharField(nint classRef, string fieldSignature, string type)
     {
-        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
-        return Env->Functions->GetStaticCharField(Env, classRef, id);
+
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(fieldSignature) + 1];
+        Span<byte> typeSpan = stackalloc byte[Encoding.UTF8.GetByteCount(type) + 1];
+        Encoding.UTF8.GetBytes(fieldSignature, sigSpan);
+        Encoding.UTF8.GetBytes(type, typeSpan);
+        fixed (byte* sig = sigSpan)
+        fixed (byte* typePtr = typeSpan)
+        {
+            var id = Env->Functions->GetStaticFieldID(Env, classRef, sig, typePtr);
+            return Env->Functions->GetStaticCharField(Env, classRef, id);
+        }
     }
 
     internal static float GetStaticFloatField(nint classRef, string fieldSignature, string type)
     {
-        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
-        return Env->Functions->GetStaticFloatField(Env, classRef, id);
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(fieldSignature) + 1];
+        Span<byte> typeSpan = stackalloc byte[Encoding.UTF8.GetByteCount(type) + 1];
+        Encoding.UTF8.GetBytes(fieldSignature, sigSpan);
+        Encoding.UTF8.GetBytes(type, typeSpan);
+        fixed (byte* sig = sigSpan)
+        fixed (byte* typePtr = typeSpan)
+        {
+            var id = Env->Functions->GetStaticFieldID(Env, classRef, sig, typePtr);
+            return Env->Functions->GetStaticFloatField(Env, classRef, id);
+        }
     }
 
     internal static double GetStaticDoubleField(nint classRef, string fieldSignature, string type)
     {
-        var id = Env->Functions->GetStaticFieldID(Env, classRef, fieldSignature, type);
-        return Env->Functions->GetStaticDoubleField(Env, classRef, id);
+        Span<byte> sigSpan = stackalloc byte[Encoding.UTF8.GetByteCount(fieldSignature) + 1];
+        Span<byte> typeSpan = stackalloc byte[Encoding.UTF8.GetByteCount(type) + 1];
+        Encoding.UTF8.GetBytes(fieldSignature, sigSpan);
+        Encoding.UTF8.GetBytes(type, typeSpan);
+        fixed (byte* sig = sigSpan)
+        fixed (byte* typePtr = typeSpan)
+        {
+            var id = Env->Functions->GetStaticFieldID(Env, classRef, sig, typePtr);
+            return Env->Functions->GetStaticDoubleField(Env, classRef, id);
+        }
     }
 
     internal static int GetArrayLength(nint array) => Env->Functions->GetArrayLength(Env, array);
@@ -151,7 +257,7 @@ unsafe partial class Loader
         if (isUtf8) return GetString((byte*)@string);
         var chars = Env->Functions->GetStringChars(Env, @string, out var isCopy);
         var result = new string(chars);
-        if (isCopy) Env->Functions->ReleaseStringChars(Env, @string, chars);
+        if (isCopy.Boolean()) Env->Functions->ReleaseStringChars(Env, @string, chars);
         return result;
     }
 
@@ -180,21 +286,31 @@ unsafe partial class Loader
         return global;
     }
 
-    internal static bool IsSameObject(nint handle, nint obj) => Env->Functions->IsSameObject(Env, handle, obj);
+    internal static bool IsSameObject(nint handle, nint obj) => Env->Functions->IsSameObject(Env, handle, obj).Boolean();
 
     internal static nint GetObjectClass(nint handle) => Env->Functions->GetObjectClass(Env, handle);
 
-    internal static bool IsInstanceOf(nint handle, nint @class) => Env->Functions->IsInstanceOf(Env, handle, @class);
+    internal static bool IsInstanceOf(nint handle, nint @class) => Env->Functions->IsInstanceOf(Env, handle, @class).Boolean();
 
-    internal static bool ExceptionCheck() => Env->Functions->ExceptionCheck(Env);
-
-    internal static void ExceptionDescribe() => Env->Functions->ExceptionDescribe(Env);
+    internal static void ExceptionCheck()
+    {
+        if (Env->Functions->ExceptionCheck(Env).Boolean())
+        {
+            var e = Env->Functions->ExceptionOccurred(Env);
+            ExceptionClear();
+            throw new JavaException(new(e));
+        }
+    }
 
     internal static void ExceptionClear() => Env->Functions->ExceptionClear(Env);
 
     internal static T From<T>(nint handle) where T : IFromHandle<T> => T.From(handle);
 
     public static nint GetObjectRef(JavaClass? obj) => obj?.ObjectRef ?? nint.Zero;
+
+    public const byte TRUE = 1;
+
+    public const byte FALSE = 0;
 }
 
 public static class LoaderExtensions
@@ -204,11 +320,10 @@ public static class LoaderExtensions
     internal static IHandle<T> AsHandle<T>(this nint handle) => new DefaultHandle<T>(handle);
 
     // 在有可能会返回已有对象时，调用该函数
-    internal static T ReturnCheck<T>(this T obj, nint handle, [CallerMemberName] string caller = default!) where T : JavaObject, IFromHandle<T>
+    internal static T ReturnCheck<T>(this T obj, nint handle) where T : JavaObject, IFromHandle<T>
     {
-        if (IsSameObject(obj.ObjectRef, handle)) return obj;
-        var global = NewGlobalRef(handle);
-        return T.From(global);
+        if (IsSameObject(obj?.ObjectRef ?? nint.Zero, handle)) return obj!;
+        return T.From(handle);
     }
 
     public static T? Nullable<T>(this T obj) where T : JavaObject
@@ -216,4 +331,8 @@ public static class LoaderExtensions
         if (obj?.IsNull ?? true) return null;
         return obj;
     }
+
+    public static byte Boolean(this bool value) => value ? TRUE : FALSE;
+
+    public static bool Boolean(this byte value) => value != 0;
 }

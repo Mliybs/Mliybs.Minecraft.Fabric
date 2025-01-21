@@ -2,7 +2,7 @@ using System;
 
 namespace Java.Util;
 
-[JavaInterface(typeof(ICollection<>))]
+[JavaInterface(typeof(ICollection<>)), FromMode(FromModes.SimpleFrom)]
 public partial class Collection<T> : Iterable<T>, ICollection<T>, IClassRef<Collection<T>>, IFromHandle<Collection<T>> where T : JavaObject, IClassRef<T>, IFromHandle<T>
 {
     internal static Names Names => Collection.Names;

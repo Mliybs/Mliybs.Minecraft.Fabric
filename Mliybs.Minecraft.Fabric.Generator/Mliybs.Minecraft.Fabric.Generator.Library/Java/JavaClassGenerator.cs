@@ -1,4 +1,4 @@
-// #define SIMPLE_FROM
+#define SIMPLE_FROM
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -221,7 +221,11 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
                 #nullable enable
                 private static unsafe nint {{methodName}}Invoke({{string.Join(", ", y.Parameters.Select(x => $"{x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}})
                 {
-                    {{SetJValues(y.Parameters)}}return Env->Functions->NewObjectA{{$"(Env, ClassRef.ObjectRef, {methodOwner}.{methodName}, @params)"}};
+                    {{SetJValues(y.Parameters)}}var obj = Env->Functions->NewObjectA{{$"(Env, ClassRef.ObjectRef, {methodOwner}.{methodName}, @params)"}};
+                    
+                    ExceptionCheck();
+
+                    return obj;
                 }
                 """, true));
 
@@ -244,7 +248,7 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
                         break;
 
                     case "bool":
-                        builder.AppendLine($"    @params[{i}].z = {SetParam(symbols[i])};");
+                        builder.AppendLine($"    @params[{i}].z = {SetParam(symbols[i])}.Boolean();");
                         break;
 
                     case "sbyte":
@@ -289,7 +293,7 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
                 return $"Mliybs.Minecraft.Fabric.Wrappers.InvocationHandlerWrapper.GetProxyOf({nestedClass}.ClassRef, {nestedClass}.Handle({x.GetFullyQualifiedName()}))";
             }
             if (name.StartsWith("global::") || x.Type.TypeKind == TypeKind.TypeParameter) return $"{x.GetFullyQualifiedName()}?.ObjectRef ?? nint.Zero";
-            if (name == "string") return $"NewString({x.GetFullyQualifiedName()})";
+            if (name == "string" || name == "string?") return $"NewString({x.GetFullyQualifiedName()})";
             return x.GetFullyQualifiedName();
         }
     }

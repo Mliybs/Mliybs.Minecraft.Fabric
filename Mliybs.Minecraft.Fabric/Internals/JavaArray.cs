@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Mliybs.Minecraft.Fabric.Internals
 {
-    [SuppressJavaClass]
+    [SuppressJavaClass, CollectionBuilder(typeof(JavaArrayBuilder), nameof(JavaArrayBuilder.Create))]
     public partial class JavaArray<T> : JavaObject, IFromHandle<JavaArray<T>>, IEnumerable<T> where T : JavaObject, IClassRef<T>, IFromHandle<T>
     {
         private readonly int length;
@@ -26,21 +27,12 @@ namespace Mliybs.Minecraft.Fabric.Internals
             this.length = length;
         }
 
-        public JavaArray(IEnumerable<T> objects) : base(nint.Zero)
+        public JavaArray(ReadOnlySpan<T> span) : base(nint.Zero)
         {
-            var array = objects.ToArray();
-            ObjectRef = NewObjectArray(array.Length, T.ClassRef.ObjectRef);
-            length = array.Length;
-            for (var i = 0; i < array.Length; i++)
-                this[i] = array[i];
-        }
-
-        public JavaArray(T[] array) : base(nint.Zero)
-        {
-            ObjectRef = NewObjectArray(array.Length, T.ClassRef.ObjectRef);
-            length = array.Length;
-            for (var i = 0; i < array.Length; i++)
-                this[i] = array[i];
+            ObjectRef = NewObjectArray(span.Length, T.ClassRef.ObjectRef);
+            length = span.Length;
+            for (var i = 0; i < span.Length; i++)
+                this[i] = span[i];
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -61,5 +53,10 @@ namespace Mliybs.Minecraft.Fabric.Internals
         public static JavaArray<T> From(nint handle) => new(handle);
 
         public static implicit operator JavaArray<T>(T[] array) => new(array);
+    }
+
+    public static class JavaArrayBuilder
+    {
+        public static JavaArray<T> Create<T>(ReadOnlySpan<T> values) where T : JavaObject, IClassRef<T>, IFromHandle<T> => new(values);
     }
 }

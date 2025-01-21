@@ -9,7 +9,19 @@ namespace Java.Lang
     {
         internal static Names Names => Class.Names;
 
-        public unsafe static Class<Class<JavaObject>> ClassRef => Class.classRef ??= new(Env->Functions->FindClass(Env, Names.MapSignature));
+        public unsafe static Class<Class<JavaObject>> ClassRef
+        {
+            get
+            {
+                if (Class.classRef is null)
+                {
+                    fixed (byte* bytes = "java/lang/Class"u8)
+                    return Class.classRef = new(Env->Functions->FindClass(Env, bytes));
+                }
+
+                return Class.classRef;
+            }
+        }
 
         static Class<Class<T>> IClassRef<Class<T>>.ClassRef => Class.Proxy<Class<T>>(ClassRef.ObjectRef);
 
@@ -25,7 +37,19 @@ namespace Java.Lang
 
         internal static Names Names { get; } = ("java.lang.Class", "java/lang/Class", "java.lang.Class", "java/lang/Class");
 
-        public unsafe static Class<Class<JavaObject>> ClassRef => classRef ??= new(Env->Functions->FindClass(Env, Names.MapSignature));
+        public unsafe static Class<Class<JavaObject>> ClassRef
+        {
+            get
+            {
+                if (classRef is null)
+                {
+                    fixed (byte* bytes = "java/lang/Class"u8)
+                    return classRef = new(Env->Functions->FindClass(Env, bytes));
+                }
+
+                return classRef;
+            }
+        }
 
         [Signature("forName", false)]
         public static partial Class<JavaObject> ForName(string className);

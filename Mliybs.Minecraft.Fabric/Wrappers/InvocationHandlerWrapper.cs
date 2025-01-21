@@ -18,19 +18,19 @@ namespace Mliybs.Minecraft.Fabric.Wrappers
             throw new NotSupportedException();
         }
 
-        public unsafe static nint GetProxyOf<T, K>(Class<K> @class, T @delegate) where T : Delegate where K : JavaObject, IClassRef<K>, IFromHandle<K>
+        public unsafe static nint GetProxyOf<T, K>(Class<K> @class, T? @delegate) where T : Delegate where K : JavaObject, IClassRef<K>, IFromHandle<K>
         {
             var id = Interlocked.Increment(ref _id);
             JValue* @params = stackalloc JValue[3];
             @params[0].l = @class.ObjectRef;
-            @params[1].j = Marshal.GetFunctionPointerForDelegate(@delegate);
+            @params[1].j = @delegate is null ? nint.Zero : Marshal.GetFunctionPointerForDelegate(@delegate);
             @params[2].i = id;
             var result = Env->Functions->CallStaticObjectMethodA(Env, ClassRef.ObjectRef, GetProxyOf_ClassLongInt, @params);
-            KeepAlive.TryAdd(id, @delegate);
+            if (@delegate is not null) KeepAlive.TryAdd(id, @delegate);
             return result;
         }
 
-        [Signature("setOnFinalize")]
+        [Signature("setOnFinalize", false)]
         private static partial void SetOnFinalize(long handle);
 
         private static void OnFinalize(int id)

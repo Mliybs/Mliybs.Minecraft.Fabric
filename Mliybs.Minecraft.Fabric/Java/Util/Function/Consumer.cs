@@ -21,5 +21,5 @@ public static partial class Consumer
 
     public delegate void ConsumerDelegateHandler(nint t);
 
-    internal static ConsumerDelegateHandler Handle<T>(ConsumerDelegate<T> @delegate) where T : JavaObject, IClassRef<T>, IFromHandle<T> => x => @delegate(T.From(x));
+    internal static ConsumerDelegateHandler? Handle<T>(ConsumerDelegate<T>? @delegate) where T : JavaObject, IClassRef<T>, IFromHandle<T> => @delegate is null ? null : x => @delegate(T.From(x));
 }

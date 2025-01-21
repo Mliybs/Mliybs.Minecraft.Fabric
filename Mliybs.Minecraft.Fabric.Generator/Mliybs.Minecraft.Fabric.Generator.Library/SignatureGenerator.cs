@@ -100,8 +100,8 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                             if (property.IsStatic)
                             {
-                                if (useMapping) return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, MapFieldName(Names.OriginName, "{{arg}}", $"{{type.Replace("MapSignature", "OriginSignature")}}"), $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated && @return.StartsWith("From") ? ".Nullable()" : "")}};""";
-                                else return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, "{{arg}}", $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated && @return.StartsWith("From") ? ".Nullable()" : "")}};""";
+                                if (useMapping) return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, MapFieldName(Names.OriginName, "{{arg}}", $"{{type.Replace("MapSignature", "OriginSignature")}}"), $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated && @return.StartsWith("From") ? ".Nullable()" : "")}}{{(name == "bool" ? ".Boolean()" : "")}};""";
+                                else return $$"""    {{property.GetFullyQualifiedName()}} = {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}GetStatic{{function}}Field(ClassRef.ObjectRef, "{{arg}}", $"{{type}}"){{(string.IsNullOrEmpty(@return) ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated && @return.StartsWith("From") ? ".Nullable()" : "")}}{{(name == "bool" ? ".Boolean()" : "")}};""";
                             }
 
                             else
@@ -120,7 +120,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
                                     {
                                         unsafe
                                         {
-                                            return {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}Env->Functions->Get{{function}}Field(Env, ObjectRef, {{owner}}.{{property.Name}}_){{(@return.Length == 0 ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated && @return.StartsWith("From") ? ".Nullable()" : "")}};
+                                            return {{@return}}{{(string.IsNullOrEmpty(@return) ? "" : "(")}}Env->Functions->Get{{function}}Field(Env, ObjectRef, {{owner}}.{{property.Name}}_){{(@return.Length == 0 ? "" : ")")}}{{(property.Type.NullableAnnotation == NullableAnnotation.Annotated && @return.StartsWith("From") ? ".Nullable()" : "")}}{{(name == "bool" ? ".Boolean()" : "")}};
                                         }
                                     }
                                     {{(property.SetMethod is not null ? $$"""
@@ -129,7 +129,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
                                     {
                                         unsafe
                                         {
-                                            Env->Functions->Set{{function}}Field(Env, ObjectRef, {{owner}}.{{property.Name}}_, {{(@return == "GetString" ? "NewString(" : "")}}value{{(@return.StartsWith("From") ? "?.ObjectRef ?? nint.Zero" : "")}}{{(@return.Length == 0 ? "" : ")")}});
+                                            Env->Functions->Set{{function}}Field(Env, ObjectRef, {{owner}}.{{property.Name}}_, {{(@return == "GetString" ? "NewString(" : "")}}value{{(@return.StartsWith("From") ? "?.ObjectRef ?? nint.Zero" : "")}}{{(name == "bool" ? ".Boolean()" : "")}}{{(@return.Length == 0 ? "" : ")")}});
                                         }
                                     }
                                 """ : "")}}
@@ -511,14 +511,16 @@ namespace Mliybs.Minecraft.Fabric.Generator
                                 ? $"(Env, ClassRef.ObjectRef, {methodOwner}.{methodName}, @params)"
                                 : $"(Env, ObjectRef, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodOwner}.{methodName}, @params)"
                             )}};
+                        
+                        ExceptionCheck();
 
                         return{{(y.ReturnsVoid ? "" : (returnType!.StartsWith("global::")
-                            ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : check + $".ReturnCheck")}(result)"
+                            ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : check + $"!.ReturnCheck")}(result)"
                             : ((returnType == "string" || returnType == "string?")
                                 ? " GetString(result)"
                                 : (y.ReturnType.TypeKind == TypeKind.TypeParameter
-                                    ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : (check + $".ReturnCheck"))}(result)"
-                                    : " result"))))}}{{((y.ReturnType.NullableAnnotation == NullableAnnotation.Annotated && returnType != "string?") ? ".Nullable()" : "")}};
+                                    ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : (check + $"!.ReturnCheck"))}(result)"
+                                    : " result"))))}}{{((y.ReturnType.NullableAnnotation == NullableAnnotation.Annotated && returnType != "string?") ? ".Nullable()" : "")}}{{(returnType == "bool" ? ".Boolean()" : "")}};
                     }
                 }
                 """, true));
@@ -531,13 +533,15 @@ namespace Mliybs.Minecraft.Fabric.Generator
                     {
                         {{SetJValues(y.Parameters)}}{{(y.ReturnsVoid ? "" : "var result = ")}}{{function}}{{$"(Env, proxy, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodOwner}.{methodName}, @params)"}};
 
+                        ExceptionCheck();
+
                         return{{(y.ReturnsVoid ? "" : (returnType!.StartsWith("global::")
-                            ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : check + $".ReturnCheck")}(result)"
+                            ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : check + $"!.ReturnCheck")}(result)"
                             : ((returnType == "string" || returnType == "string?")
                                 ? " GetString(result)"
                                 : (y.ReturnType.TypeKind == TypeKind.TypeParameter
-                                    ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : (check + $".ReturnCheck"))}(result)"
-                                    : " result"))))}}{{((y.ReturnType.NullableAnnotation == NullableAnnotation.Annotated && returnType != "string?") ? ".Nullable()" : "")}};
+                                    ? $" {(check is null ? $"From<{y.ReturnType.GetNotNullFullyQualifiedName()}>" : (check + $"!.ReturnCheck"))}(result)"
+                                    : " result"))))}}{{((y.ReturnType.NullableAnnotation == NullableAnnotation.Annotated && returnType != "string?") ? ".Nullable()" : "")}}{{(returnType == "bool" ? ".Boolean()" : "")}};
                     }
                 }
                 """, true));
@@ -549,9 +553,13 @@ namespace Mliybs.Minecraft.Fabric.Generator
                     {
                         unsafe
                         {
-                            {{SetJValues(y.Parameters)}}return {{function}}{{(y.IsStatic
+                            {{SetJValues(y.Parameters)}}var result = {{function}}{{(y.IsStatic
                                     ? $"(Env, ClassRef.ObjectRef, {methodOwner}.{methodName}, @params)"
                                     : $"(Env, ObjectRef, {(y.IsVirtual ? "ClassRef.ObjectRef, " : "")}{methodOwner}.{methodName}, @params)")}};
+                            
+                            ExceptionCheck();
+                            
+                            return result;
                         }
                     }
                     """, true));
@@ -576,7 +584,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
                         break;
 
                     case "bool":
-                        builder.AppendLine($"        @params[{i}].z = {SetParam(symbols[i])};");
+                        builder.AppendLine($"        @params[{i}].z = {SetParam(symbols[i])}.Boolean();");
                         break;
 
                     case "sbyte":
@@ -621,7 +629,7 @@ namespace Mliybs.Minecraft.Fabric.Generator
                 return $"Mliybs.Minecraft.Fabric.Wrappers.InvocationHandlerWrapper.GetProxyOf({nestedClass}.ClassRef, {nestedClass}.Handle({x.GetFullyQualifiedName()}))";
             }
             if (name.StartsWith("global::") || x.Type.TypeKind == TypeKind.TypeParameter) return $"{x.GetFullyQualifiedName()}?.ObjectRef ?? nint.Zero";
-            if (name == "string") return $"NewString({x.GetFullyQualifiedName()})";
+            if (name == "string" || name == "string?") return $"NewString({x.GetFullyQualifiedName()})";
             return x.GetFullyQualifiedName();
         }
 

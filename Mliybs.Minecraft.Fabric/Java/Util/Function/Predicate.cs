@@ -20,5 +20,5 @@ public static partial class Predicate
 
     internal delegate bool PredicateDelegateHandler(nint t);
 
-    internal static PredicateDelegateHandler Handle<T>(PredicateDelegate<T> @delegate) where T : JavaObject, IClassRef<T>, IFromHandle<T> => x => @delegate.Invoke(T.From(x));
+    internal static PredicateDelegateHandler? Handle<T>(PredicateDelegate<T>? @delegate) where T : JavaObject, IClassRef<T>, IFromHandle<T> => @delegate is null ? null : x => @delegate.Invoke(T.From(x));
 }

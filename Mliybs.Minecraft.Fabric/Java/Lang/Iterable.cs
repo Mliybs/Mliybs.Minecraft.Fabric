@@ -2,7 +2,7 @@ using Java.Util;
 
 namespace Java.Lang;
 
-[JavaInterface(typeof(IIterable<>))]
+[JavaInterface(typeof(IIterable<>)), FromMode(FromModes.SimpleFrom)]
 public partial class Iterable<T> : JavaObject, IClassRef<Iterable<T>>, IFromHandle<Iterable<T>>, IIterable<T> where T : JavaObject, IClassRef<T>, IFromHandle<T>
 {
     internal static Names Names => Iterable.Names;

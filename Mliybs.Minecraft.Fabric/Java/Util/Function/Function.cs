@@ -21,8 +21,8 @@ public static partial class Function
 
     internal delegate nint FunctionDelegateHandler(nint t);
 
-    internal static FunctionDelegateHandler Handle<T, R>(FunctionDelegate<T, R> @delegate)
+    internal static FunctionDelegateHandler? Handle<T, R>(FunctionDelegate<T, R>? @delegate)
         where T : JavaObject, IClassRef<T>, IFromHandle<T>
         where R : JavaObject, IClassRef<R>, IFromHandle<R>
-        => x => @delegate.Invoke(T.From(x)).ObjectRef;
+        => @delegate is null ? null : x => @delegate.Invoke(T.From(x)).ObjectRef;
 }

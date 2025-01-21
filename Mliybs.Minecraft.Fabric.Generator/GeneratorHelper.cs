@@ -154,10 +154,10 @@ namespace Mliybs.Minecraft.Fabric.Generator
             _ => ""
         };
 
-        public static INamedTypeSymbol InterfaceToClass(this ITypeSymbol symbol)
+        public static INamedTypeSymbol? InterfaceToClass(this ITypeSymbol symbol)
         {
-            var attribute = symbol.GetAttributes().Single(x => x.AttributeClass.HasFullyQualifiedName("global::Mliybs.Minecraft.Fabric.JavaInterfaceAttribute"));
-            return (INamedTypeSymbol)attribute.ConstructorArguments[0].Value!;
+            var attribute = symbol.GetAttributes().SingleOrDefault(x => x.AttributeClass.HasFullyQualifiedName("global::Mliybs.Minecraft.Fabric.JavaInterfaceAttribute"));
+            return attribute?.ConstructorArguments[0].Value as INamedTypeSymbol;
         }
     }
 
