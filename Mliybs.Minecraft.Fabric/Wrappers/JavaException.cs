@@ -2,9 +2,9 @@ namespace Mliybs.Minecraft.Fabric;
 
 public class JavaException : Exception
 {
-    public JavaObject InnerObject { get; }
+    public Throwable InnerObject { get; }
 
-    public JavaException(JavaObject obj) : base(obj.ToString())
+    public JavaException(Throwable obj) : base(obj.ToString())
     {
         InnerObject = obj;
     }
