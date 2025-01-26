@@ -44,19 +44,94 @@ namespace Mliybs.Minecraft.Fabric.Internals
 
         public T this[int index]
         {
-            get => T.From(GetObjectArrayElement(ObjectRef, index));
-            set => SetObjectArrayElement(ObjectRef, index, value.ObjectRef);
+            get
+            {
+                if (index >= 0 && index < length)
+                    return T.From(GetObjectArrayElement(ObjectRef, index));
+                
+                else
+                    throw new IndexOutOfRangeException();
+            }
+            set
+            {
+                if (index >= 0 && index < length)
+                    SetObjectArrayElement(ObjectRef, index, value.ObjectRef);
+                
+                else
+                    throw new IndexOutOfRangeException();
+            }
         }
 
         public int Length => length;
 
         public static JavaArray<T> From(nint handle) => new(handle);
 
-        public static implicit operator JavaArray<T>(T[] array) => new(array);
+        public static implicit operator JavaArray<T>(ReadOnlySpan<T> span) => new(span);
+    }
+
+    [SuppressJavaClass]
+    public unsafe partial class JavaArrayByte : JavaObject, IFromHandle<JavaArrayByte>, IEnumerable<sbyte>
+    {
+        internal const char Name = 'B';
+
+        private readonly int length;
+
+        internal JavaArrayByte(nint handle) : base(handle)
+        {
+            length = GetArrayLength(ObjectRef);
+        }
+
+        public JavaArrayByte(int length) : base(Env->Functions->NewByteArray(Env, length))
+        {
+            this.length = length;
+        }
+
+        public sbyte this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= length) throw new IndexOutOfRangeException();
+                sbyte value;
+                Env->Functions->GetByteArrayRegion(Env, ObjectRef, index, 1, &value);
+                return value;
+            }
+
+            set
+            {
+                if (index < 0 || index >= length) throw new IndexOutOfRangeException();
+                Env->Functions->SetByteArrayRegion(Env, ObjectRef, index, 1, &value);
+            }
+        }
+
+        public IEnumerator<sbyte> GetEnumerator()
+        {
+            for (var i = 0; i < length; i++) yield return this[i];
+        }
+        
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public int Length => length;
+
+        public static JavaArrayByte From(nint handle) => new(handle);
+
+        public static implicit operator JavaArrayByte(ReadOnlySpan<sbyte> span)
+        {
+            var array = new JavaArrayByte(span.Length);
+
+            fixed (sbyte* ptr = span)
+                Env->Functions->SetByteArrayRegion(Env, array.ObjectRef, 0, span.Length, ptr);
+            
+            return array;
+        }
+
+        public static explicit operator JavaArrayByte(ReadOnlySpan<byte> span)
+        {
+            return MemoryMarshal.Cast<byte, sbyte>(span);
+        }
     }
 
     public static class JavaArrayBuilder
     {
-        public static JavaArray<T> Create<T>(ReadOnlySpan<T> values) where T : JavaObject, IClassRef<T>, IFromHandle<T> => new(values);
+        public static JavaArray<T> Create<T>(ReadOnlySpan<T> values) where T : JavaObject, IClassRef<T>, IFromHandle<T> => values;
     }
 }

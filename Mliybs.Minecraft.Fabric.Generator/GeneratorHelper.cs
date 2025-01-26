@@ -79,8 +79,22 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
         public static string GetFullyQualifiedNameForFile(this ISymbol symbol)
         {
-            var name = regex.Replace(symbol.GetFullyQualifiedName(), "_T");
+            var name = symbol.GetFullyQualifiedName();
+            if (symbol is INamedTypeSymbol
+            {
+                TypeParameters.Length: > 0
+            } typeSymbol) return name.Substring(8, name.IndexOf('<') - 8) + typeSymbol.TypeParameters.Length;
             return name.Substring(8);
+        }
+
+        public static string GetQualifiedNameForFile(this ISymbol symbol)
+        {
+            var name = symbol.GetQualifiedName();
+            if (symbol is INamedTypeSymbol
+                {
+                    TypeParameters.Length: > 0
+                } typeSymbol) return name.Substring(0, name.IndexOf('<')) + typeSymbol.TypeParameters.Length;
+            return name;
         }
 
 #nullable enable

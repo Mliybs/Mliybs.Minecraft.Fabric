@@ -25,7 +25,7 @@ namespace Mliybs.Minecraft.Fabric.Wrappers
             @params[0].l = @class.ObjectRef;
             @params[1].j = @delegate is null ? nint.Zero : Marshal.GetFunctionPointerForDelegate(@delegate);
             @params[2].i = id;
-            var result = Env->Functions->CallStaticObjectMethodA(Env, ClassRef.ObjectRef, GetProxyOf_ClassLongInt, @params);
+            var result = Env->Functions->CallStaticObjectMethodA(Env, ClassRef.ObjectRef, GetProxyOf_Class1LongInt, @params);
             if (@delegate is not null) KeepAlive.TryAdd(id, @delegate);
             return result;
         }

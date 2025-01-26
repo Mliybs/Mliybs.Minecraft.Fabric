@@ -1,5 +1,6 @@
 namespace Java.Util;
 
+[JavaInterface(typeof(IMap<,>))]
 public partial class Map<K, V> : JavaObject, IMap<K, V>, IClassRef<Map<K, V>>, IFromHandle<Map<K, V>>
     where K : JavaObject, IClassRef<K>, IFromHandle<K>
     where V : JavaObject, IClassRef<V>, IFromHandle<V>
@@ -17,6 +18,7 @@ public static partial class Map
 
 }
 
+[JavaInterface(typeof(Map<,>))]
 public partial interface IMap<K, V>
     where K : JavaObject, IClassRef<K>, IFromHandle<K>
     where V : JavaObject, IClassRef<V>, IFromHandle<V>

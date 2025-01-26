@@ -130,20 +130,39 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
 
                 if (name.StartsWith("global::"))
                 {
-                    if (param.Type.OriginalDefinition.GetFullyQualifiedName() == "global::Mliybs.Minecraft.Fabric.Internals.JavaArray<T>")
+                    if (param.Type.OriginalDefinition.GetFullyQualifiedName().StartsWith("global::Mliybs.Minecraft.Fabric.Internals.JavaArray"))
                     {
-                        var genericType = name.AsSpan().Slice(52, name.Length - 53);
-                        // JavaArray的类型参数一定以global::开头，不以它开头的一定是泛型类型参数
-                        if (!genericType.StartsWith("global::".AsSpan())) genericType = "global::Java.Lang.Object".AsSpan();
-                        var @string = regex.Replace(genericType.ToString(), string.Empty);
-                        map.Append($"[L{{({@string}.Names.MapSignature)}};");
-                        method.Append(regex.Replace(genericType.Slice(genericType.LastIndexOf('.') + 1).ToString(), string.Empty) + "Array");
+                        if (param.Type is INamedTypeSymbol
+                        {
+                            TypeParameters.Length: 0
+                        } type)
+                        {
+                            var @string = type.WithNullableAnnotation(NullableAnnotation.NotAnnotated).GetFullyQualifiedName();
+                            map.Append($"[{{({@string}.Name)}}");
+                            method.Append(@string.Substring(51) + "Array");
+                        }
+
+                        else
+                        {
+                            var genericType = name.AsSpan().Slice(52, name.Length - 53);
+                            // JavaArray的类型参数一定以global::开头，不以它开头的一定是泛型类型参数
+                            if (!genericType.StartsWith("global::".AsSpan())) genericType = "global::Java.Lang.Object".AsSpan();
+                            var @string = regex.Replace(genericType.ToString(), string.Empty);
+                            map.Append($"[L{{({@string}.Names.MapSignature)}};");
+                            method.Append(regex.Replace(genericType.Slice(genericType.LastIndexOf('.') + 1).ToString(), string.Empty) + "Array");
+                        }
                     }
 
                     else
                     {
-                        map.Append($"L{{({regex.Replace(name, string.Empty).Replace("?", "")}.Names.MapSignature)}};");
-                        method.Append(regex.Replace(param.Type.TypeKind == TypeKind.Interface ? param.Type.GetQualifiedName().Substring(1) : param.Type.GetQualifiedName(), string.Empty).Replace("?", ""));
+                        var @string = param.Type.TypeKind == TypeKind.Interface
+                            ? regex.Replace(param.Type.InterfaceToClass().GetFullyQualifiedName(), "").Replace("?", "")
+                            : regex.Replace(name.ToString(), "").Replace("?", "");
+                        map.Append($"L{{({@string}.Names.MapSignature)}};");
+                        if (name == "global::Java.Lang.Class")
+                            method.Append("Class");
+                        else
+                            method.Append((param.Type.TypeKind == TypeKind.Interface ? param.Type.GetQualifiedNameForFile().Substring(1) : param.Type.GetQualifiedNameForFile()).Replace("?", ""));
                     }
                 }
 
@@ -213,11 +232,13 @@ namespace Mliybs.Minecraft.Fabric.Generator.Java
 
             var methodOwner = regex.Replace(y.ContainingType.GetFullyQualifiedName(), "");
 
-            x.AddSource($"JavaConstructor.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}", y.ContainingType.NestedClassCompletion($$"""
+            var fileName = y.ContainingType.GetFullyQualifiedNameForFile();
+
+            x.AddSource($"JavaConstructor.{fileName}.{methodName}", y.ContainingType.NestedClassCompletion($$"""
                 internal static nint {{methodName}} { get; private set; }
                 """, true, removeClassGeneric: true));
 
-            x.AddSource($"JavaConstructor.{y.ContainingType.GetFullyQualifiedNameForFile()}.{methodName}Invoke", y.ContainingType.NestedClassCompletion($$"""
+            x.AddSource($"JavaConstructor.{fileName}.{methodName}Invoke", y.ContainingType.NestedClassCompletion($$"""
                 #nullable enable
                 private static unsafe nint {{methodName}}Invoke({{string.Join(", ", y.Parameters.Select(x => $"{x.Type.GetFullyQualifiedName()} {x.GetFullyQualifiedName()}"))}})
                 {

@@ -13,6 +13,12 @@ public partial class Iterable<T> : JavaObject, IClassRef<Iterable<T>>, IFromHand
 
     [Signature("iterator", false)]
     public partial Iterator<T> Iterator();
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        var iterator = Iterator();
+        while (iterator.HasNext()) yield return iterator.Next();
+    }
 }
 
 [MapName("java.lang.Iterable", false), StaticGeneric(typeof(Iterable<>))]
@@ -24,4 +30,10 @@ public static partial class Iterable
 public partial interface IIterable<T> where T : JavaObject, IClassRef<T>, IFromHandle<T>
 {
     Iterator<T> Iterator();
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        var iterator = Iterator();
+        while (iterator.HasNext()) yield return iterator.Next();
+    }
 }

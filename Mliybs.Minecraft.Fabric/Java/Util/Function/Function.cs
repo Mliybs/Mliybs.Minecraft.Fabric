@@ -4,7 +4,7 @@ public partial class Function<T, R> : JavaObject, IClassRef<Function<T, R>>, IFr
     where T : JavaObject, IClassRef<T>, IFromHandle<T>
     where R : JavaObject, IClassRef<R>, IFromHandle<R>
 {
-    internal static Names Names => Predicate.Names;
+    internal static Names Names => Function.Names;
 
     public static Class<Function<JavaObject, JavaObject>> ClassRef => Function.ClassRef;
 
@@ -14,7 +14,7 @@ public partial class Function<T, R> : JavaObject, IClassRef<Function<T, R>>, IFr
     public partial R Apply(T t);
 }
 
-[MapName("java.util.Function"), StaticGeneric(typeof(Function<,>))]
+[MapName("java.util.function.Function", false), StaticGeneric(typeof(Function<,>))]
 public static partial class Function
 {
     public delegate R FunctionDelegate<in T, out R>(T t) where T : JavaObject, IClassRef<T>, IFromHandle<T>;

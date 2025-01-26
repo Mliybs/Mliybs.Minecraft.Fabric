@@ -14,8 +14,9 @@ internal static class ThrowHelper
     {
         if (ptr is null) throw new NullReferenceException($"{nameof(ptr)}为空指针！");
     }
-    public unsafe static void ThrowIfPtrIsZero(nint ptr)
+    public static nint ThrowIfPtrIsZero(nint ptr)
     {
         if (ptr == nint.Zero) throw new NullReferenceException($"{nameof(ptr)}为空指针！");
+        return ptr;
     }
 }

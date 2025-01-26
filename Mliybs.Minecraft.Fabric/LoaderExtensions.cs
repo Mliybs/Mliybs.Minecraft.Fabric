@@ -63,7 +63,7 @@ unsafe partial class Loader
         Encoding.UTF8.GetBytes(methodSignature, bytes);
         fixed (byte* init = "<init>"u8)
         fixed (byte* sig = bytes)
-        return Env->Functions->GetMethodID(Env, classRef, init, sig);
+        return ThrowHelper.ThrowIfPtrIsZero(Env->Functions->GetMethodID(Env, classRef, init, sig));
     }
 
     internal static nint GetMethodID(nint classRef, string methodName, string methodSignature)
@@ -74,7 +74,7 @@ unsafe partial class Loader
         Encoding.UTF8.GetBytes(methodSignature, sigSpan);
         fixed (byte* name = nameSpan)
         fixed (byte* sig = sigSpan)
-        return Env->Functions->GetMethodID(Env, classRef, name, sig);
+        return ThrowHelper.ThrowIfPtrIsZero(Env->Functions->GetMethodID(Env, classRef, name, sig));
     }
 
     internal static nint GetFieldID(nint classRef, string fieldName, string fieldSignature)
@@ -85,7 +85,7 @@ unsafe partial class Loader
         Encoding.UTF8.GetBytes(fieldSignature, sigSpan);
         fixed (byte* name = nameSpan)
         fixed (byte* sig = sigSpan)
-        return Env->Functions->GetFieldID(Env, classRef, name, sig);
+        return ThrowHelper.ThrowIfPtrIsZero(Env->Functions->GetFieldID(Env, classRef, name, sig));
     }
 
     internal static nint GetStaticMethodID(nint classRef, string methodName, string methodSignature)
@@ -96,7 +96,7 @@ unsafe partial class Loader
         Encoding.UTF8.GetBytes(methodSignature, sigSpan);
         fixed (byte* name = nameSpan)
         fixed (byte* sig = sigSpan)
-        return Env->Functions->GetStaticMethodID(Env, classRef, name, sig);
+        return ThrowHelper.ThrowIfPtrIsZero(Env->Functions->GetStaticMethodID(Env, classRef, name, sig));
     }
 
     internal static nint GetStaticObjectField(nint classRef, string fieldSignature, string type)

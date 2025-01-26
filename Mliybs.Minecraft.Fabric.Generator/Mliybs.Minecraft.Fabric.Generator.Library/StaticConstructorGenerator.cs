@@ -25,10 +25,17 @@ namespace Mliybs.Minecraft.Fabric.Generator
 
                 foreach (var member in y.GetMembers())
                 {
-                    if (!init.HasFlag(Initializer.Signature) && member.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.SignatureAttribute"))
+                    var hasSig = member.HasAttributeWithFullyQualifiedName("global::Mliybs.Minecraft.Fabric.SignatureAttribute");
+
+                    if (!init.HasFlag(Initializer.StaticSignature) && y.IsStatic && hasSig)
                     {
-                        if (y.IsStatic) builder.Append("\n    StaticSignatureInitialize();");
-                        else builder.Append("\n    SignatureInitialize();");
+                        builder.Append("\n    StaticSignatureInitialize();");
+                        init |= Initializer.StaticSignature;
+                    }
+
+                    if (!init.HasFlag(Initializer.Signature) && !y.IsStatic && hasSig)
+                    {
+                        builder.Append("\n    SignatureInitialize();");
                         init |= Initializer.Signature;
                     }
 
@@ -78,7 +85,8 @@ namespace Mliybs.Minecraft.Fabric.Generator
         {
             None = 0,
             Signature = 0b1,
-            JavaConstructor = 0b10
+            StaticSignature = 0b10,
+            JavaConstructor = 0b100
         }
     }
 }

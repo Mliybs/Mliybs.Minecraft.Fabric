@@ -17,6 +17,7 @@ public abstract class JavaClass : IJavaClass, IEquatable<JavaClass>
         get => disposed ? throw new ObjectDisposedException(GetType().Name) : objectRef;
         set
         {
+            if (disposed) throw new ObjectDisposedException(GetType().Name);
             if (objectRef != nint.Zero) Env->Functions->DeleteGlobalRef(Env, objectRef);
             if (value != nint.Zero) objectRef = NewGlobalRef(value);
             else objectRef = value;

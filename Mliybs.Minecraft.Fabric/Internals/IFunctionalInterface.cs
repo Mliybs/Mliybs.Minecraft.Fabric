@@ -2,7 +2,7 @@ namespace Mliybs.Minecraft.Fabric.Internals;
 
 public interface IFunctionalInterface<T, K> where T : JavaObject, IFunctionalInterface<T, K>, IClassRef<T>, IFromHandle<T> where K : Delegate
 {
-    internal static abstract T ToObject(K @delegate);
+    internal static virtual T ToObject(K @delegate) => throw new NotSupportedException();
 }
 
 [SuppressJavaClass]

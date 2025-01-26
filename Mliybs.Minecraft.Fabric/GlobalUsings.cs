@@ -13,3 +13,5 @@ global using static Mliybs.Minecraft.Fabric.Loader;
 global using Names = (string OriginName, string OriginSignature, string MapName, string MapSignature);
 global using JavaObject = Java.Lang.Object;
 global using JavaString = Java.Lang.String;
+global using JavaFunction = Java.Util.Function.Function;
+global using JavaPredicate = Java.Util.Function.Predicate;

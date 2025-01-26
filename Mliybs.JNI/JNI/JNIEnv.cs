@@ -554,7 +554,7 @@ public readonly unsafe struct JNIEnv
         public readonly delegate* unmanaged<JNIEnv*, int, nint> NewDoubleArray;
 
         // jboolean * (JNICALL *GetBooleanArrayElements) (JNIEnv* env, jbooleanArray array, jboolean* isCopy);
-        public readonly delegate* unmanaged<JNIEnv*, nint, out byte, bool*> GetBooleanArrayElements;
+        public readonly delegate* unmanaged<JNIEnv*, nint, out byte, byte*> GetBooleanArrayElements;
 
         // jbyte * (JNICALL *GetByteArrayElements) (JNIEnv* env, jbyteArray array, jboolean* isCopy);
         public readonly delegate* unmanaged<JNIEnv*, nint, out byte, sbyte*> GetByteArrayElements;
@@ -578,7 +578,7 @@ public readonly unsafe struct JNIEnv
         public readonly delegate* unmanaged<JNIEnv*, nint, out byte, double*> GetDoubleArrayElements;
 
         // void (JNICALL *ReleaseBooleanArrayElements) (JNIEnv* env, jbooleanArray array, jboolean* elems, jint mode);
-        public readonly delegate* unmanaged<JNIEnv*, nint, bool*, int, void> ReleaseBooleanArrayElements;
+        public readonly delegate* unmanaged<JNIEnv*, nint, byte*, int, void> ReleaseBooleanArrayElements;
 
         // void (JNICALL *ReleaseByteArrayElements) (JNIEnv* env, jbyteArray array, jbyte* elems, jint mode);
         public readonly delegate* unmanaged<JNIEnv*, nint, sbyte*, int, void> ReleaseByteArrayElements;
@@ -602,7 +602,7 @@ public readonly unsafe struct JNIEnv
         public readonly delegate* unmanaged<JNIEnv*, nint, double*, int, void> ReleaseDoubleArrayElements;
 
         // void (JNICALL *GetBooleanArrayRegion) (JNIEnv* env, jbooleanArray array, jsize start, jsize l, jboolean* buf);
-        public readonly delegate* unmanaged<JNIEnv*, nint, int, int, bool*, void> GetBooleanArrayRegion;
+        public readonly delegate* unmanaged<JNIEnv*, nint, int, int, byte*, void> GetBooleanArrayRegion;
 
         // void (JNICALL *GetByteArrayRegion) (JNIEnv* env, jbyteArray array, jsize start, jsize len, jbyte* buf);
         public readonly delegate* unmanaged<JNIEnv*, nint, int, int, sbyte*, void> GetByteArrayRegion;
@@ -626,7 +626,7 @@ public readonly unsafe struct JNIEnv
         public readonly delegate* unmanaged<JNIEnv*, nint, int, int, double*, void> GetDoubleArrayRegion;
 
         // void (JNICALL *SetBooleanArrayRegion) (JNIEnv* env, jbooleanArray array, jsize start, jsize l, const jboolean* buf);
-        public readonly delegate* unmanaged<JNIEnv*, nint, int, int, bool*, void> SetBooleanArrayRegion;
+        public readonly delegate* unmanaged<JNIEnv*, nint, int, int, byte*, void> SetBooleanArrayRegion;
 
         // void (JNICALL *SetByteArrayRegion) (JNIEnv* env, jbyteArray array, jsize start, jsize len, const jbyte* buf);
         public readonly delegate* unmanaged<JNIEnv*, nint, int, int, sbyte*, void> SetByteArrayRegion;

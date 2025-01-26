@@ -15,19 +15,19 @@ public readonly unsafe struct JavaVM
         public readonly nint Reserved2;
 
         // jint (JNICALL *DestroyJavaVM)(JavaVM *vm);
-        public readonly delegate* unmanaged[Cdecl]<JavaVM*, Result> DestroyJavaVM;
+        public readonly delegate* unmanaged<JavaVM*, Result> DestroyJavaVM;
 
         // jint (JNICALL *AttachCurrentThread)(JavaVM *vm, void **penv, void *args);
-        public readonly delegate* unmanaged[Cdecl]<JavaVM*, out JNIEnv*, nint, Result> AttachCurrentThread;
+        public readonly delegate* unmanaged<JavaVM*, out JNIEnv*, nint, Result> AttachCurrentThread;
 
         // jint (JNICALL *DetachCurrentThread)(JavaVM *vm);
-        public readonly delegate* unmanaged[Cdecl]<JavaVM*, Result> DetachCurrentThread;
+        public readonly delegate* unmanaged<JavaVM*, Result> DetachCurrentThread;
 
         // jint (JNICALL *GetEnv)(JavaVM *vm, void **penv, jint version);
-        public readonly delegate* unmanaged[Cdecl]<JavaVM*, out nint, int, Result> GetEnv;
+        public readonly delegate* unmanaged<JavaVM*, out nint, int, Result> GetEnv;
 
         // jint (JNICALL *AttachCurrentThreadAsDaemon)(JavaVM *vm, void **penv, void *args);
-        public readonly delegate* unmanaged[Cdecl]<JavaVM*, out nint, nint, Result> AttachCurrentThreadAsDaemon;
+        public readonly delegate* unmanaged<JavaVM*, out nint, nint, Result> AttachCurrentThreadAsDaemon;
     }
 
     public readonly JVMFunctions* Functions;
