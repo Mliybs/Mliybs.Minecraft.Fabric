@@ -3,9 +3,94 @@ namespace Net.Minecraft.Item;
 [MapName("net/minecraft/class_1761")]
 public partial class ItemGroup : JavaObject, IClassRef<ItemGroup>, IFromHandle<ItemGroup>
 {
+    [Signature("method_47307")]
+    public static partial Builder Create(Row location, int column);
+
+    [Signature("method_7737")]
+    public partial Text.Text GetDisplayName();
+
+    [Signature("method_7747")]
+    public partial ItemStack GetIcon();
+
+    [Signature("method_7742")]
+    public partial string GetTexture();
+
+    [Signature("method_7754")]
+    public partial bool ShouldRenderName();
+
+    [Signature("method_7756")]
+    public partial bool HasScrollbar();
+
+    [Signature("method_7743")]
+    public partial int GetColumn();
+
+    [Signature("method_47309")]
+    public partial ItemGroup.Row GetRow();
+
+    [Signature("method_47310")]
+    public partial bool HasStacks();
+
+    [Signature("method_47311")]
+    public partial bool ShouldDisplay();
+
+    [Signature("method_7752")]
+    public partial bool IsSpecial();
+
+    [Signature("method_47312")]
+    public partial ItemGroup.Type GetType();
+
+    [Signature("method_47306")]
+    public partial void UpdateEntries(ItemGroup.DisplayContext displayContext);
+
+    [Signature("method_47313")]
+    public partial Java.Util.Collection<ItemStack> GetDisplayStacks();
+
+    [Signature("method_45414")]
+    public partial Java.Util.Collection<ItemStack> GetSearchTabStacks();
+
+    [Signature("method_45412")]
+    public partial bool Contains(ItemStack stack);
+
+    [Signature("method_47308")]
+    public partial void SetSearchProviderReloader(Java.Util.Function.Consumer.ConsumerDelegate<Java.Util.List<ItemStack>> searchProviderReloader);
+
+    [Signature("method_47314")]
+    public partial void ReloadSearchProvider();
+
     [MapName("class_7913")]
     public partial class Builder : JavaObject, IClassRef<Builder>, IFromHandle<Builder>
-    {}
+    {
+        [JavaConstructor]
+        public Builder(Row row, int column) : base(Builder_RowIntInvoke(row, column))
+        {}
+
+        [Signature("method_47321")]
+        public partial Builder DisplayName(Text.IText displayName);
+
+        [Signature("method_47320")]
+        public partial Builder Icon(Java.Util.Function.Supplier.SupplierDelegate<ItemStack> iconSupplier);
+
+        [Signature("method_47317")]
+        public partial Builder Entries(EntryCollector.EntryCollectorDelegate entryCollector);
+
+        [Signature("method_47315")]
+        public partial Builder Special();
+
+        [Signature("method_47322")]
+        public partial Builder NoRenderedName();
+
+        [Signature("method_47323")]
+        public partial Builder NoScrollbar();
+
+        [Signature("method_47318")]
+        protected partial Builder Type(ItemGroup.Type type);
+
+        [Signature("method_47319")]
+        public partial Builder Texture(string texture);
+
+        [Signature("method_47324")]
+        public partial ItemGroup Build();
+    }
 
     [MapName("class_8128")]
     public partial class DisplayContext : Record, IClassRef<DisplayContext>, IFromHandle<DisplayContext>

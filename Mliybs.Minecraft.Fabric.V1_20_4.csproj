@@ -25,6 +25,7 @@
   <!-- <ItemGroup>
     <Compile Remove="Com\**" />
     <Compile Remove="Net\**" />
+    <Compile Remove="..\main\Mliybs.Minecraft.Fabric\Net\FabricMC\Fabric\**\*.cs" />
   </ItemGroup> -->
 
 	<ItemGroup>

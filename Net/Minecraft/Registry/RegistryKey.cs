@@ -12,12 +12,18 @@ public partial class RegistryKey<T> : JavaObject, IClassRef<RegistryKey<T>>, IFr
     static Class<RegistryKey<T>> IClassRef<RegistryKey<T>>.ClassRef => Class.Proxy<RegistryKey<T>>(ClassRef.ObjectRef);
 
     [Signature("method_31163")]
-    public partial bool IsOf<E>(RegistryKey<E> registry) where E : JavaObject, IRegistry<E>, IClassRef<E>, IFromHandle<E>;
+    public partial bool IsOf<TKey, TRegistry>(RegistryKey<TRegistry> registry)
+        where TKey : JavaObject, IClassRef<TKey>, IFromHandle<TKey>
+        where TRegistry : JavaObject, IRegistry<TKey>, IClassRef<TRegistry>, IFromHandle<TRegistry>;
+    
+    public bool IsOf<TKey>(RegistryKey<Registry<TKey>> registry) where TKey : JavaObject, IClassRef<TKey>, IFromHandle<TKey> => IsOf<TKey, Registry<TKey>>(registry);
 
     [Signature("method_39752")]
     public partial Optional<RegistryKey<TKey>> TryCast<TKey, TRegistry>(RegistryKey<TRegistry> registryRef)
         where TKey : JavaObject, IClassRef<TKey>, IFromHandle<TKey>
         where TRegistry : JavaObject, IRegistry<TKey>, IClassRef<TRegistry>, IFromHandle<TRegistry>;
+    
+    public Optional<RegistryKey<TKey>> TryCast<TKey>(RegistryKey<Registry<TKey>> registryRef) where TKey : JavaObject, IClassRef<TKey>, IFromHandle<TKey> => TryCast<TKey, Registry<TKey>>(registryRef);
 
     [Signature("method_29177")]
     public partial Identifier GetValue();
@@ -35,6 +41,8 @@ public static partial class RegistryKey
     [Signature("method_29179")]
     public static partial RegistryKey<TKey> Of<TKey, TRegistry>(RegistryKey<TRegistry> registry, Identifier value)
         where TKey : JavaObject, IClassRef<TKey>, IFromHandle<TKey> where TRegistry : JavaObject, IRegistry<TKey>, IClassRef<TRegistry>, IFromHandle<TRegistry>;
+    
+    public static RegistryKey<T> Of<T>(RegistryKey<Registry<T>> registry, Identifier value) where T : JavaObject, IClassRef<T>, IFromHandle<T> => Of<T, Registry<T>>(registry, value);
 
     [Signature("method_29180")]
     public static partial RegistryKey<Registry<T>> OfRegistry<T>(Identifier registry) where T : JavaObject, IClassRef<T>, IFromHandle<T>;

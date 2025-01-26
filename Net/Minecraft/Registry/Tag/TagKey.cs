@@ -13,7 +13,7 @@ public partial class TagKey<T> : Java.Lang.Record, IClassRef<TagKey<T>>, IFromHa
     static Class<TagKey<T>> IClassRef<TagKey<T>>.ClassRef => Class.Proxy<TagKey<T>>(ClassRef.ObjectRef);
 
     [JavaConstructor, Obsolete]
-    public TagKey(RegistryKey<Registry<T>> registry, Identifier id) : base(TagKey_RegistryKeyIdentifierInvoke(registry, id))
+    public TagKey(RegistryKey<Registry<T>> registry, Identifier id) : base(TagKey_RegistryKey1IdentifierInvoke(registry, id))
     {}
 }
 

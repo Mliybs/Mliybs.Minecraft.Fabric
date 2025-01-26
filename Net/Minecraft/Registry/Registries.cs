@@ -11,4 +11,7 @@ public partial class Registries : JavaObject, IClassRef<Registries>, IFromHandle
 
     [Signature("field_41178")]
     public static DefaultedRegistry<Item.Item> ITEM { get; private set; }
+
+    [Signature("field_44687")]
+    public static Registry<ItemGroup> ITEM_GROUP { get; private set; }
 }
