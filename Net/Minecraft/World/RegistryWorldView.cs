@@ -1,6 +1,6 @@
 using Java.Util.Function;
 using Java.Util;
-using Net.Minecraft.Entity.Ai;
+using Net.Minecraft.Entity.AI;
 using Net.Minecraft.Entity.Player;
 using Net.Minecraft.Entity;
 using Net.Minecraft.Util.Math;

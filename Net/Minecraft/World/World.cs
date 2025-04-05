@@ -8,7 +8,7 @@ using Net.Minecraft.Client.Render.Chunk;
 using Net.Minecraft.Client.World;
 using Net.Minecraft.Entity.Damage;
 using Net.Minecraft.Entity.Player;
-using Net.Minecraft.Entity.Ai;
+using Net.Minecraft.Entity.AI;
 using Net.Minecraft.Entity;
 using Net.Minecraft.Fluid;
 using Net.Minecraft.Item.Map;
@@ -605,6 +605,15 @@ public partial class World : JavaObject, IWorldAccess, IClassRef<World>, IFromHa
 
     [Signature("method_48963")]
     public partial DamageSources GetDamageSources();
+
+    [Signature("method_8558")]
+    private static partial bool IsValidHorizontally(BlockPos pos);
+
+    [Signature("method_25952")]
+    private static partial bool IsInvalidVertically(int y);
+
+    // [Signature("method_46669")]
+    // private partial Explosion.DestructionType GetDestructionType(GameRules.Key<GameRules.BooleanRule> gameRuleKey);
 
     [MapName("class_7867")]
     public partial class ExplosionSourceType : Enum<ExplosionSourceType>, IClassRef<ExplosionSourceType>, IFromHandle<ExplosionSourceType>

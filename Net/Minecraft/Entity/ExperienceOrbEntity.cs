@@ -1,6 +1,6 @@
 namespace Net.Minecraft.Entity;
 
 [MapName("net/minecraft/class_1303")]
-public partial class ExperienceOrbEntity : JavaObject, IClassRef<ExperienceOrbEntity>, IFromHandle<ExperienceOrbEntity>
+public partial class ExperienceOrbEntity : MCEntity, IClassRef<ExperienceOrbEntity>, IFromHandle<ExperienceOrbEntity>
 {
 }

@@ -1,4 +1,4 @@
-namespace Net.Minecraft.Entity.Ai.Brain;
+namespace Net.Minecraft.Entity.AI.Brain;
 
 [MapName("net/minecraft/class_4142")]
 public partial class WalkTarget : JavaObject, IClassRef<WalkTarget>, IFromHandle<WalkTarget>

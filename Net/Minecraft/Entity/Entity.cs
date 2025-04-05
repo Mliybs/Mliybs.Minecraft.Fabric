@@ -32,6 +32,324 @@ namespace Net.Minecraft.Entity;
 [MapName("net/minecraft/class_1297")]
 public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput, IScoreHolder, IClassRef<Entity>, IFromHandle<Entity>
 {
+    // [Signature("field_29985")]
+    public const string ID_KEY = "id";
+
+    // [Signature("field_29986")]
+    public const string PASSENGERS_KEY = "Passengers";
+
+    // [Signature("field_5978")]
+    // private static partial AtomicInteger CURRENT_ID { get; }
+
+    // [Signature("field_6030")]
+    // private static partial List<ItemStack> EMPTY_STACK_LIST { get; }
+
+    // [Signature("field_29987")]
+    public const int MAX_RIDING_COOLDOWN = 60;
+
+    // [Signature("field_29988")]
+    public const int DEFAULT_PORTAL_COOLDOWN = 300;
+
+    // [Signature("field_29989")]
+    public const int MAX_COMMAND_TAGS = 1024;
+
+    // [Signature("field_29992")]
+    public const int DEFAULT_MIN_FREEZE_DAMAGE_TICKS = 140;
+
+    // [Signature("field_29993")]
+    public const int FREEZING_DAMAGE_INTERVAL = 40;
+
+    // [Signature("field_6025")]
+    // private static partial Box NULL_BOX { get; }
+
+    // [Signature("field_29984")]
+    public const double SPEED_IN_WATER = 0.014;
+
+    // [Signature("field_29982")]
+    public const double SPEED_IN_LAVA_IN_NETHER = 0.007;
+
+    // [Signature("field_29983")]
+    public const double SPEED_IN_LAVA = 0.0023333333333333335;
+
+    // [Signature("field_29994")]
+    public const string UUID_KEY = "UUID";
+
+    // [Signature("field_5999")]
+    // private static partial double RenderDistanceMultiplier { get; set; }
+
+    // [Signature("field_29973")]
+    public const float DEFAULT_FRICTION = 0.6000000238418579f;
+
+    // [Signature("field_29974")]
+    public const float MIN_RISING_BUBBLE_COLUMN_SPEED = 1.7999999523162842f;
+
+    // [Signature("field_5990")]
+    // protected static partial TrackedData<Byte> FLAGS { get; }
+
+    // [Signature("field_29979")]
+    // protected static partial int ON_FIRE_FLAG_INDEX { get; }
+
+    // [Signature("field_29975")]
+    // private static partial int SNEAKING_FLAG_INDEX { get; }
+
+    // [Signature("field_29976")]
+    // private static partial int SPRINTING_FLAG_INDEX { get; }
+
+    // [Signature("field_29977")]
+    // private static partial int SWIMMING_FLAG_INDEX { get; }
+
+    // [Signature("field_29978")]
+    // private static partial int INVISIBLE_FLAG_INDEX { get; }
+
+    // [Signature("field_29980")]
+    // protected static partial int GLOWING_FLAG_INDEX { get; }
+
+    // [Signature("field_29981")]
+    // protected static partial int FALL_FLYING_FLAG_INDEX { get; }
+
+    // [Signature("field_6032")]
+    // private static partial TrackedData<Integer> AIR { get; }
+
+    // [Signature("field_6027")]
+    // private static partial TrackedData<Optional<Text>> CUSTOM_NAME { get; }
+
+    // [Signature("field_5975")]
+    // private static partial TrackedData<Boolean> NAME_VISIBLE { get; }
+
+    // [Signature("field_5962")]
+    // private static partial TrackedData<Boolean> SILENT { get; }
+
+    // [Signature("field_5995")]
+    // private static partial TrackedData<Boolean> NO_GRAVITY { get; }
+
+    // [Signature("field_18064")]
+    // protected static partial TrackedData<EntityPose> POSE { get; }
+
+    // [Signature("field_27858")]
+    // private static partial TrackedData<Integer> FROZEN_TICKS { get; }
+
+    [Signature("field_5961")]
+    private partial EntityType<MCEntity> Type { get; }
+
+    [Signature("field_5986")]
+    private partial int Id { get; set; }
+
+    [Signature("field_23807")]
+    public partial bool IntersectionChecked { get; set; }
+
+    // [Signature("field_5979")]
+    // private partial ImmutableList<Entity> PassengerList { get; set; }
+
+    [Signature("field_5951")]
+    protected partial int RidingCooldown { get; set; }
+
+    [Signature("field_6034")]
+    private partial MCEntity Vehicle { get; set; }
+
+    [Signature("field_6002")]
+    private partial MCWorld World { get; set; }
+
+    [Signature("field_6014")]
+    public partial double PrevX { get; set; }
+
+    [Signature("field_6036")]
+    public partial double PrevY { get; set; }
+
+    [Signature("field_5969")]
+    public partial double PrevZ { get; set; }
+
+    [Signature("field_22467")]
+    private partial Vec3d Pos { get; set; }
+
+    [Signature("field_22468")]
+    private partial BlockPos BlockPos { get; set; }
+
+    [Signature("field_35101")]
+    private partial ChunkPos ChunkPos { get; set; }
+
+    [Signature("field_18276")]
+    private partial Vec3d Velocity { get; set; }
+
+    [Signature("field_6031")]
+    private partial float Yaw { get; set; }
+
+    [Signature("field_5965")]
+    private partial float Pitch { get; set; }
+
+    [Signature("field_5982")]
+    public partial float PrevYaw { get; set; }
+
+    [Signature("field_6004")]
+    public partial float PrevPitch { get; set; }
+
+    [Signature("field_6005")]
+    private partial Box BoundingBox { get; set; }
+
+    [Signature("field_5952")]
+    private partial bool OnGround { get; set; }
+
+    [Signature("field_5976")]
+    public partial bool HorizontalCollision { get; set; }
+
+    [Signature("field_5992")]
+    public partial bool VerticalCollision { get; set; }
+
+    [Signature("field_36331")]
+    public partial bool GroundCollision { get; set; }
+
+    [Signature("field_34927")]
+    public partial bool CollidedSoftly { get; set; }
+
+    [Signature("field_6037")]
+    public partial bool VelocityModified { get; set; }
+
+    [Signature("field_17046")]
+    protected partial Vec3d MovementMultiplier { get; set; }
+
+    [Signature("field_26995")]
+    private partial RemovalReason? RemovalReasonProperty { get; set; }
+
+    [Signature("field_6039")]
+    public partial float PrevHorizontalSpeed { get; set; }
+
+    [Signature("field_5973")]
+    public partial float HorizontalSpeed { get; set; }
+
+    [Signature("field_5994")]
+    public partial float DistanceTraveled { get; set; }
+
+    [Signature("field_28627")]
+    public partial float Speed { get; set; }
+
+    [Signature("field_6017")]
+    public partial float FallDistance { get; set; }
+
+    [Signature("field_6003")]
+    private partial float NextStepSoundDistance { get; set; }
+
+    [Signature("field_6038")]
+    public partial double LastRenderX { get; set; }
+
+    [Signature("field_5971")]
+    public partial double LastRenderY { get; set; }
+
+    [Signature("field_5989")]
+    public partial double LastRenderZ { get; set; }
+
+    [Signature("field_6013")]
+    private partial float StepHeight { get; set; }
+
+    [Signature("field_5960")]
+    public partial bool NoClip { get; set; }
+
+    [Signature("field_5974")]
+    protected partial MCRandom Random { get; }
+
+    [Signature("field_6012")]
+    public partial int Age { get; set; }
+
+    [Signature("field_5956")]
+    private partial int FireTicks { get; set; }
+
+    [Signature("field_5957")]
+    protected partial bool TouchingWater { get; set; }
+
+    // [Signature("field_5964")]
+    // protected partial Object2DoubleMap<TagKey<Fluid>> FluidHeight { get; set; }
+
+    [Signature("field_6000")]
+    protected partial bool SubmergedInWater { get; set; }
+
+    [Signature("field_25599")]
+    private partial Java.Util.Set<TagKey<MCFluid>> SubmergedFluidTag { get; }
+
+    [Signature("field_6008")]
+    public partial int TimeUntilRegen { get; set; }
+
+    [Signature("field_5953")]
+    protected partial bool FirstUpdate { get; set; }
+
+    [Signature("field_6011")]
+    protected partial DataTracker DataTracker { get; }
+
+    [Signature("field_26996")]
+    private partial EntityChangeListener ChangeListener { get; set; }
+
+    [Signature("field_38931")]
+    private partial TrackedPosition TrackedPosition { get; }
+
+    [Signature("field_5985")]
+    public partial bool IgnoreCameraFrustum { get; set; }
+
+    [Signature("field_6007")]
+    public partial bool VelocityDirty { get; set; }
+
+    [Signature("field_6018")]
+    private partial int PortalCooldown { get; set; }
+
+    [Signature("field_5963")]
+    protected partial bool InNetherPortal { get; set; }
+
+    [Signature("field_5972")]
+    protected partial int NetherPortalTime { get; set; }
+
+    [Signature("field_5991")]
+    protected partial BlockPos LastNetherPortalPosition { get; set; }
+
+    [Signature("field_6009")]
+    private partial bool Invulnerable { get; set; }
+
+    [Signature("field_6021")]
+    protected partial UUID Uuid { get; set; }
+
+    [Signature("field_5981")]
+    protected partial string UuidString { get; set; }
+
+    [Signature("field_5958")]
+    private partial bool Glowing { get; set; }
+
+    [Signature("field_6029")]
+    private partial Java.Util.Set<JavaString> CommandTags { get; }
+
+    // [Signature("field_5993")]
+    // private partial double[] PistonMovementDelta { get; }
+
+    [Signature("field_5996")]
+    private partial long PistonMovementTick { get; set; }
+
+    [Signature("field_18065")]
+    private partial EntityDimensions Dimensions { get; set; }
+
+    [Signature("field_18066")]
+    private partial float StandingEyeHeight { get; set; }
+
+    [Signature("field_27857")]
+    public partial bool InPowderSnow { get; set; }
+
+    [Signature("field_28628")]
+    public partial bool WasInPowderSnow { get; set; }
+
+    [Signature("field_28629")]
+    public partial bool WasOnFire { get; set; }
+
+    [Signature("field_44784")]
+    public partial Optional<BlockPos> SupportingBlockPos { get; set; }
+
+    [Signature("field_44873")]
+    private partial bool ForceUpdateSupportingBlockPos { get; set; }
+
+    [Signature("field_26997")]
+    private partial float LastChimeIntensity { get; set; }
+
+    [Signature("field_26994")]
+    private partial int LastChimeAge { get; set; }
+
+    [Signature("field_33758")]
+    private partial bool HasVisualFire { get; set; }
+
+    [Signature("field_35588")]
+    private partial BlockState? BlockStateAtPos { get; set; }
+
     public Text.Text GetName() => Nameable.GetNameProxy(ObjectRef);
 
     public bool HasCustomName() => Nameable.HasCustomNameProxy(ObjectRef);
@@ -1257,6 +1575,9 @@ public partial class Entity : JavaObject, INameable, IEntityLike, ICommandOutput
 
     [Signature("method_52532")]
     protected partial void LerpPosAndRotation(int step, double x, double y, double z, double yaw, double pitch);
+
+    [Signature("blockCollisionEvent", false)]
+    public partial NativeLoaderEvent<Mliybs.Minecraft.Fabric.API.Entity.EntityEvents.BlockCollisionEvent, Mliybs.Minecraft.Fabric.API.Entity.EntityEvents.BlockCollisionEvent.BlockCollisionEventDelegate> BlockCollisionEvent { get; }
 
     [MapName("class_5529")]
     public partial class RemovalReason : Enum<RemovalReason>, IClassRef<RemovalReason>, IFromHandle<RemovalReason>

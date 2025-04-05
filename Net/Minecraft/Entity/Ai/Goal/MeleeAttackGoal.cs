@@ -1,4 +1,4 @@
-namespace Net.Minecraft.Entity.Ai.Goal;
+namespace Net.Minecraft.Entity.AI.Goal;
 
 [MapName("net/minecraft/class_1366")]
 public partial class MeleeAttackGoal : JavaObject, IClassRef<MeleeAttackGoal>, IFromHandle<MeleeAttackGoal>

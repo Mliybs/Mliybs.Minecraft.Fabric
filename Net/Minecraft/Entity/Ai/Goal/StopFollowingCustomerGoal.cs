@@ -1,4 +1,4 @@
-namespace Net.Minecraft.Entity.Ai.Goal;
+namespace Net.Minecraft.Entity.AI.Goal;
 
 [MapName("net/minecraft/class_1390")]
 public partial class StopFollowingCustomerGoal : JavaObject, IClassRef<StopFollowingCustomerGoal>, IFromHandle<StopFollowingCustomerGoal>

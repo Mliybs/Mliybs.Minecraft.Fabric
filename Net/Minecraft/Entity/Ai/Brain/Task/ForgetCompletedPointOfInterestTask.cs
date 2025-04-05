@@ -1,4 +1,4 @@
-namespace Net.Minecraft.Entity.Ai.Brain.Task;
+namespace Net.Minecraft.Entity.AI.Brain.Task;
 
 [MapName("net/minecraft/class_4128")]
 public partial class ForgetCompletedPointOfInterestTask : JavaObject, IClassRef<ForgetCompletedPointOfInterestTask>, IFromHandle<ForgetCompletedPointOfInterestTask>

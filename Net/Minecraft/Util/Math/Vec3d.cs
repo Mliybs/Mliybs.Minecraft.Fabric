@@ -71,7 +71,7 @@ public partial class Vec3d : JavaObject, IPosition, IClassRef<Vec3d>, IFromHandl
     public partial Vec3d Add(double x, double y, double z);
 
     [Signature("method_24802")]
-    public partial bool IsInRange(IPosition pos, double radius);
+    public partial bool IsInRange(Position pos, double radius);
 
     [Signature("method_1022")]
     public partial double DistanceTo(Vec3d vec);
@@ -97,8 +97,8 @@ public partial class Vec3d : JavaObject, IPosition, IClassRef<Vec3d>, IFromHandl
     [Signature("method_18805")]
     public partial Vec3d Multiply(double x, double y, double z);
 
-    // [Signature("method_49272")]
-    // public partial Vec3d AddRandom(Random random, float multiplier);
+    [Signature("method_49272")]
+    public partial Vec3d AddRandom(Random.Random random, float multiplier);
 
     [Signature("method_1033")]
     public partial double Length();
@@ -133,11 +133,11 @@ public partial class Vec3d : JavaObject, IPosition, IClassRef<Vec3d>, IFromHandl
     // [Signature("method_1032")]
     // public partial Vec3d FloorAlongAxes(EnumSet<Direction.Axis> axes);
 
-    // [Signature("method_18043")]
-    // public partial double GetComponentAlongAxis(Direction.Axis axis);
+    [Signature("method_18043")]
+    public partial double GetComponentAlongAxis(Direction.Axis axis);
 
-    // [Signature("method_38499")]
-    // public partial Vec3d WithAxis(Direction.Axis axis, double value);
+    [Signature("method_38499")]
+    public partial Vec3d WithAxis(Direction.Axis axis, double value);
 
     [Signature("method_43206")]
     public partial Vec3d Offset(Direction direction, double value);

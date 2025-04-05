@@ -1,4 +1,4 @@
-namespace Net.Minecraft.Entity.Ai.Goal;
+namespace Net.Minecraft.Entity.AI.Goal;
 
 [MapName("net/minecraft/class_1346")]
 public partial class ChaseBoatGoal : JavaObject, IClassRef<ChaseBoatGoal>, IFromHandle<ChaseBoatGoal>
